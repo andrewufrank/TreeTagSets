@@ -4,7 +4,7 @@ module NLP.Corpora.FrenchUDTests where
 
 import Test.Framework
 
-import  NLP.Corpora.UD
+import  NLP.Corpora.FrenchUD
 import NLP.Types.Tags
 
 

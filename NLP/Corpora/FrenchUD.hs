@@ -50,7 +50,7 @@ import  NLP.Types.Tags as NLPtypes
 --type POSTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 POSTagEng Text
 
-data POStagFrenchUD =   -- copied from http://universaldependencies.org/u/pos/
+data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
 --    Dollar | -- ^ $
@@ -114,7 +114,7 @@ spelledAs =
     , (Dollarcomma, "$,")
     ]
 
-instance NLPtypes.POStags POStagFrenchUD where
+instance NLPtypes.POStags POStag where
 --parseTag :: Text -> POSTag
 --    parseTag txt = case readTag txt of
 --                   Left  _ -> NLPtypes.tagUNK
@@ -130,9 +130,9 @@ instance NLPtypes.POStags POStagFrenchUD where
     isDt tag = tag `elem` []  -- unknown what is a det here?
     tagMap = mkTagMap [minBound ..] spelledAs
 
-instance Arbitrary POStagFrenchUD where
+instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
-instance Serialize POStagFrenchUD
+instance Serialize POStag
 --
 --readTag :: Text -> ErrOrVal POStagFrenchUD
 ----readTag "#" = Right Hash
