@@ -1,7 +1,12 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
-module NLP.Types.Tags
-where
+module NLP.Types.Tags (
+        POStags (..)
+        , NERtags (..)
+        , ChunkTags (..)
+        , TagsetIDs (..)
+        , Text
+        ) where
 
 import Data.Serialize (Serialize)
 import Data.Serialize.Text ()
@@ -62,11 +67,13 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     endTag :: a
     -- | Check if a tag is a determiner tag.
     isDt :: a -> Bool
-    tagmap :: Map a Text
+    tagMap :: Map a Text
 
-    fromTag a = maybe (showT (tagUNK :: a) ) id $  Map.lookup a tagmap
+    fromTag a = maybe (showT (tagUNK :: a) ) id
+                $  Map.lookup a tagMap
 --    tagUNK = UNKNOWN
-    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap tagmap)
+    parseTag t = maybe tagUNK id $ Map.lookup t
+            (reverseMap tagMap)
 
 --    -- lower level default implementations
 --    showTag2 :: [(Text, Text)] -> a -> Text
@@ -113,6 +120,7 @@ instance POStags RawTag where
   endTag = RawTag "-END-"
 
   isDt (RawTag tg) = tg == "DT"
+  tagMap = error "tagMap not implemented for RawTag"
 
 instance Arbitrary RawTag where
   arbitrary = do

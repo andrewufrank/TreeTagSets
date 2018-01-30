@@ -2,20 +2,22 @@
 {-# LANGUAGE DeriveGeneric #-}
 -- | The internal implementation of critical types in terms of the
 -- Brown corpus.
+    -- the structure of these tags is complex and parsed with a specialized system
 module NLP.Corpora.Brown
  (module NLP.Corpora.Brown
  ,  POStag(..)
  , Chunk(..)
  , POStags (..)
 -- , parseTaggedSentences
-
- )
-where
+    , replaceAll
+    ,tagTxtPatterns
+    , reversePatterns
+         ) where
 
 import Data.Serialize (Serialize)
 import qualified Data.Text as T
-import Data.Text (Text)
---import Text.Read (readEither)
+--import Data.Text (Text)
+import Text.Read (readEither)
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
@@ -57,6 +59,7 @@ instance POStags POStag where
   tagUNK = Unk
 
   tagTerm = showBrownTag
+  tagMap = error "tagmap not required for brown corpus pos tags"
 
   startTag = START
   endTag = END
@@ -100,6 +103,18 @@ showBrownTag Dash = "-"
 showBrownTag Term = "."
 showBrownTag Colon = ":"
 showBrownTag tag = replaceAll (reversePatterns tagTxtPatterns) (T.pack $ show tag)
+
+replaceAll :: [(Text, Text)] -> Text -> Text
+replaceAll patterns = foldl (.) id (map (uncurry  T.replace) ( patterns))
+
+reversePatterns :: [(Text, Text)] ->  [(Text, Text)]
+reversePatterns = map (\(x,y) -> (y,x))
+
+readOrErr :: Read a => Text -> Either Text a
+readOrErr    t = case (readEither (t2s t)) of
+                        Left msg -> Left (s2t msg)
+                        Right a -> Right a
+
 
 --replaceAll :: [(Text, Text)] -> (Text -> Text)
 --replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)

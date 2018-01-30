@@ -38,7 +38,7 @@ library
 --        ,uniform-strings
 
     exposed-modules:
---                     NLP.Corpora.Brown
+                     NLP.Corpora.Brown
                      NLP.Corpora.Conll
 --                     NLP.Corpora.UD
 --                     NLP.Corpora.French

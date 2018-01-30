@@ -5,6 +5,7 @@
 module NLP.Corpora.Conll (
     module NLP.Corpora.Conll
     , POStags (..)
+    , POStag(..)
     ) where
 
 import Data.Serialize (Serialize)
@@ -13,7 +14,7 @@ import Data.Serialize (Serialize)
 --import Text.Read (readEither)
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
-import qualified Data.Map as Map
+--import qualified Data.Map as Map
 
 import GHC.Generics
 
@@ -92,7 +93,7 @@ instance POStags POStag where
 --
     isDt tag = tag `elem` [DT]
 
-    tagmap = mkTagMap [minBound ..] spelledAs
+    tagMap = mkTagMap [minBound ..] spelledAs
 
 --map1, map2, map3 :: Map POStag Text
 --map1 = Map.fromList $ zip [minBound ..] (map showT [minBound .. maxBound :: POStag])
