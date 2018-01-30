@@ -2,38 +2,23 @@
 {-# LANGUAGE DeriveGeneric #-}
 -- | Data types representing the POS tags and Chunk tags derived from
 -- the Conll2000 training corpus.
+
 module NLP.Corpora.Conll (
     module NLP.Corpora.Conll
     , POStags (..)
-    , POStag(..)
+--    , POStag(..)
     ) where
 
 import Data.Serialize (Serialize)
---import qualified Data.Text as T
---import Data.Text (Text)
---import Text.Read (readEither)
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
---import qualified Data.Map as Map
 
 import GHC.Generics
 
---import qualified NLP.Types.Tags as NLP
 import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
-import NLP.Types.General
+--import NLP.Types.General
 import Data.Utilities
---import NLP.Types.Tree hiding (Chunk)
--- import NLP.Types.IOB
-
----- | Parse an IOB-formatted Conll corpus into TagagedSentences.
---parseTaggedSentences :: Text -> [TaggedSentence POStag]
---parseTaggedSentences rawCorpus =
---  let res :: Either Error [[IOBChunk Chunk POStag]]
---      res = parseIOB rawCorpus
---  in case res of
---       Left            err -> []
---       Right taggedCorpora -> map toTaggedSentence taggedCorpora
 
 -- | Named entity categories defined for the Conll 2003 task.
 data NERtag = PER
@@ -73,16 +58,7 @@ instance Serialize Chunk
 
 
 instance POStags POStag where
---    fromTag a = maybe (showT tagUNK) id $  Map.lookup a tagmap
-----    tagUNK = UNKNOWN
---    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap tagmap)
---  fromTag = showTag
---
---  parseTag txt = case readConllTag txt of
---                   Left  _ -> Unk
---                   Right t -> t
---
-  -- | Constant tag for "unknown"
+-- | Constant tag for "unknown"
     tagUNK = Unk
 
 --
@@ -95,13 +71,6 @@ instance POStags POStag where
 
     tagMap = mkTagMap [minBound ..] spelledAs
 
---map1, map2, map3 :: Map POStag Text
---map1 = Map.fromList $ zip [minBound ..] (map showT [minBound .. maxBound :: POStag])
---
---map2 = Map.fromList spelledAs
----- show produces the "xx"
---
---map3 = Map.union map2 map1
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]

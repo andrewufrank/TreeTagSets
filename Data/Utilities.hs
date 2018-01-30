@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE ScopedTypeVariables, OverloadedStrings #-}
 
@@ -18,7 +18,7 @@ import Data.Text (Text)
 --import qualified         Data.Char      as S          (isSpace, isLower, toLower, toUpper)
 --import Text.Read (readEither)
 import           Test.Invariant
-import Test.Framework
+--import Test.Framework
 --import Data.Text.Arbitrary
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
@@ -41,25 +41,13 @@ mkTagMap :: (Ord tag, Show tag) =>
 mkTagMap tags spellings = mapTag2text
     where
 
---map1, map2, map3 :: Map POStag Text
+--        map1, map2, mapTag2text :: Map tag Text
         map1 = Map.fromList $ zip tags
             (map showT tags)
 --
         map2 = Map.fromList spellings
         mapTag2text = Map.union map2 map1
 
---------------
---
---toEitherErr :: Either String a -> Either Error a
----- ^ convert a string error return to a text
----- better name toErrOrVal
---toEitherErr (Left s) = Left (T.pack s)
---toEitherErr (Right r) = Right r
---
---readOrErr :: Read a => Text -> Either Text a
---readOrErr    t = case (readEither (t2s t)) of
---                        Left msg -> Left (s2t msg)
---                        Right a -> Right a
 --
 s2t :: String -> Text
 -- ^ String to Text (invertable)

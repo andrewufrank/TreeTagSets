@@ -23,27 +23,17 @@ with set to -serverProperties StanfordCoreNLP-french.properties
 
 module NLP.Corpora.French (module NLP.Corpora.French
         , POStag (..)
---        , module NLP.Corpora.Conll
---        , ErrOrVal (..)
         )
          where
 
 import GHC.Generics
 import Data.Serialize (Serialize)
---import qualified Data.Text as T
---import Data.Text (Text)
 import Data.Utilities
---import           Test.Framework
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
---import Uniform.Zero
---import Uniform.Strings
---import Uniform.Error
---import Data.Text   as T (replace)
 import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
-import NLP.Types.General
 import Data.Utilities
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
@@ -84,10 +74,6 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
 
 
 instance POStags POStag where
---parseTag :: Text -> POSTag
---    parseTag txt = case readTag txt of
---                   Left  _ -> tagUNK
---                   Right t -> t
 
     tagUNK = Frenchunk
 
@@ -102,82 +88,4 @@ instance POStags POStag where
 instance Arbitrary POStag  where
   arbitrary = elements [minBound ..]
 instance Serialize POStag
---
---readTag :: Text -> ErrOrVal POStagFrench
-----readTag "#" = Right Hash
-----readTag "$" = Right Dollar
-----readTag "(" = Right Op_Paren
-----readTag ")" = Right Cl_Paren
-----readTag "''" = Right CloseDQuote
-----readTag "``" = Right OpenDQuote
-----readTag "," = Right Comma
-----readTag "." = Right Point
-----readTag "." = Right Term
-----readTag ":" = Right Colon
-----readTag "[" = Right Openbracket
---
---readTag txt =
---  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
---  in  (readOrErr  normalized)
---
----- | Order matters here: The patterns are replaced in reverse order
----- when generating tags, and in top-to-bottom when generating tags.
---tagTxtPatterns :: [(Text, Text)]
---tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
---                                        -- better solution is probably to use toUpper
---                                        -- and define DOLLARPOINT etc.
---                   , ("[", "openbracket")
---                   , (",", "comma")
---                   , (".", "point")
---                 ]
---
-----reversePatterns :: [(Text, Text)]
-----reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
---
---showTag :: POStagFrench -> Text
-----showTag Hash = "#"
-----showTag Op_Paren = "("
-----showTag Cl_Paren = ")"
-----showTag CloseDQuote = "''"
-----showTag OpenDQuote = "``"
-----showTag Dollar = "$"
-----showTag Comma = ","
-----showTag Term = "."
-----showTag Colon = ":"
---showTag tag = showTag2 tagTxtPatterns tag
-----    replaceAll reversePatterns (s2t $ show tag)
---
-----replaceAll :: [(Text, Text)] -> (Text -> Text)
-----replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
---
-----readTag :: Text -> ErrOrVal POStagFrench
-----readTag txt = maybe2errorP . read . t2s $ txt
-----
-----maybe2errorP  :: Maybe a -> ErrOrVal a
-----maybe2errorP Nothing = Left "readTag POStagFrench 34232"
-----maybe2errorP (Just a) = Right a
---
-----readOrErr :: Read a => Text -> Either Text a
-----readOrErr    t = case (readEither (t2s t)) of
-----                        Left msg -> Left (s2t msg)
-----                        Right a -> Right a
---
-----instance CharChains2 POStagFrench String where
-----    show' =  show
-----instance CharChains2 POStagFrench Text where
-----    show' =  s2t . show
-----
-----instance Zeros POStagFrench where zero = NLPtypes.tagUNK
-------type Unk = Conll.Unk
---
-----test_french_tag1 :: IO ()
-----test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrench) (parseTag "$["::POStagFrench)
-----test_french_tag2 :: IO ()
-----test_french_tag2 = assertEqual (Dollarpoint::POStagFrench) (parseTag "$."::POStagFrench)
-----test_french_tag3 :: IO ()
-----test_french_tag3 = assertEqual (Dollarcomma::POStagFrench) (parseTag "$,"::POStagFrench)
-----test_french_tag4 :: IO ()
-----test_french_tag4 = assertEqual (VVINF::POStagFrench) (parseTag "VVINF"::POStagFrench)
-----
-----test_french_tagR :: IO ()
-----test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
+

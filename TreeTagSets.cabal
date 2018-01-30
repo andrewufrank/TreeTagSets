@@ -48,7 +48,7 @@ library
                      NLP.Corpora.ItalianTinT
                      Data.Utilities
                      NLP.Types.Tags
-                     NLP.Types.General
+----                     NLP.Types.General
 --        NLP.Corpora.BrownTests
 --        NLP.Corpora.ConllTests
     default-language: Haskell2010
@@ -92,6 +92,7 @@ Test-Suite TestAuto
     hs-source-dirs: tests
 
     other-modules:
+        Data.UtilitiesTests
         NLP.Corpora.BrownTests
         NLP.Corpora.ConllTests
         NLP.Corpora.UDTests
