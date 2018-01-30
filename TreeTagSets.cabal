@@ -43,9 +43,9 @@ library
                      NLP.Corpora.UD
                      NLP.Corpora.French
                      NLP.Corpora.FrenchUD
---                     NLP.Corpora.German
---                     NLP.Corpora.Spanish
---                     NLP.Corpora.ItalianTinT
+                     NLP.Corpora.German
+                     NLP.Corpora.Spanish
+                     NLP.Corpora.ItalianTinT
                      Data.Utilities
                      NLP.Types.Tags
                      NLP.Types.General
@@ -96,5 +96,8 @@ Test-Suite TestAuto
         NLP.Corpora.ConllTests
         NLP.Corpora.UDTests
         NLP.Corpora.FrenchTests
+        NLP.Corpora.GermanTests
+        NLP.Corpora.SpanishTests
+        NLP.Corpora.ItalianTinTTests
         NLP.Corpora.FrenchUDTests
 --        StringConversion

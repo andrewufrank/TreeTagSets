@@ -24,7 +24,7 @@ module  NLP.Corpora.German (module  NLP.Corpora.German
 
 import GHC.Generics
 import Data.Serialize (Serialize)
-import qualified Data.Text as T
+--import qualified Data.Text as T
 --import Data.Text (Text)
 --import Data.Utilities
 --import           Test.Framework
@@ -38,7 +38,7 @@ import Test.QuickCheck.Gen (elements)
 --import Text.Read (readEither)
 --import qualified NLP.Corpora.Conll      as Conll
 
-import qualified NLP.Types.Tags as NLP
+import  NLP.Types.Tags
 import Data.Utilities
 --import      NLP.Corpora.Conll
 --import      NLP.Corpora.Conll   as Conll
@@ -46,7 +46,7 @@ import Data.Utilities
 --type PosTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 PosTagEng Text
 
-data POStagGerman =   -- copied from http://universaldependencies.org/u/pos/
+data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
     Dollarpoint | --    $.       |   --	0
@@ -106,65 +106,72 @@ data POStagGerman =   -- copied from http://universaldependencies.org/u/pos/
     Germanunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
+spelledAs =
+    [ (Dollarpoint, "$.")
+    , (Dollaropenbracket, "$[")
+    , (Dollarcomma, "$,")
+    ]
 
-instance NLP.POStags POStagGerman where
+
+instance POStags POStag where
 --parseTag :: Text -> PosTag
-    parseTag txt = case readTag txt of
-                   Left  _ -> NLP.tagUNK
-                   Right t -> t
+--    parseTag txt = case readTag txt of
+--                   Left  _ -> NLP.tagUNK
+--                   Right t -> t
 
     tagUNK = Germanunk
 
-    tagTerm = showTag
+--    tagTerm = showTag
 
     startTag = START
     endTag = END
 
     isDt tag = tag `elem` []  -- unknown what is a det here?
+    tagMap = mkTagMap [minBound ..] spelledAs
 
-instance Arbitrary POStagGerman where
+instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
-instance Serialize POStagGerman
-
-readTag :: Text -> ErrOrVal POStagGerman
---readTag "#" = Right Hash
---readTag "$" = Right Dollar
---readTag "(" = Right Op_Paren
---readTag ")" = Right Cl_Paren
---readTag "''" = Right CloseDQuote
---readTag "``" = Right OpenDQuote
---readTag "," = Right Comma
---readTag "." = Right Term
---readTag ":" = Right Colon
-readTag txt =
-  let normalized = replaceAll tagTxtPatterns (T.toUpper  txt)
-  in  (readOrErr  normalized)
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
-                                        -- better solution is probably to use toUpper
-                                        -- and define DOLLARPOINT etc.
-                   , ("[", "openbracket")
-                   , (",", "comma")
-                   , (".", "point")
-                 ]
-
-reversePatterns :: [(Text, Text)]
-reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
-
-showTag :: POStagGerman -> Text
---showTag Hash = "#"
---showTag Op_Paren = "("
---showTag Cl_Paren = ")"
---showTag CloseDQuote = "''"
---showTag OpenDQuote = "``"
---showTag Dollar = "$"
---showTag Comma = ","
---showTag Term = "."
---showTag Colon = ":"
-showTag tag = replaceAll reversePatterns (s2t $ show tag)
+instance Serialize POStag
+--
+--readTag :: Text -> ErrOrVal POStagGerman
+----readTag "#" = Right Hash
+----readTag "$" = Right Dollar
+----readTag "(" = Right Op_Paren
+----readTag ")" = Right Cl_Paren
+----readTag "''" = Right CloseDQuote
+----readTag "``" = Right OpenDQuote
+----readTag "," = Right Comma
+----readTag "." = Right Term
+----readTag ":" = Right Colon
+--readTag txt =
+--  let normalized = replaceAll tagTxtPatterns (T.toUpper  txt)
+--  in  (readOrErr  normalized)
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
+--                                        -- better solution is probably to use toUpper
+--                                        -- and define DOLLARPOINT etc.
+--                   , ("[", "openbracket")
+--                   , (",", "comma")
+--                   , (".", "point")
+--                 ]
+--
+--reversePatterns :: [(Text, Text)]
+--reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
+--
+--showTag :: POStagGerman -> Text
+----showTag Hash = "#"
+----showTag Op_Paren = "("
+----showTag Cl_Paren = ")"
+----showTag CloseDQuote = "''"
+----showTag OpenDQuote = "``"
+----showTag Dollar = "$"
+----showTag Comma = ","
+----showTag Term = "."
+----showTag Colon = ":"
+--showTag tag = replaceAll reversePatterns (s2t $ show tag)
 
 --replaceAll :: [(Text, Text)] -> (Text -> Text)
 --replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)

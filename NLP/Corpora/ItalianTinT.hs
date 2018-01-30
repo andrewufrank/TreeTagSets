@@ -26,8 +26,8 @@ module  NLP.Corpora.ItalianTinT (module  NLP.Corpora.ItalianTinT
 
 import GHC.Generics
 import Data.Serialize (Serialize)
-import qualified Data.Text as T
-import Data.Text (Text)
+--import qualified Data.Text as T
+--import Data.Text (Text)
 import Data.Utilities
 --import           Test.Framework
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
@@ -40,14 +40,14 @@ import Data.Text   as T (replace)
 import Text.Read (readEither)
 --import qualified NLP.Corpora.Conll      as Conll
 
-import qualified NLP.Types.Tags as NLPtypes
+import  NLP.Types.Tags
 --import      NLP.Corpora.Conll
 --import      NLP.Corpora.Conll   as Conll
 
 --type PosTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 PosTagEng Text
 
-data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST-TANL-POStagset.pdf
+data POStag =   -- the definitions are in  http://www.italianlp.it/docs/ISST-TANL-POStagset.pdf
     START  | -- START tag, used in training.
     END | --END tag, used in training.
     A         | --	felice
@@ -98,6 +98,15 @@ data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST
     TinTunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
+spelledAs =
+    [     (VplusPC, "V+PC")
+        , (VplusPCplusPC, "V+PC+PC")
+        , (VAplusPC, "VA+PC")
+        , (VMplusPC, "VM+PC")
+        , (VMplusPCplusPC, "VM+PC+PC")
+    ]
+
+
 {- additional information available
      "index": 53,
           "word": "pregiudizi",
@@ -119,60 +128,61 @@ data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST
               "Plur"
             ]
             -}
-instance NLPtypes.POStags POStagTinT where
+instance POStags POStag where
 --parseTag :: Text -> PosTag
-    parseTag txt = case readTag txt of
-                   Left  _ -> NLPtypes.tagUNK
-                   Right t -> t
+--    parseTag txt = case readTag txt of
+--                   Left  _ -> NLPtypes.tagUNK
+--                   Right t -> t
 
     tagUNK = TinTunk
 
-    tagTerm = showTag
+--    tagTerm = showTag
 
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [RD]
+    isDt tag = tag `elem` [RD]  -- unknown what is a det here?
+    tagMap = mkTagMap [minBound ..] spelledAs
 
-instance Arbitrary POStagTinT where
+instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
-instance Serialize POStagTinT
-
-readTag :: Text -> ErrOrVal POStagTinT
---readTag "#" = Right Hash
---readTag "$" = Right Dollar
---readTag "(" = Right Op_Paren
---readTag ")" = Right Cl_Paren
---readTag "''" = Right CloseDQuote
---readTag "``" = Right OpenDQuote
---readTag "," = Right Comma
---readTag "." = Right Term
---readTag ":" = Right Colon
-readTag txt =
-  let normalized = replaceAll tagTxtPatterns (T.toUpper  txt)
-  in  (readOrErr  normalized)
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "dollar")
-                   , ("+", "plus")
-                 ]
-
-reversePatterns :: [(Text, Text)]
-reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
-
-showTag :: POStagTinT -> Text
---showTag Hash = "#"
---showTag Op_Paren = "("
---showTag Cl_Paren = ")"
---showTag CloseDQuote = "''"
---showTag OpenDQuote = "``"
---showTag Dollar = "$"
---showTag Comma = ","
---showTag Term = "."
---showTag Colon = ":"
-showTag tag = replaceAll reversePatterns (s2t $ show tag)
+instance Serialize POStag
+--
+--readTag :: Text -> ErrOrVal POStagTinT
+----readTag "#" = Right Hash
+----readTag "$" = Right Dollar
+----readTag "(" = Right Op_Paren
+----readTag ")" = Right Cl_Paren
+----readTag "''" = Right CloseDQuote
+----readTag "``" = Right OpenDQuote
+----readTag "," = Right Comma
+----readTag "." = Right Term
+----readTag ":" = Right Colon
+--readTag txt =
+--  let normalized = replaceAll tagTxtPatterns (T.toUpper  txt)
+--  in  (readOrErr  normalized)
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "dollar")
+--                   , ("+", "plus")
+--                 ]
+--
+--reversePatterns :: [(Text, Text)]
+--reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
+--
+--showTag :: POStagTinT -> Text
+----showTag Hash = "#"
+----showTag Op_Paren = "("
+----showTag Cl_Paren = ")"
+----showTag CloseDQuote = "''"
+----showTag OpenDQuote = "``"
+----showTag Dollar = "$"
+----showTag Comma = ","
+----showTag Term = "."
+----showTag Colon = ":"
+--showTag tag = replaceAll reversePatterns (s2t $ show tag)
 
 --replaceAll :: [(Text, Text)] -> (Text -> Text)
 --replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)

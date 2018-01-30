@@ -40,7 +40,7 @@ import Test.QuickCheck.Gen (elements)
 --import Uniform.Zero
 --import Uniform.Strings
 --import Uniform.Error
-import Data.Text   as T (replace)
+--import Data.Text   as T (replace)
 import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 import NLP.Types.General
