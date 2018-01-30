@@ -7,14 +7,14 @@ module NLP.Corpora.Conll (
     , POStags (..)
     ) where
 
-import Data.Serialize (Serialize)
-import qualified Data.Text as T
-import Data.Text (Text)
+--import Data.Serialize (Serialize)
+--import qualified Data.Text as T
+--import Data.Text (Text)
 --import Text.Read (readEither)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
-import GHC.Generics
+--import GHC.Generics
 
 --import qualified NLP.Types.Tags as NLP
 import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
@@ -38,12 +38,12 @@ data NERtag = PER
             | ORG
             | LOC
             | MISC
-  deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
+  deriving (Read, Show, Ord, Eq, Enum, Bounded)
 
 instance Arbitrary NERtag where
   arbitrary = elements [minBound..]
 
-instance Serialize NERtag
+--instance Serialize NERtag
 instance NERtags NERtag
 
 instance TagsetIDs NERtag where
@@ -71,69 +71,72 @@ instance Serialize Chunk
 
 
 instance POStags POStag where
-  fromTag = showTag
-
-  parseTag txt = case readConllTag txt of
-                   Left  _ -> Unk
-                   Right t -> t
-
-  -- | Constant tag for "unknown"
-  tagUNK = Unk
-
-  tagTerm = showTag
-
-  startTag = START
-  endTag = END
-
-  isDt tag = tag `elem` [DT]
+    fromTag a = maybe "UNKNOWN" id $ Map.lookup a map3
+    tagUNK = UNKNOWN
+    parseTag t = maybe tagUNK id $ Map.lookup t reverseLabelMap
+--  fromTag = showTag
+--
+--  parseTag txt = case readConllTag txt of
+--                   Left  _ -> Unk
+--                   Right t -> t
+--
+--  -- | Constant tag for "unknown"
+--  tagUNK = Unk
+--
+--  tagTerm = showTag
+--
+--  startTag = START
+--  endTag = END
+--
+--  isDt tag = tag `elem` [DT]
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Serialize POStag
 
-readConllTag :: Text -> Either Error POStag
-readConllTag "#" = Right Hash
-readConllTag "$" = Right Dollar
-readConllTag "(" = Right Op_Paren
-readConllTag ")" = Right Cl_Paren
-readConllTag "''" = Right CloseDQuote
-readConllTag "``" = Right OpenDQuote
-readConllTag "," = Right Comma
-readConllTag "." = Right Term
-readConllTag ":" = Right Colon
-readConllTag txt = Right $ readTag2 tagTxtPatterns txt
---  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
---  in readOrErr normalized
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "dollar")
-                 ]
-
-reversePatterns :: [(Text, Text)]
-reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
-
-showTag :: POStag -> Text
-showTag Hash = "#"
-showTag Op_Paren = "("
-showTag Cl_Paren = ")"
-showTag CloseDQuote = "''"
-showTag OpenDQuote = "``"
-showTag Dollar = "$"
-showTag Comma = ","
-showTag Term = "."
-showTag Colon = ":"
-showTag tag = showTag2 tagTxtPatterns tag
---    replaceAll (reversePatterns tagTxtPatterns) (T.pack $ show tag)
-
---replaceAll :: [(Text, Text)] -> (Text -> Text)
---replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)
-
-instance ChunkTags Chunk where
-  fromChunk = T.pack . show
-  parseChunk txt =readOrErr  txt
-  notChunk = O
+--readConllTag :: Text -> Either Error POStag
+--readConllTag "#" = Right Hash
+--readConllTag "$" = Right Dollar
+--readConllTag "(" = Right Op_Paren
+--readConllTag ")" = Right Cl_Paren
+--readConllTag "''" = Right CloseDQuote
+--readConllTag "``" = Right OpenDQuote
+--readConllTag "," = Right Comma
+--readConllTag "." = Right Term
+--readConllTag ":" = Right Colon
+--readConllTag txt = Right $ readTag2 tagTxtPatterns txt
+----  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
+----  in readOrErr normalized
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "dollar")
+--                 ]
+--
+--reversePatterns :: [(Text, Text)]
+--reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
+--
+--showTag :: POStag -> Text
+--showTag Hash = "#"
+--showTag Op_Paren = "("
+--showTag Cl_Paren = ")"
+--showTag CloseDQuote = "''"
+--showTag OpenDQuote = "``"
+--showTag Dollar = "$"
+--showTag Comma = ","
+--showTag Term = "."
+--showTag Colon = ":"
+--showTag tag = showTag2 tagTxtPatterns tag
+----    replaceAll (reversePatterns tagTxtPatterns) (T.pack $ show tag)
+--
+----replaceAll :: [(Text, Text)] -> (Text -> Text)
+----replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)
+--
+--instance ChunkTags Chunk where
+--  fromChunk = T.pack . show
+--  parseChunk txt =readOrErr  txt
+--  notChunk = O
 
 instance TagsetIDs POStag where
     tagsetURL _ = "https://en.wikipedia.org/wiki/Brown_Corpus#Part-of-speech_tags_used"
@@ -198,3 +201,16 @@ data POStag = START -- ^ START tag, used in training.
          | Unk
   deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
+spelledAs =
+         [  (ClosePar, ")"  )
+         , (Colon,   ":"    )
+         , ( Coma, ",")
+         , ( Dash,  "--"   )
+         , (Dollar , "$"    )
+
+         , (LRB_,  "-LRB-")
+        , (PRP_Dollar, "PRP$")
+         , (Quotes , "''")
+         , (Quotes2 , "``")
+         , (WP_Dollar, "WP$")
+         ] :: [(POStag,Text)]

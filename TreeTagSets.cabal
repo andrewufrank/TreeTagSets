@@ -1,5 +1,5 @@
 name: TreeTagSets
-version: 0.0.1
+version: 0.0.2
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
@@ -20,12 +20,13 @@ library
 --        text, utf8-string,
         -- for testing
         ,test-invariant
-        , cereal
-        , cereal-text
+--        , cereal
+--        , cereal-text
         , text
         , QuickCheck
         , quickcheck-instances
         , quickcheck-text
+        , containers
 --        numeric-prelude,
 --        snap-core,
 --        safe,
@@ -37,7 +38,7 @@ library
 --        ,uniform-strings
 
     exposed-modules:
-                     NLP.Corpora.Brown
+--                     NLP.Corpora.Brown
                      NLP.Corpora.Conll
 --                     NLP.Corpora.UD
 --                     NLP.Corpora.French
