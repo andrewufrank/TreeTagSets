@@ -23,3 +23,4 @@ prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag
 --fromRight :: Either a b -> b
 --fromRight (Left  _) = error "Expected a 'Right' value"
 --fromRight (Right v) = v
+

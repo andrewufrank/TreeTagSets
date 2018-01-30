@@ -34,6 +34,20 @@ reverseMap m = Map.fromList [ (b,a) | (a,b) <- Map.assocs m]
 
 showT :: Show a => a -> Text
 showT = s2t . show
+
+mkTagMap :: (Ord tag, Show tag) =>
+        [tag] -> [(tag,Text)] -> Map tag Text
+-- ^ produce the map with the written from and the tags
+mkTagMap tags spellings = mapTag2text
+    where
+
+--map1, map2, map3 :: Map POStag Text
+        map1 = Map.fromList $ zip tags
+            (map showT tags)
+--
+        map2 = Map.fromList spellings
+        mapTag2text = Map.union map2 map1
+
 --------------
 --
 --toEitherErr :: Either String a -> Either Error a

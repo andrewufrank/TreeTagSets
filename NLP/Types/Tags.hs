@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 module NLP.Types.Tags
 where
 
@@ -14,6 +14,9 @@ import Data.Utilities
 
 import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
 import Test.QuickCheck.Instances ()
+
+import qualified Data.Map as Map
+import  Data.Map (Map (..))
 
 --import Data.Utilities (ErrOrVal))
 
@@ -59,6 +62,11 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     endTag :: a
     -- | Check if a tag is a determiner tag.
     isDt :: a -> Bool
+    tagmap :: Map a Text
+
+    fromTag a = maybe (showT (tagUNK :: a) ) id $  Map.lookup a tagmap
+--    tagUNK = UNKNOWN
+    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap tagmap)
 
 --    -- lower level default implementations
 --    showTag2 :: [(Text, Text)] -> a -> Text

@@ -72,9 +72,9 @@ instance Serialize Chunk
 
 
 instance POStags POStag where
-    fromTag a = maybe "Unk" id $  Map.lookup a map3
---    tagUNK = UNKNOWN
-    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap map3)
+--    fromTag a = maybe (showT tagUNK) id $  Map.lookup a tagmap
+----    tagUNK = UNKNOWN
+--    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap tagmap)
 --  fromTag = showTag
 --
 --  parseTag txt = case readConllTag txt of
@@ -83,64 +83,30 @@ instance POStags POStag where
 --
   -- | Constant tag for "unknown"
     tagUNK = Unk
+
 --
 --  tagTerm = showTag
 --
     startTag = START
     endTag = END
 --
---  isDt tag = tag `elem` [DT]
+    isDt tag = tag `elem` [DT]
 
-map1, map2, map3 :: Map POStag Text
-map1 = Map.fromList $ zip [minBound ..] (map showT [minBound .. maxBound :: POStag])
+    tagmap = mkTagMap [minBound ..] spelledAs
 
-map2 = Map.fromList spelledAs
--- show produces the "xx"
-
-map3 = Map.union map2 map1
+--map1, map2, map3 :: Map POStag Text
+--map1 = Map.fromList $ zip [minBound ..] (map showT [minBound .. maxBound :: POStag])
+--
+--map2 = Map.fromList spelledAs
+---- show produces the "xx"
+--
+--map3 = Map.union map2 map1
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
 instance Serialize POStag
 
---readConllTag :: Text -> Either Error POStag
---readConllTag "#" = Right Hash
---readConllTag "$" = Right Dollar
---readConllTag "(" = Right Op_Paren
---readConllTag ")" = Right Cl_Paren
---readConllTag "''" = Right CloseDQuote
---readConllTag "``" = Right OpenDQuote
---readConllTag "," = Right Comma
---readConllTag "." = Right Term
---readConllTag ":" = Right Colon
---readConllTag txt = Right $ readTag2 tagTxtPatterns txt
-----  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
-----  in readOrErr normalized
---
----- | Order matters here: The patterns are replaced in reverse order
----- when generating tags, and in top-to-bottom when generating tags.
---tagTxtPatterns :: [(Text, Text)]
---tagTxtPatterns = [ ("$", "dollar")
---                 ]
---
---reversePatterns :: [(Text, Text)]
---reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
---
---showTag :: POStag -> Text
---showTag Hash = "#"
---showTag Op_Paren = "("
---showTag Cl_Paren = ")"
---showTag CloseDQuote = "''"
---showTag OpenDQuote = "``"
---showTag Dollar = "$"
---showTag Comma = ","
---showTag Term = "."
---showTag Colon = ":"
---showTag tag = showTag2 tagTxtPatterns tag
-----    replaceAll (reversePatterns tagTxtPatterns) (T.pack $ show tag)
---
-----replaceAll :: [(Text, Text)] -> (Text -> Text)
-----replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)
+
 --
 --instance ChunkTags Chunk where
 --  fromChunk = T.pack . show
