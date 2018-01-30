@@ -7,14 +7,15 @@ module NLP.Corpora.Conll (
     , POStags (..)
     ) where
 
---import Data.Serialize (Serialize)
+import Data.Serialize (Serialize)
 --import qualified Data.Text as T
 --import Data.Text (Text)
 --import Text.Read (readEither)
---import Test.QuickCheck.Arbitrary (Arbitrary(..))
---import Test.QuickCheck.Gen (elements)
+import Test.QuickCheck.Arbitrary (Arbitrary(..))
+import Test.QuickCheck.Gen (elements)
+import qualified Data.Map as Map
 
---import GHC.Generics
+import GHC.Generics
 
 --import qualified NLP.Types.Tags as NLP
 import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
@@ -44,7 +45,7 @@ instance Arbitrary NERtag where
   arbitrary = elements [minBound..]
 
 --instance Serialize NERtag
-instance NERtags NERtag
+--instance NERtags NERtag
 
 instance TagsetIDs NERtag where
     tagsetURL _  = "Conll"
@@ -71,28 +72,36 @@ instance Serialize Chunk
 
 
 instance POStags POStag where
-    fromTag a = maybe "UNKNOWN" id $ Map.lookup a map3
-    tagUNK = UNKNOWN
-    parseTag t = maybe tagUNK id $ Map.lookup t reverseLabelMap
+    fromTag a = maybe "Unk" id $  Map.lookup a map3
+--    tagUNK = UNKNOWN
+    parseTag t = maybe tagUNK id $ Map.lookup t (reverseMap map3)
 --  fromTag = showTag
 --
 --  parseTag txt = case readConllTag txt of
 --                   Left  _ -> Unk
 --                   Right t -> t
 --
---  -- | Constant tag for "unknown"
---  tagUNK = Unk
+  -- | Constant tag for "unknown"
+    tagUNK = Unk
 --
 --  tagTerm = showTag
 --
---  startTag = START
---  endTag = END
+    startTag = START
+    endTag = END
 --
 --  isDt tag = tag `elem` [DT]
 
+map1, map2, map3 :: Map POStag Text
+map1 = Map.fromList $ zip [minBound ..] (map showT [minBound .. maxBound :: POStag])
+
+map2 = Map.fromList spelledAs
+-- show produces the "xx"
+
+map3 = Map.union map2 map1
+
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
---instance Serialize POStag
+instance Serialize POStag
 
 --readConllTag :: Text -> Either Error POStag
 --readConllTag "#" = Right Hash
@@ -157,11 +166,12 @@ data POStag = START -- ^ START tag, used in training.
          | Dollar -- ^ $
          | CloseDQuote -- ^ ''
          | OpenDQuote -- ^ ``
-         | Op_Paren -- ^ (
-         | Cl_Paren -- ^ )
+         | OpParen -- ^ (
+         | ClParen -- ^ )
          | Comma -- ^ ,
          | Term -- ^ . Sentence Terminator
          | Colon -- ^ :
+
          | CC -- ^ Coordinating conjunction
          | CD -- ^ Cardinal number
          | DT -- ^ Determiner
@@ -198,19 +208,26 @@ data POStag = START -- ^ START tag, used in training.
          | WP -- ^ Wh-pronoun
          | WPdollar -- ^ Possessive wh-pronoun
          | WRB -- ^ Wh-adverb
+         -- additions - af
+         | LRB --
+         | RRB
+         | Dash
          | Unk
   deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
-         [  (ClosePar, ")"  )
+         [  (ClParen, ")"  )
+         ,(OpParen, "("  )
          , (Colon,   ":"    )
-         , ( Coma, ",")
+         , ( Comma, ",")
+         , ( Term, ".")
          , ( Dash,  "--"   )
-         , (Dollar , "$"    )
+--         , (Dollar , "$"    )
 
-         , (LRB_,  "-LRB-")
-        , (PRP_Dollar, "PRP$")
-         , (Quotes , "''")
-         , (Quotes2 , "``")
-         , (WP_Dollar, "WP$")
+         , (LRB,  "-LRB-")
+         , (RRB,  "-RRB-")
+        , (PRPdollar, "PRP$")
+         , (CloseDQuote , "''")
+         , (OpenDQuote , "``")
+         , (WPdollar, "WP$")
          ] :: [(POStag,Text)]

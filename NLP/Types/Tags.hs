@@ -15,7 +15,7 @@ import Data.Utilities
 import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
 import Test.QuickCheck.Instances ()
 
-import Data.Utilities (Error, toEitherErr)
+--import Data.Utilities (ErrOrVal))
 
 -- | The class of named entity sets.  This typeclass can be defined
 -- entirely in terms of the required class constraints.
@@ -24,7 +24,7 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => NERtags a where
   fromNERTag = T.pack . show
 
   parseNERTag :: Text -> Either Error a
-  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
+--  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
 
 -- | The class of things that can be regarded as 'chunks'; Chunk tags
 -- are much like POS tags, but should not be confused. Generally,
@@ -60,12 +60,12 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     -- | Check if a tag is a determiner tag.
     isDt :: a -> Bool
 
-    -- lower level default implementations
-    showTag2 :: [(Text, Text)] -> a -> Text
-    showTag2 tagTxtPatterns tag = replaceAll (reversePatterns tagTxtPatterns) (s2t $ show tag)
-
-    readTag2 :: [(Text, Text)] -> Text -> a
-    readTag2 tagTxtPatterns = either (return tagUNK) id . readOrErr . normalized tagTxtPatterns
+--    -- lower level default implementations
+--    showTag2 :: [(Text, Text)] -> a -> Text
+----    showTag2 tagTxtPatterns tag = replaceAll (reversePatterns tagTxtPatterns) (s2t $ show tag)
+--
+--    readTag2 :: [(Text, Text)] -> Text -> a
+----    readTag2 tagTxtPatterns = either (return tagUNK) id . readOrErr . normalized tagTxtPatterns
 
 --    normalized :: [(Text, Text)] ->  Text -> a
 --    normalized tagTxtPatterns = replaceAll tagTxtPatterns (T.toUpper txt)

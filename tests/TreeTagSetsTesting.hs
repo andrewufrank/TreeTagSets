@@ -14,7 +14,7 @@ import           Test.Framework
 
 import {-@ HTF_TESTS @-} Data.Utilities
 
-import {-@ HTF_TESTS @-} NLP.Corpora.BrownTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.BrownTests
 import {-@ HTF_TESTS @-} NLP.Corpora.ConllTests
 
 main =  do  -- with tests in other modules

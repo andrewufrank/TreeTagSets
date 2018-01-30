@@ -20,8 +20,8 @@ library
 --        text, utf8-string,
         -- for testing
         ,test-invariant
---        , cereal
---        , cereal-text
+        , cereal
+        , cereal-text
         , text
         , QuickCheck
         , quickcheck-instances

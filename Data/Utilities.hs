@@ -5,6 +5,8 @@
 module Data.Utilities (module Data.Utilities
     , Text
     , Map
+--    , Arbitrary (..)
+--    , Serialize
     ) where
 
 -- a collection of utilities used in handling of tags
@@ -30,6 +32,8 @@ type Error = Text
 reverseMap :: (Ord b, Ord a) => Map a b -> Map b a
 reverseMap m = Map.fromList [ (b,a) | (a,b) <- Map.assocs m]
 
+showT :: Show a => a -> Text
+showT = s2t . show
 --------------
 --
 --toEitherErr :: Either String a -> Either Error a
@@ -43,13 +47,13 @@ reverseMap m = Map.fromList [ (b,a) | (a,b) <- Map.assocs m]
 --                        Left msg -> Left (s2t msg)
 --                        Right a -> Right a
 --
---s2t :: String -> Text
----- ^ String to Text (invertable)
---s2t = T.pack
---
---t2s :: Text -> String
----- ^ String to Text (invertable)
---t2s = T.unpack
+s2t :: String -> Text
+-- ^ String to Text (invertable)
+s2t = T.pack
+
+t2s :: Text -> String
+-- ^ String to Text (invertable)
+t2s = T.unpack
 
 --toUpper' :: Text -> Text
 --toUpper' = map T.toUpper
