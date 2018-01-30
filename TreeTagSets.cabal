@@ -40,9 +40,9 @@ library
     exposed-modules:
                      NLP.Corpora.Brown
                      NLP.Corpora.Conll
---                     NLP.Corpora.UD
---                     NLP.Corpora.French
---                     NLP.Corpora.FrenchUD
+                     NLP.Corpora.UD
+                     NLP.Corpora.French
+                     NLP.Corpora.FrenchUD
 --                     NLP.Corpora.German
 --                     NLP.Corpora.Spanish
 --                     NLP.Corpora.ItalianTinT
@@ -94,4 +94,7 @@ Test-Suite TestAuto
     other-modules:
         NLP.Corpora.BrownTests
         NLP.Corpora.ConllTests
+        NLP.Corpora.UDTests
+        NLP.Corpora.FrenchTests
+        NLP.Corpora.FrenchUDTests
 --        StringConversion

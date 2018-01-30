@@ -22,8 +22,8 @@ module NLP.Corpora.UD (module NLP.Corpora.UD
          where
 
 import Data.Serialize (Serialize)
-import qualified Data.Text as T
-import Data.Text (Text)
+--import qualified Data.Text as T
+--import Data.Text (Text)
 --import Data.Utilities
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
@@ -31,8 +31,8 @@ import Test.QuickCheck.Gen (elements)
 import GHC.Generics
 
 import qualified NLP.Types.Tags as NLP
-import NLP.Types.General
-import Data.Utilities (readOrErr, ErrOrVal (..), Error, s2t)
+--import NLP.Types.General
+import Data.Utilities
 --import NLP.Types.Tree hiding (Chunk)
 -- import NLP.Types.IOB
 
@@ -63,57 +63,58 @@ instance NLP.TagsetIDs POStag where
 
 instance NLP.POStags  POStag where
 --parseTag :: Text -> PosTag
-    parseTag txt = case readTag txt of
-                   Left  _ -> NLP.tagUNK
-                   Right t -> t
+--    parseTag txt = case readTag txt of
+--                   Left  _ -> NLP.tagUNK
+--                   Right t -> t
 
     tagUNK = X
 
-    tagTerm = showTag
+--    tagTerm = showTag
 
     startTag = START
     endTag = END
 
     isDt tag = tag `elem` [DET]
+    tagMap = mkTagMap [minBound ..] []
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
 instance Serialize POStag
-
-readTag :: Text -> ErrOrVal POStag
---readTag "#" = Right Hash
---readTag "$" = Right Dollar
---readTag "(" = Right Op_Paren
---readTag ")" = Right Cl_Paren
---readTag "''" = Right CloseDQuote
---readTag "``" = Right OpenDQuote
---readTag "," = Right Comma
---readTag "." = Right Term
---readTag ":" = Right Colon
-readTag txt =
-  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
-  in  (readOrErr  normalized)
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "dollar")
-                 ]
-
-reversePatterns :: [(Text, Text)]
-reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
-
-showTag :: POStag -> Text
---showTag Hash = "#"
---showTag Op_Paren = "("
---showTag Cl_Paren = ")"
---showTag CloseDQuote = "''"
---showTag OpenDQuote = "``"
---showTag Dollar = "$"
---showTag Comma = ","
---showTag Term = "."
---showTag Colon = ":"
-showTag tag = replaceAll reversePatterns (s2t $ show tag)
+--
+--readTag :: Text -> ErrOrVal POStag
+----readTag "#" = Right Hash
+----readTag "$" = Right Dollar
+----readTag "(" = Right Op_Paren
+----readTag ")" = Right Cl_Paren
+----readTag "''" = Right CloseDQuote
+----readTag "``" = Right OpenDQuote
+----readTag "," = Right Comma
+----readTag "." = Right Term
+----readTag ":" = Right Colon
+--readTag txt =
+--  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
+--  in  (readOrErr  normalized)
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "dollar")
+--                 ]
+--
+--reversePatterns :: [(Text, Text)]
+--reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
+--
+--showTag :: POStag -> Text
+----showTag Hash = "#"
+----showTag Op_Paren = "("
+----showTag Cl_Paren = ")"
+----showTag CloseDQuote = "''"
+----showTag OpenDQuote = "``"
+----showTag Dollar = "$"
+----showTag Comma = ","
+----showTag Term = "."
+----showTag Colon = ":"
+--showTag tag = replaceAll reversePatterns (s2t $ show tag)
 
 --replaceAll :: [(Text, Text)] -> (Text -> Text)
 --replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)

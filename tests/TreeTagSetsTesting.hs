@@ -16,10 +16,14 @@ import {-@ HTF_TESTS @-} Data.Utilities
 
 import {-@ HTF_TESTS @-} NLP.Corpora.BrownTests
 import {-@ HTF_TESTS @-} NLP.Corpora.ConllTests
+import {-@ HTF_TESTS @-} NLP.Corpora.FrenchTests
+import {-@ HTF_TESTS @-} NLP.Corpora.UDTests
+import {-@ HTF_TESTS @-} NLP.Corpora.FrenchUDTests
 
 main =  do  -- with tests in other modules
     putStrLn "HTF ExampleTest.hs:\n"
     p <- htfMain htf_importedTests
-    putStrLn ("HTF end TreeTagSetsTesting.hs test:\n" ++ show p)
+    putStrLn ("HTF end TreeTagSetsTesting.hs test:\n"
+                ++ show p)
     return ()
 

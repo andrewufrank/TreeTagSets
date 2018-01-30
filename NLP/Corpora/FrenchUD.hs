@@ -108,58 +108,64 @@ data POStagFrenchUD =   -- copied from http://universaldependencies.org/u/pos/
     Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
+spelledAs =
+    [ (Dollarpoint, "$.")
+    , (Dollaropenbracket, "$[")
+    , (Dollarcomma, "$,")
+    ]
 
 instance NLPtypes.POStags POStagFrenchUD where
 --parseTag :: Text -> POSTag
-    parseTag txt = case readTag txt of
-                   Left  _ -> NLPtypes.tagUNK
-                   Right t -> t
+--    parseTag txt = case readTag txt of
+--                   Left  _ -> NLPtypes.tagUNK
+--                   Right t -> t
 
     tagUNK = Frenchunk
 
-    tagTerm = showTag
+--    tagTerm = showTag
 
     startTag = START
     endTag = END
 
     isDt tag = tag `elem` []  -- unknown what is a det here?
+    tagMap = mkTagMap [minBound ..] spelledAs
 
 instance Arbitrary POStagFrenchUD where
   arbitrary = elements [minBound ..]
 instance Serialize POStagFrenchUD
+--
+--readTag :: Text -> ErrOrVal POStagFrenchUD
+----readTag "#" = Right Hash
+----readTag "$" = Right Dollar
+----readTag "(" = Right Op_Paren
+----readTag ")" = Right Cl_Paren
+----readTag "''" = Right CloseDQuote
+----readTag "``" = Right OpenDQuote
+----readTag "," = Right Comma
+----readTag "." = Right Point
+----readTag "." = Right Term
+----readTag ":" = Right Colon
+----readTag "[" = Right Openbracket
+--
+--readTag txt =
+--  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
+--  in  (readOrErr  normalized)
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
+--                                        -- better solution is probably to use toUpper
+--                                        -- and define DOLLARPOINT etc.
+--                   , ("[", "openbracket")
+--                   , (",", "comma")
+--                   , (".", "point")
+--                 ]
+--
+--reversePatterns :: [(Text, Text)]
+--reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
 
-readTag :: Text -> ErrOrVal POStagFrenchUD
---readTag "#" = Right Hash
---readTag "$" = Right Dollar
---readTag "(" = Right Op_Paren
---readTag ")" = Right Cl_Paren
---readTag "''" = Right CloseDQuote
---readTag "``" = Right OpenDQuote
---readTag "," = Right Comma
---readTag "." = Right Point
---readTag "." = Right Term
---readTag ":" = Right Colon
---readTag "[" = Right Openbracket
-
-readTag txt =
-  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
-  in  (readOrErr  normalized)
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
-                                        -- better solution is probably to use toUpper
-                                        -- and define DOLLARPOINT etc.
-                   , ("[", "openbracket")
-                   , (",", "comma")
-                   , (".", "point")
-                 ]
-
-reversePatterns :: [(Text, Text)]
-reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
-
-showTag :: POStagFrenchUD -> Text
+--showTag :: POStagFrenchUD -> Text
 --showTag Hash = "#"
 --showTag Op_Paren = "("
 --showTag Cl_Paren = ")"
@@ -169,7 +175,7 @@ showTag :: POStagFrenchUD -> Text
 --showTag Comma = ","
 --showTag Term = "."
 --showTag Colon = ":"
-showTag tag = replaceAll reversePatterns (s2t $ show tag)
+--showTag tag = replaceAll reversePatterns (s2t $ show tag)
 
 --replaceAll :: [(Text, Text)] -> (Text -> Text)
 --replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
