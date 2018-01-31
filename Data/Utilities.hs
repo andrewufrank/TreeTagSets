@@ -16,7 +16,7 @@ module Data.Utilities (module Data.Utilities
 import qualified Data.Text as T
 import Data.Text (Text)
 --import qualified         Data.Char      as S          (isSpace, isLower, toLower, toUpper)
---import Text.Read (readEither)
+import Text.Read (readEither)
 import           Test.Invariant
 --import Test.Framework
 --import Data.Text.Arbitrary
@@ -28,6 +28,13 @@ type ErrOrVal a = Either Text a
 
 -- | Just a handy alias for Text
 type Error = Text
+
+read2unk :: Read a => a -> Text ->  a
+-- ^ read a tag, if error report the first arg
+-- could be readDef from safe package
+read2unk unk t = case (readEither (t2s t)) of
+                        Left msg -> unk
+                        Right a ->   a
 
 reverseMap :: (Ord b, Ord a) => Map a b -> Map b a
 reverseMap m = Map.fromList [ (b,a) | (a,b) <- Map.assocs m]

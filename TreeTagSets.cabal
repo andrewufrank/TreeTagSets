@@ -46,6 +46,7 @@ library
                      NLP.Corpora.German
                      NLP.Corpora.Spanish
                      NLP.Corpora.ItalianTinT
+                     NLP.Corpora.ConllNER
                      Data.Utilities
                      NLP.Types.Tags
 ----                     NLP.Types.General

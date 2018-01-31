@@ -6,7 +6,7 @@
 module NLP.Corpora.Conll (
     module NLP.Corpora.Conll
     , POStags (..)
---    , POStag(..)
+    , POStag(..)
     ) where
 
 import Data.Serialize (Serialize)
@@ -20,21 +20,19 @@ import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
 --import NLP.Types.General
 import Data.Utilities
 
--- | Named entity categories defined for the Conll 2003 task.
-data NERtag = PER
-            | ORG
-            | LOC
-            | MISC
-  deriving (Read, Show, Ord, Eq, Enum, Bounded)
-
-instance Arbitrary NERtag where
-  arbitrary = elements [minBound..]
+---- | Named entity categories defined for the Conll 2003 task.
+--data NERtag = PER
+--            | ORG
+--            | LOC
+--            | MISC
+--  deriving (Read, Show, Ord, Eq, Enum, Bounded)
+--
+--instance Arbitrary NERtag where
+--  arbitrary = elements [minBound..]
 
 --instance Serialize NERtag
 --instance NERtags NERtag
 
-instance TagsetIDs NERtag where
-    tagsetURL _  = "Conll"
 
 -- | Phrase chunk tags defined for the Conll task.
 data Chunk = ADJP

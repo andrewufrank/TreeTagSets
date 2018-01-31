@@ -27,12 +27,15 @@ import  Data.Map (Map (..))
 
 -- | The class of named entity sets.  This typeclass can be defined
 -- entirely in terms of the required class constraints.
-class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => NERtags a where
+class (Ord a, Eq a, Read a, Show a, Bounded a, Generic a, Serialize a) => NERtags a where
   fromNERTag :: a -> Text
   fromNERTag = T.pack . show
 
-  parseNERTag :: Text -> Either Error a
+  parseNERTag :: Text ->  a
+  parseNERTag txt = read2unk nerUNK txt
 --  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
+  nerUNK :: a
+  nerUNK = maxBound
 
 -- | The class of things that can be regarded as 'chunks'; Chunk tags
 -- are much like POS tags, but should not be confused. Generally,
