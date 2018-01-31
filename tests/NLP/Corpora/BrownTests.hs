@@ -6,6 +6,7 @@ module NLP.Corpora.BrownTests where
 import Test.Framework
 
 import qualified NLP.Corpora.Brown as B
+import  NLP.Corpora.Brown as B
 import  NLP.Corpora.Brown
 -- qualification here is not required
 
@@ -25,3 +26,9 @@ test_replace1 = assertEqual ("WRB_pl_DO")
 test_read1 = assertEqual (Right WRB_pl_DO)
             (parseBrownTag "WRB+DO")
 test_show1 = assertEqual "WRB+DO" (fromTag WRB_pl_DO)
+
+--prop_nerTagsRoundTrip :: NERtag -> Bool
+--prop_nerTagsRoundTrip tag = tag == (parseNERTag . fromNERTag) tag
+--
+prop_chunkTagsRoundTrip :: ChunkTag -> Bool
+prop_chunkTagsRoundTrip tag = tag == (parseChunkTag . fromChunkTag) tag

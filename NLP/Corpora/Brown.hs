@@ -21,17 +21,18 @@ import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
 --import NLP.Types.General
 import Data.Utilities
 
-data Chunk = C_NP -- ^ Noun Phrase.
+data ChunkTag = C_NP -- ^ Noun Phrase.
            | C_VP -- ^ Verb Phrase.
            | C_PP -- ^ Prepositional Phrase.
            | C_CL -- ^ Clause.
            | C_O  -- ^ "Out" not a chunk.
+            | C_UNK
   deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
-instance Arbitrary Chunk where
+instance Arbitrary ChunkTag where
   arbitrary = elements [minBound ..]
 
-instance Serialize Chunk
+instance Serialize ChunkTag
 
 instance Serialize POStag
 
@@ -101,10 +102,10 @@ readOrErr    t = case (readEither (t2s t)) of
                         Right a -> Right a
 
 
-instance ChunkTags Chunk where
-  fromChunk = T.pack . show
-  parseChunk txt = readOrErr (  T.append "C_" txt)
-  notChunk = C_O
+instance ChunkTags ChunkTag where
+  fromChunkTag = T.pack . drop 2 . show
+  parseChunkTag txt = read2unk C_UNK (  T.append "C_" txt)
+  notChunk = C_UNK -- C_O
 instance TagsetIDs POStag where
     tagsetURL _ = "https://hackage.haskell.org/package/chatter-0.9.1.0/docs/NLP-Corpora-Conll.html"
     -- this is the original haskell code of which this is a copy

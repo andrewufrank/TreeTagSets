@@ -42,10 +42,9 @@ class (Ord a, Eq a, Read a, Show a, Bounded a, Generic a, Serialize a) => NERtag
 -- chunks distinguish between different phrasal categories (e.g.; Noun
 -- Phrases, Verb Phrases, Prepositional Phrases, etc..)
 class (Ord a, Eq a, Read a, Show a, Bounded a, Generic a, Serialize a) => ChunkTags a where
-  fromChunkTag :: a -> Text
-  fromChunkTag = showT
-  parseChunkTag :: Text -> a
-  parseChunkTag txt = read2unk notChunk txt
+  fromChunk :: a -> Text
+  parseChunk :: Text -> a
+  parseChunk txt = read2unk notChunk txt
   notChunk :: a
   notChunk = maxBound
 
@@ -94,41 +93,41 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
 class TagsetIDs t where
     tagsetURL :: t ->  Text
 
----- | A fall-back 'ChunkTag' instance, analogous to 'RawTag'
---newtype RawChunk = RawChunk Text
---  deriving (Ord, Eq, Read, Show, Generic)
---
---instance Serialize RawChunk
---
---instance ChunkTags RawChunk where
---  fromChunk (RawChunk ch) = ch
---  parseChunk txt =  (RawChunk txt)
---  notChunk = RawChunk "O"
---
----- | A fallback POS tag instance.
---newtype RawTag = RawTag Text
---  deriving (Ord, Eq, Read, Show, Generic)
---
---instance Serialize RawTag
---
----- | POStags instance for unknown tagsets.
---instance POStags RawTag where
---  fromTag (RawTag t) = t
---
---  parseTag t = RawTag t
---
---  -- | Constant tag for "unknown"
---  tagUNK = RawTag "Unk"
---
---  tagTerm (RawTag t) = t
---
---  startTag = RawTag "-START-"
---  endTag = RawTag "-END-"
---
---  isDt (RawTag tg) = tg == "DT"
---  tagMap = error "tagMap not implemented for RawTag"
---
---instance Arbitrary RawTag where
---  arbitrary = do
---    NonEmpty str <- arbitrary
---    return $ RawTag $ T.pack str
+-- | A fall-back 'ChunkTag' instance, analogous to 'RawTag'
+newtype RawChunk = RawChunk Text
+  deriving (Ord, Eq, Read, Show, Generic)
+
+instance Serialize RawChunk
+
+instance ChunkTags RawChunk where
+  fromChunk (RawChunk ch) = ch
+  parseChunk txt =  (RawChunk txt)
+  notChunk = RawChunk "O"
+
+-- | A fallback POS tag instance.
+newtype RawTag = RawTag Text
+  deriving (Ord, Eq, Read, Show, Generic)
+
+instance Serialize RawTag
+
+-- | POStags instance for unknown tagsets.
+instance POStags RawTag where
+  fromTag (RawTag t) = t
+
+  parseTag t = RawTag t
+
+  -- | Constant tag for "unknown"
+  tagUNK = RawTag "Unk"
+
+  tagTerm (RawTag t) = t
+
+  startTag = RawTag "-START-"
+  endTag = RawTag "-END-"
+
+  isDt (RawTag tg) = tg == "DT"
+  tagMap = error "tagMap not implemented for RawTag"
+
+instance Arbitrary RawTag where
+  arbitrary = do
+    NonEmpty str <- arbitrary
+    return $ RawTag $ T.pack str
