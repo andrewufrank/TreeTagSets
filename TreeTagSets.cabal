@@ -1,12 +1,13 @@
 name: TreeTagSets
-version: 0.0.2
+version: 0.0.3
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE
 synopsis: a collection of TreeTags
 description:
-
+    0.0.2 - separate descriptions for POStag, simplified using Map
+    0.0.3 - add Model descriptions listing the tagsets used in a model
 
 author: Andrew U. Frank
 
@@ -50,6 +51,7 @@ library
                      NLP.Corpora.ConllChunks
                      Data.Utilities
                      NLP.Types.Tags
+                     NLP.Models
 ----                     NLP.Types.General
 --        NLP.Corpora.BrownTests
 --        NLP.Corpora.ConllTests

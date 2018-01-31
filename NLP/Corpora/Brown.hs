@@ -6,6 +6,7 @@
 
 module NLP.Corpora.Brown
  (module NLP.Corpora.Brown
+ , POStag (..)
          ) where
 
 import Data.Serialize (Serialize)
