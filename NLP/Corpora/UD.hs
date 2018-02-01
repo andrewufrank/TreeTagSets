@@ -64,7 +64,7 @@ instance NLP.POStags  POStag where
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [DET]
+    isDeterminerTag tag = tag `elem` [DET]
     tagMap = mkTagMap [minBound ..] []
 
 instance Arbitrary POStag where

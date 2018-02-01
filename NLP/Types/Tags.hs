@@ -1,10 +1,11 @@
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DefaultSignatures #-}
 module NLP.Types.Tags (
         POStags (..)
         , NERtags (..)
         , ChunkTags (..)
         , TagsetIDs (..)
+        , DEPtags (..)
         , Text
         ) where
 
@@ -27,27 +28,34 @@ import  Data.Map (Map (..))
 
 -- | The class of named entity sets.  This typeclass can be defined
 -- entirely in terms of the required class constraints.
-class (Ord a, Eq a, Read a, Show a, Bounded a, Generic a, Serialize a) => NERtags a where
-  fromNERTag :: a -> Text
-  fromNERTag = T.pack . show
+    -- removed Serialize and Bounded
+class (Ord a, Eq a, Read a, Show a, Generic a) => NERtags a where
+  fromNERtag :: a -> Text
+  -- ^ convert Tag to the form used by the tagger
+  fromNERtag = showT
 
-  parseNERTag :: Text ->  a
-  parseNERTag txt = read2unk nerUNK txt
+  parseNERtag :: Text ->  a
+  -- convert the tagger form to a type
+  parseNERtag txt = read2unk nerUNK txt
 --  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
+
   nerUNK :: a
+  -- ^ the value marking a tag which is not defined - always the last
+  default nerUNK :: Bounded a => a
   nerUNK = maxBound
 
 -- | The class of things that can be regarded as 'chunks'; Chunk tags
 -- are much like POS tags, but should not be confused. Generally,
 -- chunks distinguish between different phrasal categories (e.g.; Noun
 -- Phrases, Verb Phrases, Prepositional Phrases, etc..)
-class (Ord a, Eq a, Read a, Show a, Bounded a, Generic a, Serialize a) => ChunkTags a where
+class (Ord a, Eq a, Read a, Show a,   Generic a, Serialize a) => ChunkTags a where
   fromChunkTag :: a -> Text
   fromChunkTag = showT
   parseChunkTag :: Text -> a
-  parseChunkTag txt = read2unk notChunk txt
-  notChunk :: a
-  notChunk = maxBound
+  parseChunkTag txt = read2unk notChunkTag txt
+  notChunkTag :: a
+  default notChunkTag :: Bounded a => a
+  notChunkTag = maxBound
 
 -- | The class of POS Tags.
 --
@@ -72,7 +80,7 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     startTag :: a
     endTag :: a
     -- | Check if a tag is a determiner tag.
-    isDt :: a -> Bool
+    isDeterminerTag :: a -> Bool
     tagMap :: Map a Text
 
     fromTag a = maybe (showT (tagUNK :: a) ) id
@@ -81,54 +89,21 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     parseTag t = maybe tagUNK id $ Map.lookup t
             (reverseMap tagMap)
 
---    -- lower level default implementations
---    showTag2 :: [(Text, Text)] -> a -> Text
-----    showTag2 tagTxtPatterns tag = replaceAll (reversePatterns tagTxtPatterns) (s2t $ show tag)
---
---    readTag2 :: [(Text, Text)] -> Text -> a
-----    readTag2 tagTxtPatterns = either (return tagUNK) id . readOrErr . normalized tagTxtPatterns
+class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => DEPtags a where
+    -- the dependency tags (as a single level, inclusive features?)
+    fromDEPtag :: a -> Text
+    parseDEPtag :: Text -> a
+    tagDEPUNK :: a
 
---    normalized :: [(Text, Text)] ->  Text -> a
---    normalized tagTxtPatterns = replaceAll tagTxtPatterns (T.toUpper txt)
+    tagDEPmap :: Map a Text
+
+    fromDEPtag a = maybe (showT (tagDEPUNK :: a) ) id
+                $  Map.lookup a tagDEPmap
+--    tagUNK = UNKNOWN
+    parseDEPtag t = maybe tagDEPUNK id $ Map.lookup t
+            (reverseMap tagDEPmap)
 
 class TagsetIDs t where
     tagsetURL :: t ->  Text
 
----- | A fall-back 'ChunkTag' instance, analogous to 'RawTag'
---newtype RawChunk = RawChunk Text
---  deriving (Ord, Eq, Read, Show, Generic)
---
---instance Serialize RawChunk
---
---instance ChunkTags RawChunk where
---  fromChunk (RawChunk ch) = ch
---  parseChunk txt =  (RawChunk txt)
---  notChunk = RawChunk "O"
---
----- | A fallback POS tag instance.
---newtype RawTag = RawTag Text
---  deriving (Ord, Eq, Read, Show, Generic)
---
---instance Serialize RawTag
---
----- | POStags instance for unknown tagsets.
---instance POStags RawTag where
---  fromTag (RawTag t) = t
---
---  parseTag t = RawTag t
---
---  -- | Constant tag for "unknown"
---  tagUNK = RawTag "Unk"
---
---  tagTerm (RawTag t) = t
---
---  startTag = RawTag "-START-"
---  endTag = RawTag "-END-"
---
---  isDt (RawTag tg) = tg == "DT"
---  tagMap = error "tagMap not implemented for RawTag"
---
---instance Arbitrary RawTag where
---  arbitrary = do
---    NonEmpty str <- arbitrary
---    return $ RawTag $ T.pack str
+

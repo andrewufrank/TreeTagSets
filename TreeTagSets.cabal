@@ -48,6 +48,7 @@ library
                      NLP.Corpora.ItalianTinT
                      NLP.Corpora.ConllNER
                      NLP.Corpora.ConllChunks
+                     NLP.Corpora.RawTags
                      Data.Utilities
                      NLP.Types.Tags
 ----                     NLP.Types.General

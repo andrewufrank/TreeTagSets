@@ -65,7 +65,7 @@ instance POStags POStag where
     startTag = START
     endTag = END
 --
-    isDt tag = tag `elem` [DT]
+    isDeterminerTag tag = tag `elem` [DT]
 
     tagMap = mkTagMap [minBound ..] spelledAs
 

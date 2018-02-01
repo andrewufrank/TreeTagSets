@@ -122,7 +122,7 @@ instance POStags POStag where
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [RD]  -- unknown what is a det here?
+    isDeterminerTag tag = tag `elem` [RD]  -- unknown what is a det here?
     tagMap = mkTagMap [minBound ..] spelledAs
 
 instance Arbitrary POStag where

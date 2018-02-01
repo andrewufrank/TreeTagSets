@@ -52,7 +52,7 @@ instance POStags POStag where
   startTag = START
   endTag = END
 
-  isDt tag = tag `elem` [DT, DTdollar, DT_pl_BEZ, DT_pl_MD, DTI, DTS, DTS_pl_BEZ, DTX]
+  isDeterminerTag tag = tag `elem` [DT, DTdollar, DT_pl_BEZ, DT_pl_MD, DTI, DTS, DTS_pl_BEZ, DTX]
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
@@ -105,7 +105,7 @@ readOrErr    t = case (readEither (t2s t)) of
 instance ChunkTags ChunkTag where
   fromChunkTag = T.pack . drop 2 . show
   parseChunkTag txt = read2unk C_UNK (  T.append "C_" txt)
-  notChunk = C_UNK -- C_O
+  notChunkTag = C_UNK -- C_O
 instance TagsetIDs POStag where
     tagsetURL _ = "https://hackage.haskell.org/package/chatter-0.9.1.0/docs/NLP-Corpora-Conll.html"
     -- this is the original haskell code of which this is a copy

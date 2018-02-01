@@ -156,7 +156,7 @@ instance POStags POStag  where
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
+    isDeterminerTag tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
     tagMap = mkTagMap [minBound ..] []
 
 instance Arbitrary POStag where
