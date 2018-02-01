@@ -35,7 +35,7 @@ newtype RawNERtag = RawNERtag Text
 -- | POStags instance for unknown tagsets.
 instance NERtags RawNERtag where
   fromNERtag (RawNERtag t) = t
-  parseNERtag t = RawNERtag t
+  parseNERtag  = RawNERtag
 
   -- | Constant tag for "unknown"  -- cannot occur
   nerUNK = error "nerUNK cannot occur for RawNERtag"
@@ -54,7 +54,7 @@ newtype RawPOStag = RawPOStag Text
 instance POStags RawPOStag where
   fromTag (RawPOStag t) = t
 
-  parseTag t = RawPOStag t
+  parseTag  = RawPOStag
 
   -- | Constant tag for "unknown"
   tagUNK = RawPOStag "Unk"
@@ -81,7 +81,7 @@ newtype RawChunk = RawChunk Text
 
 instance ChunkTags RawChunk where
   fromChunkTag (RawChunk ch) = ch
-  parseChunkTag txt =  (RawChunk txt)
+  parseChunkTag txt =  RawChunk txt
   notChunkTag = RawChunk "O"
 
 ------------------------------------------------------------------- D E P tags
@@ -95,7 +95,7 @@ instance Serialize RawDEPtag
 
 instance DEPtags RawDEPtag where
   fromDEPtag (RawDEPtag ch) = ch
-  parseDEPtag txt =  (RawDEPtag txt)
+  parseDEPtag txt =  RawDEPtag txt
 
 
 

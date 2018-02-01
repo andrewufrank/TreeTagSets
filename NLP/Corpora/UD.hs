@@ -12,7 +12,7 @@
     , OverloadedStrings
         , TypeSynonymInstances
         , FlexibleInstances
-        , DeriveAnyClass
+--        , DeriveAnyClass
         , DeriveGeneric
         #-}
 

@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+--{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DefaultSignatures #-}
 module NLP.Types.Tags (
         POStags (..)
@@ -17,6 +17,7 @@ import GHC.Generics
 import Text.Read (readEither)
 
 import Data.Utilities
+import Data.Maybe
 
 import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
 import Test.QuickCheck.Instances ()
@@ -36,7 +37,7 @@ class (Ord a, Eq a, Read a, Show a, Generic a) => NERtags a where
 
   parseNERtag :: Text ->  a
   -- convert the tagger form to a type
-  parseNERtag txt = read2unk nerUNK txt
+  parseNERtag  = read2unk nerUNK
 --  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
 
   nerUNK :: a
@@ -52,7 +53,7 @@ class (Ord a, Eq a, Read a, Show a,   Generic a, Serialize a) => ChunkTags a whe
   fromChunkTag :: a -> Text
   fromChunkTag = showT
   parseChunkTag :: Text -> a
-  parseChunkTag txt = read2unk notChunkTag txt
+  parseChunkTag   = read2unk notChunkTag
   notChunkTag :: a
   default notChunkTag :: Bounded a => a
   notChunkTag = maxBound
@@ -83,7 +84,7 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     isDeterminerTag :: a -> Bool
     tagMap :: Map a Text
 
-    fromTag a = maybe (showT (tagUNK :: a) ) id
+    fromTag a = fromMaybe (showT (tagUNK :: a) )
                 $  Map.lookup a tagMap
 --    tagUNK = UNKNOWN
     parseTag t = maybe tagUNK id $ Map.lookup t

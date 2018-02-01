@@ -97,7 +97,7 @@ reversePatterns :: [(Text, Text)] ->  [(Text, Text)]
 reversePatterns = map (\(x,y) -> (y,x))
 
 readOrErr :: Read a => Text -> Either Text a
-readOrErr    t = case (readEither (t2s t)) of
+readOrErr    t = case  readEither (t2s t)  of
                         Left msg -> Left (s2t msg)
                         Right a -> Right a
 
