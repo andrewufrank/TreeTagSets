@@ -28,6 +28,8 @@ import Data.Serialize (Serialize)
 import Data.Utilities
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
+import qualified Data.Text                as T
+import           Data.Char                (isSpace, isLower, toLower, toUpper)
 
 
 import  NLP.Types.Tags
@@ -144,10 +146,9 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
 
 
 instance POStags POStag  where
---parseTag :: Text -> POSTag
---    parseTag txt = case readTag txt of
---                   Left  _ -> NLPtypes.tagUNK
---                   Right t -> t
+--    parseTag :: Text -> POSTag
+--    parseTag t = maybe tagUNK id $ Map.lookup t
+--            (reverseMap tagMap)
 
     tagUNK = Spanishunk
 
@@ -157,9 +158,13 @@ instance POStags POStag  where
     endTag = END
 
     isDeterminerTag tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
-    tagMap = mkTagMap [minBound ..] []
+    tagMap = mkTagMap4conv toLowerStart [minBound ..] []
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
 instance Serialize POStag
+
+toLowerStart :: Text -> Text
+-- ^ convert the first character to lowercase - for Properties in RDF
+toLowerStart t = (toLower . T.head $ t ) `T.cons` (T.tail t)
 

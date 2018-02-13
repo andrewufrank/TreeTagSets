@@ -55,6 +55,19 @@ mkTagMap tags spellings = mapTag2text
         map2 = Map.fromList spellings
         mapTag2text = Map.union map2 map1
 
+mkTagMap4conv :: (Ord tag, Show tag) =>
+        (Text -> Text) -> [tag] -> [(tag,Text)] -> Map tag Text
+-- ^ produce the map with the written from and the tags
+mkTagMap4conv conv tags spellings = mapTag2text
+    where
+
+--        map1, map2, mapTag2text :: Map tag Text
+        map1 = Map.fromList $ zip tags
+            (map (conv . showT) tags)
+--
+        map2 = Map.fromList spellings
+        mapTag2text = Map.union map2 map1
+
 --
 s2t :: String -> Text
 -- ^ String to Text (invertable)
