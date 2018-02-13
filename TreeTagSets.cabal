@@ -19,7 +19,7 @@ library
 --        bytestring,
 --        text, utf8-string,
         -- for testing
-        ,test-invariant
+        , test-invariant
         , cereal
         , cereal-text
         , text
@@ -27,6 +27,7 @@ library
         , quickcheck-instances
         , quickcheck-text
         , containers
+        , safe
 --        numeric-prelude,
 --        snap-core,
 --        safe,
@@ -38,19 +39,21 @@ library
 --        ,uniform-strings
 
     exposed-modules:
-                     NLP.Corpora.Brown
-                     NLP.Corpora.Conll
-                     NLP.Corpora.UD
-                     NLP.Corpora.French
-                     NLP.Corpora.FrenchUD
-                     NLP.Corpora.German
-                     NLP.Corpora.Spanish
-                     NLP.Corpora.ItalianTinT
-                     NLP.Corpora.ConllNER
-                     NLP.Corpora.ConllChunks
-                     NLP.Corpora.RawTags
-                     Data.Utilities
-                     NLP.Types.Tags
+        NLP.Corpora.Brown
+        NLP.Corpora.Conll
+        NLP.Corpora.UD
+        NLP.Corpora.French
+        NLP.Corpora.FrenchUD
+        NLP.Corpora.German
+        NLP.Corpora.Spanish
+        NLP.Corpora.ItalianTinT
+        NLP.Corpora.ConllNER
+        NLP.Corpora.ConllChunks
+        NLP.Corpora.RawTags
+        CoreNLP.NERcodes
+        CoreNLP.DEPcodes
+        Data.Utilities
+        NLP.Types.Tags
 ----                     NLP.Types.General
 --        NLP.Corpora.BrownTests
 --        NLP.Corpora.ConllTests
