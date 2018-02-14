@@ -7,13 +7,13 @@
 -----------------------------------------------------------------------------}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
-       , ScopedTypeVariables
-        , FlexibleContexts
+--       , ScopedTypeVariables
+--        , FlexibleContexts
     , OverloadedStrings
-        , TypeSynonymInstances
-        , FlexibleInstances
-        , DeriveAnyClass
-        , DefaultSignatures
+--        , TypeSynonymInstances
+--        , FlexibleInstances
+--        , DeriveAnyClass
+--        , DefaultSignatures
         , DeriveGeneric
         #-}
 
@@ -97,17 +97,33 @@ data NERtag = PER
 --instance Zeros NERtag where zero = NERunk
 
 data SpeakerTag =  -- PER0 | PER1 | PER2 |
-                    Speaker Text
+                    SpeakerNumber Text
+                    | SpeakerName Text
+
     deriving (Read, Show,  Ord, Eq)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
 
-readSpeakerTag :: Text -> SpeakerTag
-readSpeakerTag  t = case (T.take 3 t) of
-                "PER" -> Speaker (fromJust  $ T.stripPrefix "PER" t)
-                _ -> Speaker t
---                "PER1" -> PER1
---                "PER2" -> PER2
---                s     -> Speaker s
+class (Ord a, Eq a, Read a, Show a ) => SpeakerTags a where
+  fromSpeakerTag :: a -> Text
+  -- ^ convert Tag to the form used by the tagger
+  fromSpeakerTag = showT
+
+  parseSpeakerTag :: Text ->  a
+  -- convert the tagger form to a type
+--  parseSpeakerTag  = read2unkF NERunk
+
+  speakerUNK :: a
+  -- ^ the value marking a tag which is not defined - always the last
+--  default nerUNK :: Bounded a => a
+
+instance SpeakerTags SpeakerTag where
+    parseSpeakerTag t =  case (T.take 3 t) of
+                "PER" -> SpeakerNumber (fromJust  $ T.stripPrefix "PER" t)
+                _ -> SpeakerName t
+    fromSpeakerTag (SpeakerNumber t) = "PER" <> t
+    fromSpeakerTag (SpeakerName  t) = "Speaker" <> t
+
+    speakerUNK = error "speaker unknown not expected"
 
 --instance CharChains2 SpeakerTag Text  where
 ------    show' PER0 = "PERO"
