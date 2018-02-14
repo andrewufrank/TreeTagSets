@@ -5,7 +5,7 @@ module NLP.Types.Tags (
         , NERtags (..)
         , ChunkTags (..)
         , TagsetIDs (..)
-        , DEPtags (..)
+--        , DEPtags (..)
         , Text
         ) where
 
@@ -91,19 +91,19 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     parseTag t = maybe tagUNK id $ Map.lookup t
             (reverseMap tagMap)
 
-class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => DEPtags a where
-    -- the dependency tags (as a single level, inclusive features?)
-    fromDEPtag :: a -> Text
-    parseDEPtag :: Text -> a
-    tagDEPUNK :: a
-
-    tagDEPmap :: Map a Text
-
-    fromDEPtag a = maybe (showT (tagDEPUNK :: a) ) id
-                $  Map.lookup a tagDEPmap
---    tagUNK = UNKNOWN
-    parseDEPtag t = maybe tagDEPUNK id $ Map.lookup t
-            (reverseMap tagDEPmap)
+--class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => DEPtags a where
+--    -- the dependency tags (as a single level, inclusive features?)
+--    fromDEPtag :: a -> Text
+--    parseDEPtag :: Text -> a
+--    tagDEPUNK :: a
+--
+--    tagDEPmap :: Map a Text
+--
+--    fromDEPtag a = maybe (showT (tagDEPUNK :: a) ) id
+--                $  Map.lookup a tagDEPmap
+----    tagUNK = UNKNOWN
+--    parseDEPtag t = maybe tagDEPUNK id $ Map.lookup t
+--            (reverseMap tagDEPmap)
 
 class TagsetIDs t where
     tagsetURL :: t ->  Text

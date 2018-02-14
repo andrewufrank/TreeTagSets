@@ -38,7 +38,7 @@ import           Test.Framework
 
 import Data.Text (Text)
 import qualified Data.Text as T
-
+import Data.Maybe
 import Data.Utilities
 
 --import Uniform.Zero
@@ -73,18 +73,18 @@ data NERtag = PER
 
 --instance Zeros NERtag where zero = NERunk
 
---data SpeakerTag =  -- PER0 | PER1 | PER2 |
---                    Speaker Text
---    deriving (Read, Show,  Ord, Eq)
---    -- to encode the speaker tag -- any others? PER5 or 5 is seen
---
---readSpeakerTag :: Text -> SpeakerTag
---readSpeakerTag  t = case (take' 3 t) of
---                "PER" -> Speaker (fromJustNote "readSpeakerTag 342u324" $ stripPrefix' "PER" t)
---                _ -> Speaker t
-----                "PER1" -> PER1
-----                "PER2" -> PER2
-----                s     -> Speaker s
+data SpeakerTag =  -- PER0 | PER1 | PER2 |
+                    Speaker Text
+    deriving (Read, Show,  Ord, Eq)
+    -- to encode the speaker tag -- any others? PER5 or 5 is seen
+
+readSpeakerTag :: Text -> SpeakerTag
+readSpeakerTag  t = case (T.take 3 t) of
+                "PER" -> Speaker (fromJust  $ T.stripPrefix "PER" t)
+                _ -> Speaker t
+--                "PER1" -> PER1
+--                "PER2" -> PER2
+--                s     -> Speaker s
 
 --instance CharChains2 SpeakerTag Text  where
 ------    show' PER0 = "PERO"

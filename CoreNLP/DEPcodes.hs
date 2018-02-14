@@ -14,6 +14,7 @@
         , FlexibleInstances
         , DeriveAnyClass
          #-}
+{-# LANGUAGE DeriveGeneric #-}  -- for RawDEPtag
 
 module CoreNLP.DEPcodes (module CoreNLP.DEPcodes
 
@@ -39,6 +40,10 @@ module CoreNLP.DEPcodes (module CoreNLP.DEPcodes
 
 import           Test.Framework
 
+import Data.Serialize (Serialize) -- for RawDEPtag
+import Data.Serialize.Text ()
+import GHC.Generics
+
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
 import Data.Utilities
@@ -46,11 +51,11 @@ import qualified Data.Text as T
 import Data.Text (Text)
 
 
-class (Ord a, Eq a, Read a, Show a) => POStags a where
--- , Generic a, Serialize a
-    fromTag :: a -> Text
-    parseTag :: Text -> a
-    tagUNK :: a
+--class (Ord a, Eq a, Read a, Show a) => POStags a where
+---- , Generic a, Serialize a
+--    fromTag :: a -> Text
+--    parseTag :: Text -> a
+--    tagUNK :: a
 
 class (Ord a, Eq a, Read a, Show a) => DEPtags a where
   fromDEPtag :: a -> Text
@@ -63,6 +68,8 @@ class (Ord a, Eq a, Read a, Show a) => DEPtags a where
 instance DEPtags DepCode where
   fromDEPtag (DepCode c1 c2) = if c2==Dep2Zero then showT c1
                                                else T.concat [showT c1, ":", showT c2]
+  fromDEPtag x = error ("fromDEPtag in DEPcodes " ++ show x)
+
   parseDEPtag   = readDepCode
   tagDEPunk  =  DepCode DepUnk Dep2Zero
 
@@ -86,7 +93,7 @@ map2 :: Map DepCode2 Text
 map2 = Map.fromList $ zip [RELCL .. ] (map showT [RELCL ..])
 
 readDepCode :: Text -> DepCode
-readDepCode t = maybe unk conv (splitIn2By ":" t)
+readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t)) -- at least french model produces root
 
 --    case splitIn2By ":" t of
 --    Nothing -> unk
@@ -230,6 +237,15 @@ showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2Zero then showT dd1
         else (T.concat [showT dd1, ":", showT dd2])
 
 
-----instance Zeros DepCode where zero = (z)
---instance Zeros DepCode1 where zero =  DepUnk
---instance Zeros DepCode2 where zero =  DepZero
+------------------------------------------------------------------- D E P tags
+
+-- | A fallback Dependency tag instance.
+
+newtype RawDEPtag = RawDEPtag Text
+  deriving (Ord, Eq, Read, Show, Generic)
+
+instance Serialize RawDEPtag
+
+instance DEPtags RawDEPtag where
+  fromDEPtag (RawDEPtag ch) = ch
+  parseDEPtag txt =  RawDEPtag txt

@@ -84,18 +84,6 @@ instance ChunkTags RawChunk where
   parseChunkTag txt =  RawChunk txt
   notChunkTag = RawChunk "O"
 
-------------------------------------------------------------------- D E P tags
-
--- | A fallback Dependency tag instance.
-
-newtype RawDEPtag = RawDEPtag Text
-  deriving (Ord, Eq, Read, Show, Generic)
-
-instance Serialize RawDEPtag
-
-instance DEPtags RawDEPtag where
-  fromDEPtag (RawDEPtag ch) = ch
-  parseDEPtag txt =  RawDEPtag txt
 
 
 
