@@ -59,7 +59,7 @@ instance POStags RawPOStag where
   -- | Constant tag for "unknown"
   tagUNK = RawPOStag "Unk"
 
-  tagTerm (RawPOStag t) = t
+--  tagTerm (RawPOStag t) = t
 
   startTag = RawPOStag "-START-"
   endTag = RawPOStag "-END-"

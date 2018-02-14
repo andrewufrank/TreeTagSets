@@ -46,7 +46,7 @@ instance POStags POStag where
   -- | Constant tag for "unknown"
   tagUNK = Unk
 
-  tagTerm = showBrownTag
+--  tagTerm = showBrownTag
   tagMap = error "tagmap not required for brown corpus pos tags"
 
   startTag = START

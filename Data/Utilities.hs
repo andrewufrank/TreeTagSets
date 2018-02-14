@@ -39,6 +39,9 @@ read2unk unk t = case (readEither (t2s t)) of
 reverseMap :: (Ord b, Ord a) => Map a b -> Map b a
 reverseMap m = Map.fromList [ (b,a) | (a,b) <- Map.assocs m]
 
+reverseLookup :: Ord a => Map a Text -> Text -> Maybe a
+reverseLookup m1 a1  = Map.lookup a1 (reverseMap m1)
+
 showT :: Show a => a -> Text
 showT = s2t . show
 
@@ -85,3 +88,15 @@ t2s = T.unpack
 ---- ^ convert the first character to Uppercase - for  PosTags in Spanish
 --toUpperStart t = (S.toUpper . T.head $ t ) `T.cons` (T.tail t)
 
+splitIn2By :: Text -> Text -> Maybe (Text, Maybe Text)
+-- split a text in two pieces, separated - if two are present
+splitIn2By sep t = case T.splitOn sep t of
+    [] -> Nothing
+    [a] -> Just (a, Nothing)
+    [a,b] -> Just (a, Just b)
+    _ -> Nothing
+
+flatMaybe :: Maybe (Maybe a) -> Maybe a
+flatMaybe Nothing = Nothing
+flatMaybe (Just (Just a)) = Just a
+flatMaybe (Just Nothing)  = Nothing

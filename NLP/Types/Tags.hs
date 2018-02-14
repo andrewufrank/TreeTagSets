@@ -78,6 +78,7 @@ class (Ord a, Eq a, Read a, Show a, Generic a, Serialize a) => POStags a where
     parseTag :: Text -> a
     tagUNK :: a
     tagTerm :: a -> Text
+    tagTerm = fromTag
     startTag :: a
     endTag :: a
     -- | Check if a tag is a determiner tag.

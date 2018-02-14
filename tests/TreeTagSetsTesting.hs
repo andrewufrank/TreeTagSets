@@ -22,7 +22,7 @@ import {-@ HTF_TESTS @-} NLP.Corpora.SpanishTests
 import {-@ HTF_TESTS @-} NLP.Corpora.ItalianTinTTests
 import {-@ HTF_TESTS @-} NLP.Corpora.UDTests
 import {-@ HTF_TESTS @-} NLP.Corpora.FrenchUDTests
-import {-@ HTF_TESTS @-} CoreNLP.DEPcodes
+import {-@ HTF_TESTS @-} CoreNLP.DEPcodesTests
 
 
 main =  do  -- with tests in other modules

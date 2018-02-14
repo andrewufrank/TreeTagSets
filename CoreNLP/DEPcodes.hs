@@ -5,7 +5,7 @@
 -- |
 --
 -----------------------------------------------------------------------------}
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
        , ScopedTypeVariables
         , FlexibleContexts
@@ -86,50 +86,43 @@ map2 :: Map DepCode2 Text
 map2 = Map.fromList $ zip [RELCL .. ] (map showT [RELCL ..])
 
 readDepCode :: Text -> DepCode
-readDepCode t = case length ts of
-                    0 -> unk
-                    1 -> maybe unk (\c  -> DepCode c  Dep2Zero) c1
-                    2 -> case c2 of
-                            Nothing -> unk
-                            Just c22 -> case c1 of
-                                Nothing -> unk
-                                Just c11 -> DepCode c11 c22
+readDepCode t = maybe unk conv (splitIn2By ":" t)
+
+--    case splitIn2By ":" t of
+--    Nothing -> unk
+--    Just (a,Nothing) -> maybe unk (\c -> DepCode c Dep2Zero) c1
+--    Just (a, Just b) ->
 
 
+--readDepCode t = case length ts of
+--                    0 -> unk
+--                    1 -> maybe unk (\c  -> DepCode c  Dep2Zero) c1
+--                    2 -> case c2 of
+--                            Nothing -> unk
+--                            Just c22 -> case c1 of
+--                                Nothing -> unk
+--                                Just c11 -> DepCode c11 c22
+--
+--
     where
-            ts = T.splitOn ":" t :: [Text]
+            conv (a, mb) =  case conv2 (a, mb) of
+                    (Nothing, _) -> unk
+                    (Just a1, Nothing) -> DepCode a1 Dep2Zero
+                    (Just a1, Just b1) -> DepCode a1 b1
+
+
+--            ts = T.splitOn ":" t :: [Text]
             unk = DepUnknown t
-            c1 =    (reverseLookup map1 . head $ ts) :: Maybe DepCode1
-            c2 =    (reverseLookup map2 . head . tail $ ts):: Maybe DepCode2
+            c1 a =    (reverseLookup map1 a) :: Maybe DepCode1
+            c2 b =    (reverseLookup map2 b):: Maybe DepCode2
 
-splitIn2By :: Text -> Text -> Maybe (Text, Maybe Text)
--- split a text in two pieces, separated - if two are present
-splitIn2By sep t = case T.splitOn sep t of
-    [] -> Nothing
-    [a] -> Just (a, Nothing)
-    [a,b] -> Just (a, Just b)
-    _ -> Nothing
+            conv2 (a, mb) = (c1 a, flatMaybe $ fmap c2 mb) :: (Maybe DepCode1, Maybe DepCode2)
 
-test_splitok = assertEqual (Just ("a", Just "b")) (splitIn2By ":" "a:b")
-test_splitnok1 = assertEqual (Nothing) (splitIn2By ":" "a:b:c")
-test_splitok2 = assertEqual (Just ("a ", Nothing)) (splitIn2By ":" "a ")
-test_splitnok3 = assertEqual (Just("",Just "b")) (splitIn2By ":" ":b")
-test_splitnok4 = assertEqual (Just(" ",Nothing)) (splitIn2By ":" " ")
 
-test_1a = assertEqual (DepCode ACL Dep2Zero) (readDepCode "ACL")
-test_2a = assertEqual (DepCode AUX ON) (readDepCode "AUX:ON")
-test_2b = assertEqual (DepCode AUX Dep2Zero) (readDepCode "AUX")
-
-test_3a = assertEqual "AUX:ON" (fromDEPtag $ DepCode AUX ON)
-test_3b = assertEqual "AUX" (fromDEPtag $ DepCode AUX Dep2Zero)
-
-test_depCode_cc = assertEqual (DepCode CC Dep2Zero) (readDepCode "CC")
 
 --reverseMap:: Map a Text -> Map  Text a
 --reverseMap m1 = Map.fromList [ (b,a) | (a,b) <- Map.assocs m1]
 
-reverseLookup :: Ord a => Map a Text -> Text -> Maybe a
-reverseLookup m1 a1  = Map.lookup a1 (reverseMap m1)
 
 data DepCode1 = ACL
                 | ADVCL
