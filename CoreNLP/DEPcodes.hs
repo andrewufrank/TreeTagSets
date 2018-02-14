@@ -210,7 +210,6 @@ hasDepCode:: DepCode1 -> DepCode2 -> DepCode -> Bool
 -- | test if d has major or minor depcode
 hasDepCode maj min d = d1 d == maj && d2 d == min
 
-
 isSimpleCode ::  DepCode1 -> DepCode -> Bool
 isSimpleCode aa d = d1 d == aa
 
