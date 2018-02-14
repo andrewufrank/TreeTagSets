@@ -102,6 +102,19 @@ readDepCode t = case length ts of
             c1 =    (reverseLookup map1 . head $ ts) :: Maybe DepCode1
             c2 =    (reverseLookup map2 . head . tail $ ts):: Maybe DepCode2
 
+splitIn2By :: Text -> Text -> Maybe (Text, Maybe Text)
+-- split a text in two pieces, separated - if two are present
+splitIn2By sep t = case T.splitOn sep t of
+    [] -> Nothing
+    [a] -> Just (a, Nothing)
+    [a,b] -> Just (a, Just b)
+    _ -> Nothing
+
+test_splitok = assertEqual (Just ("a", Just "b")) (splitIn2By ":" "a:b")
+test_splitnok1 = assertEqual (Nothing) (splitIn2By ":" "a:b:c")
+test_splitok2 = assertEqual (Just ("a ", Nothing)) (splitIn2By ":" "a ")
+test_splitnok3 = assertEqual (Just("",Just "b")) (splitIn2By ":" ":b")
+test_splitnok4 = assertEqual (Just(" ",Nothing)) (splitIn2By ":" " ")
 
 test_1a = assertEqual (DepCode ACL Dep2Zero) (readDepCode "ACL")
 test_2a = assertEqual (DepCode AUX ON) (readDepCode "AUX:ON")
