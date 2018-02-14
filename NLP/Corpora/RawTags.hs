@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveAnyClass #-}
 module NLP.Corpora.RawTags (
         RawPOStag (..)
-        , RawNERtag (..)
+--        , RawNERtag (..)
         , RawChunk (..)
         , Text
         ) where
@@ -28,23 +28,6 @@ import  Data.Map (Map (..))
 import NLP.Types.Tags
 --import Data.Utilities (ErrOrVal))
 
-------------------------------------------------__N E R tags
-newtype RawNERtag = RawNERtag Text
-  deriving (Ord, Eq, Read, Show, Generic)
-
--- | POStags instance for unknown tagsets.
-instance NERtags RawNERtag where
-  fromNERtag (RawNERtag t) = t
-  parseNERtag  = RawNERtag
-
-  -- | Constant tag for "unknown"  -- cannot occur
-  nerUNK = error "nerUNK cannot occur for RawNERtag"
-
-
-instance Arbitrary RawNERtag where
-  arbitrary = do
-    NonEmpty str <- arbitrary
-    return $ RawNERtag $ T.pack str
 
 ------------------------------------------------------- P O S tags
 -- | POStags instance for unknown tagsets.

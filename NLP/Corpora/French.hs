@@ -32,7 +32,7 @@ import Data.Utilities
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
-import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
+import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 import Data.Utilities
 

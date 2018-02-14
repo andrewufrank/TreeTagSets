@@ -29,11 +29,21 @@ type ErrOrVal a = Either Text a
 -- | Just a handy alias for Text
 type Error = Text
 
+readEitherT :: Read a => Text -> Either Text a
+readEitherT t = either (Left . s2t) Right  $ readEither . t2s $ t
+
 read2unk :: Read a => a -> Text ->  a
 -- ^ read a tag, if error report the first arg
 -- could be readDef from safe package
 read2unk unk t = case (readEither (t2s t)) of
                         Left msg -> unk
+                        Right a ->   a
+
+read2unkF :: Read a => (Text -> a) -> Text ->  a
+-- ^ read a tag, if error report the first arg
+-- could be readDef from safe package
+read2unkF unk t = case (readEither (t2s t)) of
+                        Left msg -> unk t
                         Right a ->   a
 
 reverseMap :: (Ord b, Ord a) => Map a b -> Map b a

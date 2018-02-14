@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DefaultSignatures #-}
 module NLP.Types.Tags (
         POStags (..)
-        , NERtags (..)
+--        , NERtags (..)
         , ChunkTags (..)
         , TagsetIDs (..)
 --        , DEPtags (..)
@@ -27,23 +27,6 @@ import  Data.Map (Map (..))
 
 --import Data.Utilities (ErrOrVal))
 
--- | The class of named entity sets.  This typeclass can be defined
--- entirely in terms of the required class constraints.
-    -- removed Serialize and Bounded
-class (Ord a, Eq a, Read a, Show a, Generic a) => NERtags a where
-  fromNERtag :: a -> Text
-  -- ^ convert Tag to the form used by the tagger
-  fromNERtag = showT
-
-  parseNERtag :: Text ->  a
-  -- convert the tagger form to a type
-  parseNERtag  = read2unk nerUNK
---  parseNERTag txt = toEitherErr $ readEither $ T.unpack txt
-
-  nerUNK :: a
-  -- ^ the value marking a tag which is not defined - always the last
-  default nerUNK :: Bounded a => a
-  nerUNK = maxBound
 
 -- | The class of things that can be regarded as 'chunks'; Chunk tags
 -- are much like POS tags, but should not be confused. Generally,
@@ -53,7 +36,7 @@ class (Ord a, Eq a, Read a, Show a,   Generic a, Serialize a) => ChunkTags a whe
   fromChunkTag :: a -> Text
   fromChunkTag = showT
   parseChunkTag :: Text -> a
-  parseChunkTag   = read2unk notChunkTag
+--  parseChunkTag   = read2unk notChunkTag
   notChunkTag :: a
   default notChunkTag :: Bounded a => a
   notChunkTag = maxBound

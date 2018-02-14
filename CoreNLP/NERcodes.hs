@@ -13,6 +13,8 @@
         , TypeSynonymInstances
         , FlexibleInstances
         , DeriveAnyClass
+        , DefaultSignatures
+        , DeriveGeneric
         #-}
 
 module CoreNLP.NERcodes (module CoreNLP.NERcodes
@@ -35,17 +37,37 @@ module CoreNLP.NERcodes (module CoreNLP.NERcodes
          where
 
 import           Test.Framework
+import Data.Serialize (Serialize)
+import Data.Serialize.Text ()
+import GHC.Generics
 
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Maybe
 import Data.Utilities
+import Text.Read (readEither)
 
---import Uniform.Zero
---import Uniform.Strings
---import Uniform.Error
+--import              NLP.Corpora.Conll  hiding (NERtag (..))
 
-import              NLP.Corpora.Conll  hiding (NERtag (..))
+-- | The class of named entity sets.  This typeclass can be defined
+-- entirely in terms of the required class constraints.
+    -- removed Serialize and Bounded
+class (Ord a, Eq a, Read a, Show a ) => NERtags a where
+  fromNERtag :: a -> Text
+  -- ^ convert Tag to the form used by the tagger
+  fromNERtag = showT
+
+  parseNERtag :: Text ->  a
+  -- convert the tagger form to a type
+--  parseNERtag  = read2unkF NERunk
+
+  nerUNK :: a
+  -- ^ the value marking a tag which is not defined - always the last
+--  default nerUNK :: Bounded a => a
+
+instance NERtags NERtag where
+  parseNERtag txt = either NERunk id (readEitherT txt)
+  nerUNK = UNK
 
 
 -- | Named entity categories defined for the Conll 2003 task.
@@ -53,7 +75,7 @@ data NERtag = PER
             | ORG
             | LOC
             | MISC
-            | NERunk
+            | UNK
             -- found in Stanford CoreNLP 3.5.2
             -- Time, Location, Organization, Person, Money, Percent, Date
             | O
@@ -68,8 +90,9 @@ data NERtag = PER
             | ORGANIZATION
             | MONEY
             | PERCENT
+            | NERunk Text
 
-  deriving (Read, Show, Ord, Eq,  Enum, Bounded)
+  deriving (Read, Show, Ord, Eq) -- ,  Enum, Bounded)
 
 --instance Zeros NERtag where zero = NERunk
 
@@ -108,4 +131,21 @@ readSpeakerTag  t = case (T.take 3 t) of
 --    show' PER2 = "PER2"
 --    show' (Speaker n) = "Speaker " <> showT n
 
+------------------------------------------------__N E R tags
+newtype RawNERtag = RawNERtag Text
+  deriving (Ord, Eq, Read, Show, Generic)
+
+-- | POStags instance for unknown tagsets.
+instance NERtags RawNERtag where
+  fromNERtag (RawNERtag t) = t
+  parseNERtag  = RawNERtag
+
+  -- | Constant tag for "unknown"  -- cannot occur
+  nerUNK = error "nerUNK cannot occur for RawNERtag"
+
+
+instance Arbitrary RawNERtag where
+  arbitrary = do
+    NonEmpty str <- arbitrary
+    return $ RawNERtag $ T.pack str
 

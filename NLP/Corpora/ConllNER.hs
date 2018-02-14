@@ -17,10 +17,12 @@ import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
-import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
+import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities
+
+import CoreNLP.NERcodes (NERtags (..))
 
 -- | Named entity categories defined for the Conll 2003 task.
 data NERtag = PER

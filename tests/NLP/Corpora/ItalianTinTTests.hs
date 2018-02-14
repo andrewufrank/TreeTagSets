@@ -1,5 +1,9 @@
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
-
+{-# LANGUAGE  OverloadedStrings
+----        , TypeSynonymInstances
+----        , FlexibleInstances
+----        , DeriveAnyClass
+         #-}
 module NLP.Corpora.ItalianTinTTests where
 
 import Test.Framework
@@ -10,6 +14,8 @@ import NLP.Types.Tags
 
 prop_tagsRoundTrip ::  POStag -> Bool
 prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag
+
+test_erd = assertEqual EplusRD (parseTag "E+RD")
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

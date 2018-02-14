@@ -89,6 +89,7 @@ spelledAs =
         , (VAplusPC, "VA+PC")
         , (VMplusPC, "VM+PC")
         , (VMplusPCplusPC, "VM+PC+PC")
+        , (EplusRD, "E+RD")
     ]
 
 
