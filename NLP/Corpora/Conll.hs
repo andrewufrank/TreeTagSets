@@ -159,6 +159,7 @@ spelledAs =
          , ( Comma, ",")
          , ( Term, ".")
          , ( Dash,  "--"   )
+         , ( Hash,  "#"   )
 --         , (Dollar , "$"    )
 
          , (LRB,  "-LRB-")

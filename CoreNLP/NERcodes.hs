@@ -56,6 +56,7 @@ class (Ord a, Eq a, Read a, Show a ) => NERtags a where
   fromNERtag :: a -> Text
   -- ^ convert Tag to the form used by the tagger
   fromNERtag = showT
+  -- does not reproduce exactly
 
   parseNERtag :: Text ->  a
   -- convert the tagger form to a type
@@ -66,9 +67,15 @@ class (Ord a, Eq a, Read a, Show a ) => NERtags a where
 --  default nerUNK :: Bounded a => a
 
 instance NERtags NERtag where
-  parseNERtag txt = either NERunk id (readEitherT txt)
+  parseNERtag txt = either (\_ -> NERunk txt) id (readEitherT txt2)
+    where
+        txt2 = T.replace "-" "_" txt
   nerUNK = UNK
 
+parseNERtagList :: [Text] -> [NERtag]
+parseNERtagList [] = []
+parseNERtagList [a] = [parseNERtag a]
+parseNERtagList (a:as) = parseNERtag a : map NERtagValue as
 
 -- | Named entity categories defined for the Conll 2003 task.
 data NERtag = PER
@@ -90,6 +97,18 @@ data NERtag = PER
             | ORGANIZATION
             | MONEY
             | PERCENT
+            -- for german
+            | I_LOC
+            | I_ORG
+            | I_PER
+            | I_MISC
+
+            -- for spanish
+            | PERS
+            | LUG
+
+            --
+            | NERtagValue Text
             | NERunk Text
 
   deriving (Read, Show, Ord, Eq) -- ,  Enum, Bounded)
@@ -99,6 +118,7 @@ data NERtag = PER
 data SpeakerTag =  -- PER0 | PER1 | PER2 |
                     SpeakerNumber Text
                     | SpeakerName Text
+                    | SpeakerValue Text
 
     deriving (Read, Show,  Ord, Eq)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
@@ -124,6 +144,11 @@ instance SpeakerTags SpeakerTag where
     fromSpeakerTag (SpeakerName  t) = "Speaker" <> t
 
     speakerUNK = error "speaker unknown not expected"
+
+parseSpeakerTagList :: [Text] -> [SpeakerTag]
+parseSpeakerTagList [] = []
+parseSpeakerTagList [a] = [parseSpeakerTag a]
+parseSpeakerTagList (a:as) = parseSpeakerTag a : map SpeakerValue as
 
 --instance CharChains2 SpeakerTag Text  where
 ------    show' PER0 = "PERO"
