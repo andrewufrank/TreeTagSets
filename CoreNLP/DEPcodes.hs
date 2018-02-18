@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
 --
--- Module      :  Dependency and other Codes
+-- Module      :  Dependency codes for UD
 --
 -- |
 --
@@ -60,6 +60,10 @@ import Data.Text (Text)
 class (Ord a, Eq a, Read a, Show a) => DEPtags a where
   fromDEPtag :: a -> Text
   parseDEPtag :: Text -> a
+--  propertyDEP :: a -> Text
+--  -- produce a property text for RDF
+-- use the fromDEPtag and convert to lowercase
+
   tagDEPunk :: a
   notDEPtag :: a
 --  default notChunkTag :: Bounded a => a
@@ -72,6 +76,8 @@ instance DEPtags DepCode where
 
   parseDEPtag   = readDepCode
   tagDEPunk  =  DepCode DepUnk Dep2Zero
+
+--  propertyDEP =
 
 data DepCode = DepCode {d1::DepCode1
                         , d2 :: DepCode2

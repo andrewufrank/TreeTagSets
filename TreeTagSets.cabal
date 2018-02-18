@@ -1,11 +1,13 @@
 name: TreeTagSets
-version: 0.0.2.6.8
+version: 0.0.3.8.0
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE
 synopsis: a collection of TreeTags
-description:
+description: tree tag and other codes for
+the Stanford coreNLP 0.3.8
+(ad older codes)
 
 
 author: Andrew U. Frank
