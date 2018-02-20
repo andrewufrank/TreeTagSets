@@ -56,7 +56,11 @@ class (Ord a, Eq a, Read a, Show a ) => NERtags a where
   fromNERtag :: a -> Text
   -- ^ convert Tag to the form used by the tagger
   fromNERtag = showT
-  -- does not reproduce exactly
+  -- does not reproduce exactly (I-LOC becomes I_LOC)
+
+  fromNERtagNormalized :: a -> Text
+
+
 
   parseNERtag :: Text ->  a
   -- convert the tagger form to a type
@@ -71,6 +75,14 @@ instance NERtags NERtag where
     where
         txt2 = T.replace "-" "_" txt
   nerUNK = UNK
+
+  fromNERtagNormalized I_LOC  = fromNERtag LOC
+  fromNERtagNormalized LUG = fromNERtag LOC
+
+  fromNERtagNormalized I_ORG = fromNERtag ORG
+  fromNERtagNormalized I_PER = fromNERtag PER
+  fromNERtagNormalized PERS = fromNERtag PER
+  fromNERtagNormalized I_MISC = fromNERtag MISC
 
 parseNERtagList :: [Text] -> [NERtag]
 parseNERtagList [] = []

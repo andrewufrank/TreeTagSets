@@ -5,9 +5,7 @@ build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE
 synopsis: a collection of TreeTags
-description: tree tag and other codes for
-the Stanford coreNLP 0.3.8
-(ad older codes)
+description: tree tag and other codes for the Stanford coreNLP 0.3.8(and older codes)
 
 
 author: Andrew U. Frank
