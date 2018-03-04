@@ -22,6 +22,13 @@ import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities
+-- import Uniform.Error (undef)
+
+--undef :: String -> a
+--undef = error
+---- ^ for type specification, not to be evaluated
+
+undefConll = error "convertOneSnip2Triples postag conll":: POStag
 
 ---- | Named entity categories defined for the Conll 2003 task.
 --data NERtag = PER

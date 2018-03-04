@@ -49,6 +49,7 @@ import  Data.Map (Map (..))
 import Data.Utilities
 import qualified Data.Text as T
 import Data.Text (Text)
+--import Uniform.Zero
 
 
 --class (Ord a, Eq a, Read a, Show a) => POStags a where
@@ -90,6 +91,7 @@ instance Arbitrary DepCode1 where
   arbitrary = elements [minBound ..]
 instance Arbitrary DepCode2 where
   arbitrary = elements [minBound ..]
+
 
 --
 map1 :: Map DepCode1 Text
