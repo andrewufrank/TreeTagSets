@@ -28,6 +28,8 @@ import Test.QuickCheck.Gen (elements)
 import  NLP.Types.Tags
 import Data.Utilities
 
+undefGermanPos = undef "convertOneSnip2Triples postag german":: POStag
+
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.

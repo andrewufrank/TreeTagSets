@@ -32,6 +32,8 @@ import Text.Read (readEither)
 
 import  NLP.Types.Tags
 
+undefTinTPos = undef "convertOneSnip2Triples postat TinT":: POStag
+
 data POStag =   -- the definitions are in  http://www.italianlp.it/docs/ISST-TANL-POStagset.pdf
     START  | -- START tag, used in training.
     END | --END tag, used in training.

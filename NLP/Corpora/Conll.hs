@@ -24,6 +24,7 @@ import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
 import Data.Utilities
 
 undefConll = error "convertOneSnip2Triples postag conll":: POStag
+
 ---- | Named entity categories defined for the Conll 2003 task.
 --data NERtag = PER
 --            | ORG

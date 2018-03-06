@@ -36,6 +36,8 @@ import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 import Data.Utilities
 
+undefFrenchPos = undef "convertOneSnip2Triples postat French":: POStag
+
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.

@@ -39,6 +39,8 @@ import           Data.Char                (isSpace, isLower, toLower, toUpper)
 
 import  NLP.Types.Tags
 
+undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: POStag
+
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.

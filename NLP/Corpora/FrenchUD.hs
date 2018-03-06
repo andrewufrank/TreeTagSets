@@ -38,6 +38,7 @@ import Data.Text   as T (replace)
 import qualified NLP.Types.Tags as NLPtypes
 import  NLP.Types.Tags as NLPtypes
 
+undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.

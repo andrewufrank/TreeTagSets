@@ -113,3 +113,5 @@ flatMaybe :: Maybe (Maybe a) -> Maybe a
 flatMaybe Nothing = Nothing
 flatMaybe (Just (Just a)) = Just a
 flatMaybe (Just Nothing)  = Nothing
+
+undef = error   -- to produce a string when the undefined value is accessed
