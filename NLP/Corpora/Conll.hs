@@ -1,5 +1,13 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE        MultiParamTypeClasses
+       , ScopedTypeVariables
+        , FlexibleContexts
+    , OverloadedStrings
+        , TypeSynonymInstances
+        , FlexibleInstances
+        , DeriveAnyClass
+         #-}
+{-# LANGUAGE DeriveGeneric #-}  -- for RawDEPtag
+
 -- | Data types representing the POS tags and Chunk tags derived from
 -- the Conll2000 training corpus.
     -- it is an attempt to a complete list of penn treebank codes
@@ -16,12 +24,21 @@ import Data.Serialize (Serialize)
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
+import Data.Aeson
 import GHC.Generics
 
 import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities
+
+
+--import qualified Data.Map as Map
+--import  Data.Map (Map (..))
+--import Data.Utilities
+--import qualified Data.Text as T
+--import Data.Text (Text)
+import Data.Aeson
 
 undefConll = error "convertOneSnip2Triples postag conll":: POStag
 
@@ -52,7 +69,8 @@ data Chunk = ADJP
            | UCP
            | VP -- ^ Verb Phrase.
            | O -- ^ "out"; not a chunk.
-  deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
+
 
 instance Arbitrary Chunk where
   arbitrary = elements [minBound..]
@@ -85,6 +103,9 @@ instance Serialize POStag
 --  fromChunk = T.pack . show
 --  parseChunk txt =readOrErr  txt
 --  notChunk = O
+
+--instance ToJSON POStag
+--instance FromJSON POStag
 
 instance TagsetIDs POStag where
     tagsetURL _ = "https://en.wikipedia.org/wiki/Brown_Corpus#Part-of-speech_tags_used"
@@ -152,7 +173,7 @@ data POStag = START -- ^ START tag, used in training.
          | RRB
          | Dash
          | Unk
-  deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
 
 spelledAs =
          [  (ClParen, ")"  )

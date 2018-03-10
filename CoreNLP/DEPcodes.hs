@@ -50,7 +50,7 @@ import  Data.Map (Map (..))
 import Data.Utilities
 import qualified Data.Text as T
 import Data.Text (Text)
-
+import Data.Aeson
 
 --class (Ord a, Eq a, Read a, Show a) => POStags a where
 ---- , Generic a, Serialize a
@@ -77,6 +77,7 @@ instance DEPtags DepCode where
 
   parseDEPtag   = readDepCode
   tagDEPunk  =  DepCode DepUnk Dep2Zero
+  notDEPtag = error "not implemented notDEPtag"
 
 --  propertyDEP =
 
@@ -84,7 +85,7 @@ data DepCode = DepCode {d1::DepCode1
                         , d2 :: DepCode2
                         }
             | DepUnknown {s :: Text }
-                deriving (Show, Read, Eq, Ord)
+                deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
 
 --instance CharChains2 DepCode Text where
 instance Arbitrary DepCode1 where
@@ -131,7 +132,8 @@ readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t)) -- at least french
             c1 a =    (reverseLookup map1 a) :: Maybe DepCode1
             c2 b =    (reverseLookup map2 b):: Maybe DepCode2
 
-            conv2 (a, mb) = (c1 a, flatMaybe $ fmap c2 mb) :: (Maybe DepCode1, Maybe DepCode2)
+            conv2 (a, mb) = (c1 a, flatMaybe $ fmap c2 mb)
+                         :: (Maybe DepCode1, Maybe DepCode2)
 
 
 
@@ -182,7 +184,7 @@ data DepCode1 = ACL
                 | XCOMP
                 | DepUnk
 
-                deriving (Show, Read, Eq, Ord, Enum, Bounded)
+        deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
 --instance CharChains2 DepCode1 Text where
 --    show' = s2t . show
 
@@ -220,7 +222,7 @@ data DepCode2 = RELCL
 --            | MissingDepCode2 Text
             | Dep2Zero
 
-    deriving (Show, Read, Eq, Ord, Enum, Bounded )
+    deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
 
 
 
@@ -250,10 +252,12 @@ showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2Zero then showT dd1
 -- | A fallback Dependency tag instance.
 
 newtype RawDEPtag = RawDEPtag Text
-  deriving (Ord, Eq, Read, Show, Generic)
+  deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
 
 instance Serialize RawDEPtag
 
 instance DEPtags RawDEPtag where
   fromDEPtag (RawDEPtag ch) = ch
   parseDEPtag txt =  RawDEPtag txt
+  tagDEPunk  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2Zero
+  notDEPtag = error "not implemented notDEPtag"

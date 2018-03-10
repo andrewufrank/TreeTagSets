@@ -19,8 +19,8 @@ module CoreNLP.DEPcodesTests  where
 import           Test.Framework
 
 import CoreNLP.DEPcodes
-
-
+import Data.Aeson
+import GHC.Exts
 
 
 test_1a = assertEqual (DepCode ACL Dep2Zero) (readDepCode "ACL")
@@ -32,4 +32,10 @@ test_3b = assertEqual "AUX" (fromDEPtag $ DepCode AUX Dep2Zero)
 
 test_depCode_cc = assertEqual (DepCode CC Dep2Zero) (readDepCode "CC")
 
+test_toJson = assertEqual objAux (toJSON (DepCode AUX Dep2Zero))
 
+objAux =
+    Object
+  (fromList
+     [("tag", String "DepCode"), ("d1", String "AUX"),
+      ("d2", String "Dep2Zero")])

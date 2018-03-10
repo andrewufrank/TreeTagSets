@@ -5,14 +5,14 @@
 -- |
 --
 -----------------------------------------------------------------------------}
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
 --       , ScopedTypeVariables
 --        , FlexibleContexts
     , OverloadedStrings
 --        , TypeSynonymInstances
 --        , FlexibleInstances
---        , DeriveAnyClass
+        , DeriveAnyClass
 --        , DefaultSignatures
         , DeriveGeneric
         #-}
@@ -36,7 +36,7 @@ module CoreNLP.NERcodes (module CoreNLP.NERcodes
         )
          where
 
-import           Test.Framework
+--import           Test.Framework
 import Data.Serialize (Serialize)
 import Data.Serialize.Text ()
 import GHC.Generics
@@ -46,6 +46,8 @@ import qualified Data.Text as T
 import Data.Maybe
 import Data.Utilities
 import Text.Read (readEither)
+import Data.Aeson
+import GHC.Generics
 
 --import              NLP.Corpora.Conll  hiding (NERtag (..))
 
@@ -123,7 +125,8 @@ data NERtag = PER
             | NERtagValue Text
             | NERunk Text
 
-  deriving (Read, Show, Ord, Eq) -- ,  Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
+         -- ,  Enum, Bounded)
 
 --instance Zeros NERtag where zero = NERunk
 
@@ -132,7 +135,7 @@ data SpeakerTag =  -- PER0 | PER1 | PER2 |
                     | SpeakerName Text
                     | SpeakerValue Text
 
-    deriving (Read, Show,  Ord, Eq)
+    deriving (Show, Read, Eq, Ord,  Generic, ToJSON, FromJSON)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
 
 class (Ord a, Eq a, Read a, Show a ) => SpeakerTags a where
@@ -186,7 +189,7 @@ parseSpeakerTagList (a:as) = parseSpeakerTag a : map SpeakerValue as
 
 ------------------------------------------------__N E R tags
 newtype RawNERtag = RawNERtag Text
-  deriving (Ord, Eq, Read, Show, Generic)
+  deriving (Show, Read, Eq, Ord,  Generic, ToJSON, FromJSON)
 
 -- | POStags instance for unknown tagsets.
 instance NERtags RawNERtag where
@@ -197,8 +200,8 @@ instance NERtags RawNERtag where
   nerUNK = error "nerUNK cannot occur for RawNERtag"
 
 
-instance Arbitrary RawNERtag where
-  arbitrary = do
-    NonEmpty str <- arbitrary
-    return $ RawNERtag $ T.pack str
+--instance Arbitrary RawNERtag where
+--  arbitrary = do
+--    NonEmpty str <- arbitrary
+--    return $ RawNERtag $ T.pack str
 

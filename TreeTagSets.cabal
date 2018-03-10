@@ -1,5 +1,5 @@
 name: TreeTagSets
-version: 0.0.3.8.0
+version: 0.0.3.8.1
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
@@ -28,6 +28,7 @@ library
         , quickcheck-text
         , containers
         , safe
+        , aeson
 --        numeric-prelude,
 --        snap-core,
 --        safe,
@@ -84,6 +85,7 @@ Test-Suite TestAuto
     main-is:    TreeTagSetsTesting.hs
     build-depends: base, HTF
             , TreeTagSets
+            , aeson, aeson-pretty
 --            , testExample >=0.0.2
 --            , uniform-strings
 --        , safe
