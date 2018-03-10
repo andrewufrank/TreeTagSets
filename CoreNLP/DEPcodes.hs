@@ -43,6 +43,7 @@ import           Test.Framework
 import Data.Serialize (Serialize) -- for RawDEPtag
 import Data.Serialize.Text ()
 import GHC.Generics
+import Uniform.Zero
 
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
@@ -90,6 +91,7 @@ instance Arbitrary DepCode1 where
   arbitrary = elements [minBound ..]
 instance Arbitrary DepCode2 where
   arbitrary = elements [minBound ..]
+instance Zeros DepCode where zero = DepUnknown "constant zero"
 
 --
 map1 :: Map DepCode1 Text
