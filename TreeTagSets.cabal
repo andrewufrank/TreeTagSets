@@ -22,27 +22,8 @@ author: Andrew U. Frank, using the code from chatter by Rogan Creswick
 library
     build-depends:
         base >=4.8 && <= 5
---        , HTF
-        -- for testing
---        , test-invariant
---        , cereal
---        , cereal-text
         , text
---        , QuickCheck
---        , quickcheck-instances
---        , quickcheck-text
         , containers
---        , safe
---        , aeson
-----        numeric-prelude,
-----        snap-core,
-----        safe,
-----        vector,
-----        -- fay-base,
-----        split,
-----        data-easy
---        , uniform-algebras
-----        ,uniform-strings
 
     exposed-modules:
         NLP.TagSets.Brown
@@ -53,57 +34,24 @@ library
         NLP.TagSets.German
         NLP.TagSets.Spanish
         NLP.TagSets.ItalianTinT
---        NLP.TagSets.ConllNER  -- is in CoreNLP
---        NLP.TagSets.ConllChunks
         NLP.TagSets.RawTags
         NLP.TagSets.NERcodes
         NLP.TagSets.DEPcodes
         Data.Utilities
         NLP.Tags
-----                     NLP.Types.General
---        NLP.TagSets.BrownTests
---        NLP.TagSets.ConllTests
     default-language: Haskell2010
     hs-source-dirs: .
 
---executable main
---    main-is:    NotUsedMain.hs
---    build-depends: base, HTF
---            , TreeTagSets
-----        , testExample
-----        , uniform-strings
-----        , safe
-----        -- , test-framework  -- clash with HTF
-----        , test-invariant
-----        , text
-----        , snap-core
-----        , network-uri
-----        , bytestring
-----        , quickcheck-text
---    default-language: Haskell2010
---    hs-source-dirs: src
---    other-modules:
-----        StringConversion
 
 Test-Suite TestAuto
     type:       exitcode-stdio-1.0
     main-is:    TreeTagSetsTesting.hs
-    build-depends: base, HTF
+    build-depends: base
+            , HTF
             , TreeTagSets
-            , aeson, aeson-pretty
         , QuickCheck
         , quickcheck-instances
         , quickcheck-text
---            , testExample
---            , uniform-strings
---        , safe
-        -- , test-framework
---        , test-invariant
---        , text
---        , snap-core
---        , network-uri
---        , bytestring
---        , quickcheck-text
     default-language: Haskell2010
     hs-source-dirs: tests
 
@@ -119,4 +67,3 @@ Test-Suite TestAuto
         NLP.TagSets.FrenchUDTests
         NLP.TagSets.NERcodesTests
         NLP.TagSets.DEPcodesTests
---        StringConversion

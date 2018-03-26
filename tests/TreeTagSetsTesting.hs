@@ -14,15 +14,15 @@ import           Test.Framework
 
 import {-@ HTF_TESTS @-} Data.UtilitiesTests
 
---import {-@ HTF_TESTS @-} NLP.TagSets.BrownTests
---import {-@ HTF_TESTS @-} NLP.TagSets.ConllTests
---import {-@ HTF_TESTS @-} NLP.TagSets.FrenchTests
---import {-@ HTF_TESTS @-} NLP.TagSets.GermanTests
---import {-@ HTF_TESTS @-} NLP.TagSets.SpanishTests
---import {-@ HTF_TESTS @-} NLP.TagSets.ItalianTinTTests
---import {-@ HTF_TESTS @-} NLP.TagSets.UDTests
---import {-@ HTF_TESTS @-} NLP.TagSets.FrenchUDTests
---import {-@ HTF_TESTS @-} NLP.TagSets.DEPcodesTests
+import {-@ HTF_TESTS @-} NLP.TagSets.BrownTests
+import {-@ HTF_TESTS @-} NLP.TagSets.ConllTests
+import {-@ HTF_TESTS @-} NLP.TagSets.FrenchTests
+import {-@ HTF_TESTS @-} NLP.TagSets.GermanTests
+import {-@ HTF_TESTS @-} NLP.TagSets.SpanishTests
+import {-@ HTF_TESTS @-} NLP.TagSets.ItalianTinTTests
+import {-@ HTF_TESTS @-} NLP.TagSets.UDTests
+import {-@ HTF_TESTS @-} NLP.TagSets.FrenchUDTests
+import {-@ HTF_TESTS @-} NLP.TagSets.DEPcodesTests
 import {-@ HTF_TESTS @-} NLP.TagSets.NERcodesTests
 
 
