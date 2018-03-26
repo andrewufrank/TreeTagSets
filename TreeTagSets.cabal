@@ -54,7 +54,7 @@ library
         NLP.TagSets.Spanish
         NLP.TagSets.ItalianTinT
 --        NLP.TagSets.ConllNER  -- is in CoreNLP
-        NLP.TagSets.ConllChunks
+--        NLP.TagSets.ConllChunks
         NLP.TagSets.RawTags
         NLP.TagSets.NERcodes
         NLP.TagSets.DEPcodes

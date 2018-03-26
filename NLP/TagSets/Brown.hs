@@ -38,7 +38,7 @@ instance ChunkTags ChunkTag where
 
 
 instance TagsetIDs POStag where
-    tagsetURL _ = "https://hackage.haskell.org/package/chatter-0.9.1.0/docs/NLP-Corpora-Conll.html"
+    tagsetURL _ = "https://en.wikipedia.org/wiki/Brown_Corpus#Part-of-speech_tags_used"
     -- this is the original haskell code of which this is a copy
 
 instance POStags POStag where

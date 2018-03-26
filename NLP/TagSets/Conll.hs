@@ -71,10 +71,13 @@ data Chunk = ADJP
   deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 
 
---instance Arbitrary Chunk where
---  arbitrary = elements [minBound..]
-
---instance Serialize Chunk
+-- | Named entity categories defined for the Conll 2003 task.
+data NERtag = PER
+            | ORG
+            | LOC
+            | MISC
+            | UNK
+  deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic)
 
 
 instance POStags POStag where

@@ -18,7 +18,7 @@ import Test.Framework
 
 import  NLP.TagSets.Conll
 --import  NLP.TagSets.ConllNER
-import NLP.TagSets.ConllChunks
+--import NLP.TagSets.ConllChunks
 
 --import Data.Aeson
 --import GHC.Exts
