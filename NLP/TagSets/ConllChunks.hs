@@ -3,8 +3,8 @@
 -- | Data types representing the POS tags and Chunk tags derived from
 -- the Conll2000 training corpus.
 
-module NLP.Corpora.ConllChunks (
-    module NLP.Corpora.ConllChunks
+module NLP.TagSets.ConllChunks (
+    module NLP.TagSets.ConllChunks
     , ChunkTag (..)
     , ChunkTags(..)
     ) where
@@ -15,7 +15,7 @@ import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
-import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
+import  NLP.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities

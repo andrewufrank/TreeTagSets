@@ -4,8 +4,8 @@
 -- Brown corpus.
     -- the structure of these tags is complex and parsed with a specialized system
 
-module NLP.Corpora.Brown
- (module NLP.Corpora.Brown
+module NLP.TagSets.Brown
+ (module NLP.TagSets.Brown
          ) where
 
 import Data.Serialize (Serialize)
@@ -16,7 +16,7 @@ import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
-import  NLP.Types.Tags  ( POStags (..), TagsetIDs (..)
+import  NLP.Tags  ( POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities

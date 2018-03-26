@@ -1,6 +1,6 @@
 --{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DefaultSignatures #-}
-module NLP.Types.Tags (
+module NLP.Tags (
         POStags (..)
 --        , NERtags (..)
         , ChunkTags (..)

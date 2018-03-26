@@ -16,7 +16,7 @@
          #-}
 {-# LANGUAGE DeriveGeneric #-}  -- for RawDEPtag
 
-module CoreNLP.DEPcodes (module CoreNLP.DEPcodes
+module NLP.TagSets.DEPcodes (module NLP.TagSets.DEPcodes
 
 
 

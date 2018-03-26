@@ -4,12 +4,12 @@
 ----        , FlexibleInstances
 ----        , DeriveAnyClass
          #-}
-module NLP.Corpora.ItalianTinTTests where
+module NLP.TagSets.ItalianTinTTests where
 
 import Test.Framework
 
-import  NLP.Corpora.ItalianTinT
-import NLP.Types.Tags
+import  NLP.TagSets.ItalianTinT
+import NLP.Tags
 
 
 prop_tagsRoundTrip ::  POStag -> Bool

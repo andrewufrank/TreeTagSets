@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveAnyClass #-}
-module NLP.Corpora.RawTags (
+module NLP.TagSets.RawTags (
         RawPOStag (..)
 --        , RawNERtag (..)
         , RawChunk (..)
@@ -25,7 +25,7 @@ import Test.QuickCheck.Instances ()
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
 
-import NLP.Types.Tags
+import NLP.Tags
 --import Data.Utilities (ErrOrVal))
 
 

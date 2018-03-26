@@ -20,7 +20,7 @@
         , DeriveGeneric
         #-}
 
-module  NLP.Corpora.Spanish (module  NLP.Corpora.Spanish
+module  NLP.TagSets.Spanish (module  NLP.TagSets.Spanish
         )
          where
 
@@ -37,7 +37,7 @@ import qualified Data.Text                as T
 import           Data.Char                (isSpace, isLower, toLower, toUpper)
 
 
-import  NLP.Types.Tags
+import  NLP.Tags
 
 undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: POStag
 

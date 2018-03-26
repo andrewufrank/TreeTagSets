@@ -18,7 +18,7 @@
         , DeriveGeneric
         #-}
 
-module  NLP.Corpora.ItalianTinT (module  NLP.Corpora.ItalianTinT
+module  NLP.TagSets.ItalianTinT (module  NLP.TagSets.ItalianTinT
         ) where
 
 import GHC.Generics
@@ -30,7 +30,7 @@ import Test.QuickCheck.Gen (elements)
 import Data.Text   as T (replace)
 import Text.Read (readEither)
 
-import  NLP.Types.Tags
+import  NLP.Tags
 
 undefTinTPos = undef "convertOneSnip2Triples postat TinT":: POStag
 

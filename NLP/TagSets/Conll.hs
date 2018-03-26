@@ -14,8 +14,8 @@
     -- see http://erwinkomen.ruhosting.nl/eng/2014_Longdale-Labels.htm and
     -- https://stackoverflow.com/questions/1833252/java-stanford-nlp-part-of-speech-labels
 
-module NLP.Corpora.Conll (
-    module NLP.Corpora.Conll
+module NLP.TagSets.Conll (
+    module NLP.TagSets.Conll
     , POStags (..)
     , POStag(..)
     ) where
@@ -27,7 +27,7 @@ import Test.QuickCheck.Gen (elements)
 import Data.Aeson
 import GHC.Generics
 
-import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
+import  NLP.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 --import NLP.Types.General
 import Data.Utilities

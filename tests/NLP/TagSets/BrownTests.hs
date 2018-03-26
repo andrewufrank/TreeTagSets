@@ -1,16 +1,16 @@
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module NLP.Corpora.BrownTests where
+module NLP.TagSets.BrownTests where
 
 import Test.Framework
 
-import qualified NLP.Corpora.Brown as B
-import  NLP.Corpora.Brown as B
-import  NLP.Corpora.Brown
+import qualified NLP.TagSets.Brown as B
+import  NLP.TagSets.Brown as B
+import  NLP.TagSets.Brown
 -- qualification here is not required
 
-import  NLP.Types.Tags
+import  NLP.Tags
 
 prop_tagsRoundTrip :: B.POStag -> Bool
 prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag

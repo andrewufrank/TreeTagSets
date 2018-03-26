@@ -16,7 +16,7 @@
         , DeriveGeneric
         #-}
 
-module NLP.Corpora.UD (module NLP.Corpora.UD
+module NLP.TagSets.UD (module NLP.TagSets.UD
         , NLP.POStags(..)
         )
          where
@@ -27,10 +27,10 @@ import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
-import qualified NLP.Types.Tags as NLP
+import qualified NLP.Tags as NLP
 import Data.Utilities
 
-undefUPOS = error "NLP.Corpora.UD" :: POStag
+undefUPOS = error "NLP.TagSets.UD" :: POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.

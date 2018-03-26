@@ -17,7 +17,7 @@
         , DeriveGeneric
         #-}
 
-module CoreNLP.NERcodes (module CoreNLP.NERcodes
+module NLP.TagSets.NERcodes (module NLP.TagSets.NERcodes
     , Text
 --    DepCode1(..), DepCode2 (..), DepCode
 --        , isROOT, isPUNCT
@@ -51,7 +51,7 @@ import Data.Aeson
 import GHC.Generics
 import Uniform.Zero
 
---import              NLP.Corpora.Conll  hiding (NERtag (..))
+--import              NLP.TagSets.Conll  hiding (NERtag (..))
 
 -- | The class of named entity sets.  This typeclass can be defined
 -- entirely in terms of the required class constraints.

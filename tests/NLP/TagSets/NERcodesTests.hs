@@ -15,10 +15,10 @@
         , DeriveAnyClass
         #-}
 
-module CoreNLP.NERcodesTests  where
+module NLP.TagSets.NERcodesTests  where
 
 import           Test.Framework
-import CoreNLP.NERcodes
+import NLP.TagSets.NERcodes
 
 test_listNull = assertEqual [NERunk text0] (parseNERtagList [text0])
 test_listOh = assertEqual [O] (parseNERtagList [textOh])

@@ -9,16 +9,16 @@
         , DeriveAnyClass
          #-}
 
-module NLP.Corpora.ConllTests where
+module NLP.TagSets.ConllTests where
 
 import Test.Framework
 
 
-import  NLP.Types.Tags
+import  NLP.Tags
 
-import  NLP.Corpora.Conll
---import  NLP.Corpora.ConllNER
-import NLP.Corpora.ConllChunks
+import  NLP.TagSets.Conll
+--import  NLP.TagSets.ConllNER
+import NLP.TagSets.ConllChunks
 
 import Data.Aeson
 import GHC.Exts

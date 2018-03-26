@@ -1,11 +1,11 @@
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-module NLP.Corpora.FrenchUDTests where
+module NLP.TagSets.FrenchUDTests where
 
 import Test.Framework
 
-import  NLP.Corpora.FrenchUD
-import NLP.Types.Tags
+import  NLP.TagSets.FrenchUD
+import NLP.Tags
 
 
 prop_tagsRoundTrip ::  POStag -> Bool

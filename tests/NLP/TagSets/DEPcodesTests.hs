@@ -14,11 +14,11 @@
 --        , DeriveAnyClass
          #-}
 
-module CoreNLP.DEPcodesTests  where
+module NLP.TagSets.DEPcodesTests  where
 
 import           Test.Framework
 
-import CoreNLP.DEPcodes
+import NLP.TagSets.DEPcodes
 import Data.Aeson
 import GHC.Exts
 

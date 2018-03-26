@@ -21,7 +21,7 @@ with set to -serverProperties StanfordCoreNLP-french.properties
         , DeriveGeneric
         #-}
 
-module NLP.Corpora.French (module NLP.Corpora.French
+module NLP.TagSets.French (module NLP.TagSets.French
         , POStag (..)
         )
          where
@@ -32,7 +32,7 @@ import Data.Utilities
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
-import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
+import  NLP.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 import Data.Utilities
 

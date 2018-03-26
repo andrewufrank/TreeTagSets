@@ -2,8 +2,12 @@
 --
 -- Module       | --  Dependency and other Codes
 --
--- | the codes for TinT parser for German
---
+-- | the codes for French parser for French
+-- model is http://nlp.stanford.edu/software/stanford-french-corenlp-2017-06-09-models.jar
+-- pos tageset name is
+-- from http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php
+-- model is http://nlp.stanford.edu/software/stanford-french-corenlp-2017-06-09-models.jar
+-- called with -serverProperties StanfordCoreNLP-french-UD.properties
 -----------------------------------------------------------------------------}
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
@@ -16,28 +20,39 @@
         , DeriveGeneric
         #-}
 
-module  NLP.Corpora.German (module  NLP.Corpora.German
-        )  where
+module NLP.TagSets.FrenchUD (module  NLP.TagSets.FrenchUD
+        )
+         where
 
 import GHC.Generics
 import Data.Serialize (Serialize)
+import qualified Data.Text as T
+import Data.Text (Text)
+import Data.Utilities
 import Test.QuickCheck.Arbitrary (Arbitrary(..))
 import Test.QuickCheck.Gen (elements)
 
+import Data.Text   as T (replace)
 
-import  NLP.Types.Tags
-import Data.Utilities
 
-undefGermanPos = undef "convertOneSnip2Triples postag german":: POStag
+import qualified NLP.Tags as NLPtypes
+import  NLP.Tags as NLPtypes
+
+undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
+--    Dollar | -- ^ $
+--    Comma  | -- ^ ,
+--    Point | -- ^ .
+--    OpenBracket |   -- [
     Dollarpoint | --    $.       |   --	0
     Dollaropenbracket | --  $[       |   --	 '
     Dollarcomma  |   --	,
     ADJA       |   --	environs
     ADJD       |   --	I.
+    ADP |
     ADV       |   --	que
     APPO       |   --	l'épouse
     APPR       |   --	 --
@@ -50,6 +65,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     KON       |   --	un
     KOUS       |   --	sous
     NE       |   --	XXII
+    NOUN |
     NN       |   --	CONCLUSION
     PDAT       |   --	d'analyse
     PDS       |   --	une
@@ -60,6 +76,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     PPOSAT       |   --	donner
     PRELS       |   --	qui
     PRF       |   --	café
+    PRON |
     PROAV       |   --	d'un
     PTKANT       |   --	avec
     PTKNEG       |   --	net
@@ -70,24 +87,15 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     VAFIN       |   --	C'est
     VAINF       |   --	sein
     VMFIN       |   --	démêlés
+    VERB |
     VVFIN       |   --	chrétienne
     VVIMP       |   --	j'
     VVINF       |   --	bien
     VVIZU       |   --	hésitation
     VVPP       |   --	maintenant
+    X |
     XY       |   --	n
-    PTKZU |
-    VAPP  |
-    KOUI |
-    PTKA |
-    VMINF |
-    VAIMP |
-    PRELAT |
-    PWAT |
-    VMPP |
-    PPOSS |
-    KOKOM |
-    Germanunk  -- other  -- conflicts possible!
+    Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
@@ -96,10 +104,9 @@ spelledAs =
     , (Dollarcomma, "$,")
     ]
 
+instance NLPtypes.POStags POStag where
 
-instance POStags POStag where
-
-    tagUNK = Germanunk
+    tagUNK = Frenchunk
 
 --    tagTerm = showTag
 
@@ -112,6 +119,4 @@ instance POStags POStag where
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]
 instance Serialize POStag
-
-
 
