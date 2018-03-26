@@ -30,6 +30,8 @@ import GHC.Generics
 import qualified NLP.Types.Tags as NLP
 import Data.Utilities
 
+undefUPOS = error "NLP.Corpora.UD" :: POStag
+
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.

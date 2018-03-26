@@ -14,15 +14,16 @@ import           Test.Framework
 
 import {-@ HTF_TESTS @-} Data.UtilitiesTests
 
-import {-@ HTF_TESTS @-} NLP.Corpora.BrownTests
-import {-@ HTF_TESTS @-} NLP.Corpora.ConllTests
-import {-@ HTF_TESTS @-} NLP.Corpora.FrenchTests
-import {-@ HTF_TESTS @-} NLP.Corpora.GermanTests
-import {-@ HTF_TESTS @-} NLP.Corpora.SpanishTests
-import {-@ HTF_TESTS @-} NLP.Corpora.ItalianTinTTests
-import {-@ HTF_TESTS @-} NLP.Corpora.UDTests
-import {-@ HTF_TESTS @-} NLP.Corpora.FrenchUDTests
-import {-@ HTF_TESTS @-} CoreNLP.DEPcodesTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.BrownTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.ConllTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.FrenchTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.GermanTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.SpanishTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.ItalianTinTTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.UDTests
+--import {-@ HTF_TESTS @-} NLP.Corpora.FrenchUDTests
+--import {-@ HTF_TESTS @-} CoreNLP.DEPcodesTests
+import {-@ HTF_TESTS @-} CoreNLP.NERcodesTests
 
 
 main =  do  -- with tests in other modules

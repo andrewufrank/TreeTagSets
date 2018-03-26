@@ -18,6 +18,7 @@
         #-}
 
 module CoreNLP.NERcodes (module CoreNLP.NERcodes
+    , Text
 --    DepCode1(..), DepCode2 (..), DepCode
 --        , isROOT, isPUNCT
 ----        , hasDepCode
@@ -48,6 +49,7 @@ import Data.Utilities
 import Text.Read (readEither)
 import Data.Aeson
 import GHC.Generics
+import Uniform.Zero
 
 --import              NLP.Corpora.Conll  hiding (NERtag (..))
 
@@ -91,6 +93,9 @@ parseNERtagList [] = []
 parseNERtagList [a] = [parseNERtag a]
 parseNERtagList (a:as) = parseNERtag a : map NERtagValue as
 
+isAnUnknownNER  (NERunk a) = True
+isAnUnknownNER  _ = False
+
 -- | Named entity categories defined for the Conll 2003 task.
 data NERtag = PER
             | ORG
@@ -99,7 +104,7 @@ data NERtag = PER
             | UNK
             -- found in Stanford CoreNLP 3.5.2
             -- Time, Location, Organization, Person, Money, Percent, Date
-            | O
+            | O  -- does this stand for nothing?
             | NUMBER
             | PERSON
             | DURATION
@@ -129,6 +134,10 @@ data NERtag = PER
          -- ,  Enum, Bounded)
 
 --instance Zeros NERtag where zero = NERunk
+instance Zeros NERtag where zero = NERunk "zero"
+
+
+------------------------------------------------------------------
 
 data SpeakerTag =  -- PER0 | PER1 | PER2 |
                     SpeakerNumber Text
@@ -195,7 +204,7 @@ newtype RawNERtag = RawNERtag Text
 instance NERtags RawNERtag where
   fromNERtag (RawNERtag t) = t
   parseNERtag  = RawNERtag
-
+  fromNERtagNormalized = error "fromNERtagNormalized not implemented"
   -- | Constant tag for "unknown"  -- cannot occur
   nerUNK = error "nerUNK cannot occur for RawNERtag"
 

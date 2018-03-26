@@ -3,7 +3,7 @@
 -- | Data types representing the NER tags
 -- the Conll2000 training corpus.
 
-module NLP.Corpora.ConllNER (
+module xNLP.Corpora.ConllNER (
     module NLP.Corpora.ConllNER
         , NERtag (..)
         , NERtags (..)
@@ -23,22 +23,23 @@ import  NLP.Types.Tags  (POStags (..), TagsetIDs (..)
 import Data.Utilities
 
 import CoreNLP.NERcodes (NERtags (..))
-
--- | Named entity categories defined for the Conll 2003 task.
-data NERtag = PER
-            | ORG
-            | LOC
-            | MISC
-            | UNK
-  deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic, Serialize)
-
-instance Arbitrary NERtag where
-  arbitrary = elements [minBound..]
-
---instance Serialize NERtag
-instance NERtags NERtag
-
-instance TagsetIDs NERtag where
-    tagsetURL _  = "Conll"
-
+--
+---- | Named entity categories defined for the Conll 2003 task.
+--data NERtag = PER
+--            | ORG
+--            | LOC
+--            | MISC
+--            | UNK
+--  deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic, Serialize)
+--
+--instance Arbitrary NERtag where
+--  arbitrary = elements [minBound..]
+--
+----instance Serialize NERtag
+--instance NERtags NERtag
+--    fromNERtagNormalized = error "fromNERtagNormalized not implemented"
+--    parseNer
+--instance TagsetIDs NERtag where
+--    tagsetURL _  = "Conll"
+--
 

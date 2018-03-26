@@ -17,7 +17,7 @@ import Test.Framework
 import  NLP.Types.Tags
 
 import  NLP.Corpora.Conll
-import  NLP.Corpora.ConllNER
+--import  NLP.Corpora.ConllNER
 import NLP.Corpora.ConllChunks
 
 import Data.Aeson

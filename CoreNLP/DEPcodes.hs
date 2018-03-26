@@ -71,12 +71,13 @@ class (Ord a, Eq a, Read a, Show a) => DEPtags a where
 --  notChunkTag = maxBound
 
 instance DEPtags DepCode where
-  fromDEPtag (DepCode c1 c2) = if c2==Dep2Zero then showT c1
+  fromDEPtag (DepCode c1 c2) = if c2==Dep2zero then showT c1
                                                else T.concat [showT c1, ":", showT c2]
-  fromDEPtag x = error ("fromDEPtag in DEPcodes " ++ show x)
+  fromDEPtag (DepUnknown s) = s
+--  fromDEPtag x = error ("fromDEPtag in DEPcodes " ++ show x)
 
   parseDEPtag   = readDepCode
-  tagDEPunk  =  DepCode DepUnk Dep2Zero
+  tagDEPunk  =  DepCode DepUnk Dep2zero
   notDEPtag = error "not implemented notDEPtag"
 
 --  propertyDEP =
@@ -106,13 +107,13 @@ readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t)) -- at least french
 
 --    case splitIn2By ":" t of
 --    Nothing -> unk
---    Just (a,Nothing) -> maybe unk (\c -> DepCode c Dep2Zero) c1
+--    Just (a,Nothing) -> maybe unk (\c -> DepCode c Dep2zero) c1
 --    Just (a, Just b) ->
 
 
 --readDepCode t = case length ts of
 --                    0 -> unk
---                    1 -> maybe unk (\c  -> DepCode c  Dep2Zero) c1
+--                    1 -> maybe unk (\c  -> DepCode c  Dep2zero) c1
 --                    2 -> case c2 of
 --                            Nothing -> unk
 --                            Just c22 -> case c1 of
@@ -123,7 +124,7 @@ readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t)) -- at least french
     where
             conv (a, mb) =  case conv2 (a, mb) of
                     (Nothing, _) -> unk
-                    (Just a1, Nothing) -> DepCode a1 Dep2Zero
+                    (Just a1, Nothing) -> DepCode a1 Dep2zero
                     (Just a1, Just b1) -> DepCode a1 b1
 
 
@@ -163,6 +164,7 @@ data DepCode1 = ACL
                 | DOBJ
                 | EXPL
                 | FOREIGN
+                | FLAT  -- used in hs-conllu
                 | GOESWITH
                 | IOBJ
                 | LIST
@@ -187,6 +189,8 @@ data DepCode1 = ACL
         deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
 --instance CharChains2 DepCode1 Text where
 --    show' = s2t . show
+
+instance Zeros DepCode1 where zero = DepUnk
 
 data DepCode2 = RELCL
             | AS  -- is this all prepositions?
@@ -220,10 +224,11 @@ data DepCode2 = RELCL
             | PREDET
             | TOWARDS
 --            | MissingDepCode2 Text
-            | Dep2Zero
+            | Dep2zero
 
     deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
 
+instance Zeros DepCode2 where zero = Dep2zero
 
 
 isROOT = (ROOT==) . d1
@@ -240,10 +245,10 @@ makeDepCode :: DepCode1 -> DepCode2 -> DepCode
 makeDepCode maj min = DepCode maj min
 
 makeSimpleDepCode :: DepCode1 -> DepCode
-makeSimpleDepCode maj = DepCode maj Dep2Zero
+makeSimpleDepCode maj = DepCode maj Dep2zero
 
 showDepCodes :: DepCode -> Text
-showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2Zero then showT dd1
+showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2zero then showT dd1
         else (T.concat [showT dd1, ":", showT dd2])
 
 
@@ -259,5 +264,5 @@ instance Serialize RawDEPtag
 instance DEPtags RawDEPtag where
   fromDEPtag (RawDEPtag ch) = ch
   parseDEPtag txt =  RawDEPtag txt
-  tagDEPunk  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2Zero
+  tagDEPunk  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2zero
   notDEPtag = error "not implemented notDEPtag"
