@@ -21,18 +21,19 @@
         #-}
 
 module  NLP.TagSets.Spanish (module  NLP.TagSets.Spanish
+ , module NLP.Tags
         )
          where
 
 import GHC.Generics
-import Data.Serialize (Serialize)
+--import Data.Serialize (Serialize)
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
 import Data.Maybe
 
 import Data.Utilities
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 import qualified Data.Text                as T
 import           Data.Char                (isSpace, isLower, toLower, toUpper)
 

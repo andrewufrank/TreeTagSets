@@ -5,8 +5,7 @@
 
 module xNLP.Corpora.ConllNER (
     module NLP.Corpora.ConllNER
-        , NERtag (..)
-        , NERtags (..)
+ , module NLP.Tags
 --    , POStags (..)
 --    , POStag(..)
     ) where

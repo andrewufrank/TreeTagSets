@@ -21,22 +21,22 @@
         #-}
 
 module NLP.TagSets.FrenchUD (module  NLP.TagSets.FrenchUD
+ , module NLP.Tags
         )
          where
 
 import GHC.Generics
-import Data.Serialize (Serialize)
+--import Data.Serialize (Serialize)
 import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Utilities
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
-import Data.Text   as T (replace)
+--import Data.Text   as T (replace)
 
 
-import qualified NLP.Tags as NLPtypes
-import  NLP.Tags as NLPtypes
+import  NLP.Tags
 
 undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
 
@@ -104,7 +104,7 @@ spelledAs =
     , (Dollarcomma, "$,")
     ]
 
-instance NLPtypes.POStags POStag where
+instance POStags POStag where
 
     unkPOStag = Frenchunk
 
@@ -115,8 +115,8 @@ instance NLPtypes.POStags POStag where
 
 --    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
     mapPOStag = mkTagMap [minBound ..] spelledAs
-
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 

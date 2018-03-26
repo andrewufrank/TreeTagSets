@@ -16,15 +16,14 @@
 
 module NLP.TagSets.Conll (
     module NLP.TagSets.Conll
-    , POStags (..)
-    , POStag(..)
+ , module NLP.Tags
     ) where
 
-import Data.Serialize (Serialize)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
-
-import Data.Aeson
+--import Data.Serialize (Serialize)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
+--
+--import Data.Aeson
 import GHC.Generics
 
 import  NLP.Tags  (POStags (..), TagsetIDs (..)
@@ -38,7 +37,7 @@ import Data.Utilities
 --import Data.Utilities
 --import qualified Data.Text as T
 --import Data.Text (Text)
-import Data.Aeson
+--import Data.Aeson
 
 undefConll = error "convertOneSnip2Triples postag conll":: POStag
 
@@ -69,13 +68,13 @@ data Chunk = ADJP
            | UCP
            | VP -- ^ Verb Phrase.
            | O -- ^ "out"; not a chunk.
-  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 
 
-instance Arbitrary Chunk where
-  arbitrary = elements [minBound..]
+--instance Arbitrary Chunk where
+--  arbitrary = elements [minBound..]
 
-instance Serialize Chunk
+--instance Serialize Chunk
 
 
 instance POStags POStag where
@@ -93,9 +92,9 @@ instance POStags POStag where
     mapPOStag = mkTagMap [minBound ..] spelledAs
 
 
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 
 
 --
@@ -173,7 +172,7 @@ data POStag = START -- ^ START tag, used in training.
          | RRB
          | Dash
          | Unk
-  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 
 spelledAs =
          [  (ClParen, ")"  )

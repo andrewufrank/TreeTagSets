@@ -9,13 +9,19 @@ module NLP.TagSets.ItalianTinTTests where
 import Test.Framework
 
 import  NLP.TagSets.ItalianTinT
-import NLP.Tags
+--import NLP.Tags
+
+import Test.QuickCheck.Arbitrary (Arbitrary(..))
+import Test.QuickCheck.Gen (elements)
+
+instance Arbitrary POStag where
+  arbitrary = elements [minBound ..]
 
 
 prop_tagsRoundTrip ::  POStag -> Bool
-prop_tagsRoundTrip tag = tag == (fromPOStag . fromTag) tag
+prop_tagsRoundTrip tag = tag == (toPOStag . fromPOStag) tag
 
-test_erd = assertEqual EplusRD (fromPOStag "E+RD")
+test_erd = assertEqual EplusRD (toPOStag "E+RD")
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

@@ -17,12 +17,13 @@
         #-}
 
 module  NLP.TagSets.German (module  NLP.TagSets.German
+ , module NLP.Tags
         )  where
 
 import GHC.Generics
-import Data.Serialize (Serialize)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Data.Serialize (Serialize)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 
 import  NLP.Tags
@@ -109,9 +110,9 @@ instance POStags POStag where
 --    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
     mapPOStag = mkTagMap [minBound ..] spelledAs
 
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 
 
 

@@ -18,7 +18,7 @@
         #-}
 
 module NLP.TagSets.NERcodes (module NLP.TagSets.NERcodes
-    , Text
+ , module NLP.Tags
 --    DepCode1(..), DepCode2 (..), DepCode
 --        , isROOT, isPUNCT
 ----        , hasDepCode
@@ -38,8 +38,8 @@ module NLP.TagSets.NERcodes (module NLP.TagSets.NERcodes
          where
 
 --import           Test.Framework
-import Data.Serialize (Serialize)
-import Data.Serialize.Text ()
+--import Data.Serialize (Serialize)
+--import Data.Serialize.Text ()
 import GHC.Generics
 
 import Data.Text (Text)
@@ -47,9 +47,9 @@ import qualified Data.Text as T
 import Data.Maybe
 import Data.Utilities
 import Text.Read (readEither)
-import Data.Aeson
+--import Data.Aeson
 import GHC.Generics
-import Uniform.Zero
+--import Uniform.Zero
 
 --import              NLP.TagSets.Conll  hiding (NERtag (..))
 
@@ -112,11 +112,11 @@ data NERtag = PER
             | NERtagValue Text
             | NERunk Text
 
-  deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
+  deriving (Show, Read, Eq, Ord, Generic)
          -- ,  Enum, Bounded)
 
 --instance Zeros NERtag where zero = NERunk
-instance Zeros NERtag where zero = NERunk "zero"
+--instance Zeros NERtag where zero = NERunk "zero"
 
 
 ------------------------------------------------------------------
@@ -126,7 +126,7 @@ data SpeakerTag =  -- PER0 | PER1 | PER2 |
                     | SpeakerName Text
                     | SpeakerValue Text
 
-    deriving (Show, Read, Eq, Ord,  Generic, ToJSON, FromJSON)
+    deriving (Show, Read, Eq, Ord,  Generic)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
 
 class (Ord a, Eq a, Read a, Show a ) => SpeakerTags a where
@@ -180,7 +180,7 @@ parseSpeakerTagList (a:as) = parseSpeakerTag a : map SpeakerValue as
 
 ------------------------------------------------__N E R tags
 newtype RawNERtag = RawNERtag Text
-  deriving (Show, Read, Eq, Ord,  Generic, ToJSON, FromJSON)
+  deriving (Show, Read, Eq, Ord,  Generic)
 
 -- | POStags instance for unknown tagsets.
 instance NERtags RawNERtag where

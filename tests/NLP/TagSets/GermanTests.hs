@@ -5,11 +5,15 @@ module NLP.TagSets.GermanTests where
 import Test.Framework
 
 import  NLP.TagSets.German
-import NLP.Tags
+--import NLP.Tags
+import Test.QuickCheck.Arbitrary (Arbitrary(..))
+import Test.QuickCheck.Gen (elements)
 
+instance Arbitrary POStag where
+  arbitrary = elements [minBound ..]
 
 prop_tagsRoundTrip ::  POStag -> Bool
-prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag
+prop_tagsRoundTrip tag = tag == (toPOStag . fromPOStag) tag
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

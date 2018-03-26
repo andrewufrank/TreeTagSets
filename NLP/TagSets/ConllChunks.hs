@@ -5,13 +5,12 @@
 
 module NLP.TagSets.ConllChunks (
     module NLP.TagSets.ConllChunks
-    , ChunkTag (..)
-    , ChunkTags(..)
-    ) where
+ , module NLP.Tags
+   ) where
 
-import Data.Serialize (Serialize)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Data.Serialize (Serialize)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
@@ -38,10 +37,10 @@ data ChunkTag = ADJP
            | UNK
   deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
-instance Arbitrary ChunkTag where
-  arbitrary = elements [minBound..]
-
-instance Serialize ChunkTag
+--instance Arbitrary ChunkTag where
+--  arbitrary = elements [minBound..]
+--
+--instance Serialize ChunkTag
 
 
 instance TagsetIDs ChunkTag where

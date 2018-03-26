@@ -7,6 +7,7 @@
 
 module NLP.TagSets.Brown
  (module NLP.TagSets.Brown
+ , module NLP.Tags
          ) where
 
 --import Data.Serialize (Serialize)

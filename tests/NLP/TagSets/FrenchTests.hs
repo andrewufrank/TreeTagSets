@@ -5,7 +5,7 @@ module NLP.TagSets.FrenchTests where
 import Test.Framework
 
 import  NLP.TagSets.French
-import NLP.Tags
+--import NLP.Tags
 instance Arbitrary POStag  where
   arbitrary = elements [minBound ..]
 

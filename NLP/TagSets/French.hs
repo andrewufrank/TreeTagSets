@@ -22,7 +22,7 @@ with set to -serverProperties StanfordCoreNLP-french.properties
         #-}
 
 module NLP.TagSets.French (module NLP.TagSets.French
-        , POStag (..)
+ , module NLP.Tags
         )
          where
 

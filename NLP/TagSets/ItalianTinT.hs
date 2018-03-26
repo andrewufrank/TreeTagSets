@@ -19,6 +19,7 @@
         #-}
 
 module  NLP.TagSets.ItalianTinT (module  NLP.TagSets.ItalianTinT
+ , module NLP.Tags
         ) where
 
 import GHC.Generics

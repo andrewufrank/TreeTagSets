@@ -2,16 +2,14 @@
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveAnyClass #-}
 module NLP.TagSets.RawTags (
         RawPOStag (..)
---        , RawNERtag (..)
-        , RawChunk (..)
-        , Text
+ , module NLP.Tags
         ) where
 
 -- the raw tags are just newtypes of the text output from the tagger
 -- raw tags are used to find all the tags used by a model
 
-import Data.Serialize (Serialize)
-import Data.Serialize.Text ()
+--import Data.Serialize (Serialize)
+--import Data.Serialize.Text ()
 import Data.Text (Text)
 import qualified Data.Text as T
 import GHC.Generics
@@ -19,8 +17,8 @@ import Text.Read (readEither)
 
 import Data.Utilities
 
-import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
-import Test.QuickCheck.Instances ()
+--import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
+--import Test.QuickCheck.Instances ()
 
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
@@ -32,7 +30,7 @@ import NLP.Tags
 ------------------------------------------------------- P O S tags
 -- | POStags instance for unknown tagsets.
 newtype RawPOStag = RawPOStag Text
-  deriving (Ord, Eq, Read, Show, Generic, Serialize)
+  deriving (Ord, Eq, Read, Show, Generic)
 
 instance POStags RawPOStag where
   fromPOStag (RawPOStag t) = t
@@ -59,7 +57,7 @@ instance POStags RawPOStag where
 -----------------------------------------------------------------C H U N K
 -- | A fall-back 'ChunkTag' instance, analogous to 'RawTag'
 newtype RawChunk = RawChunk Text
-  deriving (Ord, Eq, Read, Show, Generic, Serialize)
+  deriving (Ord, Eq, Read, Show, Generic)
 
 
 instance ChunkTags RawChunk where

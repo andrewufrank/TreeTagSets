@@ -16,6 +16,7 @@
 {-# LANGUAGE DeriveGeneric #-}  -- for RawDEPtag
 
 module NLP.TagSets.DEPcodes (module NLP.TagSets.DEPcodes
+ , module NLP.Tags
         )
          where
 
@@ -24,14 +25,14 @@ import NLP.Tags
 --import Data.Serialize (Serialize) -- for RawDEPtag
 --import Data.Serialize.Text ()
 import GHC.Generics
-import Uniform.Zero
+--import Uniform.Zero
 
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
 import Data.Utilities
 import qualified Data.Text as T
 import Data.Text (Text)
-import Data.Aeson
+--import Data.Aeson
 --import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
 --import Test.QuickCheck.Instances ()
 
@@ -59,7 +60,7 @@ data DepCode = DepCode {d1::DepCode1
                         , d2 :: DepCode2
                         }
             | DepUnknown {s :: Text }
-                deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
+                deriving (Show, Read, Eq, Ord, Generic)
 
 
 --
@@ -153,11 +154,11 @@ data DepCode1 = ACL
                 | XCOMP
                 | DepUnk
 
-        deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
+        deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 --instance CharChains2 DepCode1 Text where
 --    show' = s2t . show
 
-instance Zeros DepCode1 where zero = DepUnk
+--instance Zeros DepCode1 where zero = DepUnk
 
 data DepCode2 = RELCL
             | AS  -- is this all prepositions?
@@ -193,9 +194,9 @@ data DepCode2 = RELCL
 --            | MissingDepCode2 Text
             | Dep2zero
 
-    deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic, ToJSON, FromJSON)
+    deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
 
-instance Zeros DepCode2 where zero = Dep2zero
+--instance Zeros DepCode2 where zero = Dep2zero
 
 
 isROOT = (ROOT==) . d1
@@ -224,7 +225,7 @@ showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2zero then showT dd1
 -- | A fallback Dependency tag instance.
 
 newtype RawDEPtag = RawDEPtag Text
-  deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
+  deriving (Show, Read, Eq, Ord, Generic)
 
 --instance Serialize RawDEPtag
 

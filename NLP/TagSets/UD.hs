@@ -17,17 +17,17 @@
         #-}
 
 module NLP.TagSets.UD (module NLP.TagSets.UD
-        , NLP.POStags(..)
+ , module NLP.Tags
         )
          where
 
-import Data.Serialize (Serialize)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Data.Serialize (Serialize)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
-import qualified NLP.Tags as NLP
+import  NLP.Tags
 import Data.Utilities
 
 undefUPOS = error "NLP.TagSets.UD" :: POStag
@@ -54,10 +54,10 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     X  -- other
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
-instance NLP.TagsetIDs POStag where
+instance  TagsetIDs POStag where
     tagsetURL _ = "http://universaldependencies.org/u/pos/"
 
-instance NLP.POStags  POStag where
+instance  POStags  POStag where
 
     unkPOStag = X
 
@@ -69,8 +69,8 @@ instance NLP.POStags  POStag where
 --    isDeterminerTag tag = tag `elem` [DET]
     mapPOStag = mkTagMap [minBound ..] []
 
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 
 

@@ -17,7 +17,7 @@ import qualified Data.Text as T
 import Data.Text (Text)
 --import qualified         Data.Char      as S          (isSpace, isLower, toLower, toUpper)
 import Text.Read (readEither)
-import           Test.Invariant
+--import           Test.Invariant
 --import Test.Framework
 --import Data.Text.Arbitrary
 import qualified Data.Map as Map

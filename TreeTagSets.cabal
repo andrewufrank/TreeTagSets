@@ -22,27 +22,27 @@ author: Andrew U. Frank, using the code from chatter by Rogan Creswick
 library
     build-depends:
         base >=4.8 && <= 5
-        , HTF
+--        , HTF
         -- for testing
-        , test-invariant
-        , cereal
-        , cereal-text
+--        , test-invariant
+--        , cereal
+--        , cereal-text
         , text
-        , QuickCheck
-        , quickcheck-instances
-        , quickcheck-text
+--        , QuickCheck
+--        , quickcheck-instances
+--        , quickcheck-text
         , containers
-        , safe
-        , aeson
---        numeric-prelude,
---        snap-core,
---        safe,
---        vector,
---        -- fay-base,
---        split,
---        data-easy
-        , uniform-algebras
---        ,uniform-strings
+--        , safe
+--        , aeson
+----        numeric-prelude,
+----        snap-core,
+----        safe,
+----        vector,
+----        -- fay-base,
+----        split,
+----        data-easy
+--        , uniform-algebras
+----        ,uniform-strings
 
     exposed-modules:
         NLP.TagSets.Brown
@@ -91,6 +91,9 @@ Test-Suite TestAuto
     build-depends: base, HTF
             , TreeTagSets
             , aeson, aeson-pretty
+        , QuickCheck
+        , quickcheck-instances
+        , quickcheck-text
 --            , testExample
 --            , uniform-strings
 --        , safe

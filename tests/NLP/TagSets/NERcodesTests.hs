@@ -19,10 +19,11 @@ module NLP.TagSets.NERcodesTests  where
 
 import           Test.Framework
 import NLP.TagSets.NERcodes
+--import NLP.Tags
 
 test_listNull = assertEqual [NERunk text0] (parseNERtagList [text0])
 test_listOh = assertEqual [O] (parseNERtagList [textOh])
-test_unk = assertBool . isAnUnknownNER . parseNERtag $ text0
+test_unk = assertBool . isAnUnknownNER . toNERtag $ text0
 
 test_eq = assertBool $ [NERunk text0] == (parseNERtagList [text0])
 test_eqOh = assertBool $ [O] == (parseNERtagList [textOh])

@@ -51,6 +51,8 @@ class (Ord a, Eq a, Read a, Show a, Generic a) => POStags a where
     unkPOStag = maxBound
 
     mapPOStag :: Map a Text
+    mapPOStag = error "no mapPOStag implemented \
+                    \ - used from and toPOStag"
 
     fromPOStag a = fromMaybe (showT (unkPOStag :: a) )
                 $  Map.lookup a mapPOStag
