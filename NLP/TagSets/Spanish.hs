@@ -166,27 +166,27 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
 
 
 instance POStags POStag  where
-    parseTag "$" = Dollar
-    parseTag t = maybe Spanishunk id $ Map.lookup t
-            (reverseMap tagMap)
+    toPOStag "$" = Dollar
+    toPOStag t = maybe Spanishunk id $ Map.lookup t
+            (reverseMap mapPOStag)
 
-    fromTag Dollar = "$"
-    fromTag a = fromMaybe (showT (Spanishunk ) )
-                $  Map.lookup a tagMap
+    fromPOStag Dollar = "$"
+    fromPOStag a = fromMaybe (showT (Spanishunk ) )
+                $  Map.lookup a mapPOStag
 
-    tagUNK = Spanishunk
+    unkPOStag = Spanishunk
 
 --    tagTerm = showTag
 
-    startTag = START
-    endTag = END
+--    startTag = START
+--    endTag = END
+--
+--    isDeterminerTag tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
+    mapPOStag = mkTagMap4conv toLowerStart [minBound ..] []
 
-    isDeterminerTag tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
-    tagMap = mkTagMap4conv toLowerStart [minBound ..] []
-
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 
 toLowerStart :: Text -> Text
 -- ^ convert the first character to lowercase - for Properties in RDF

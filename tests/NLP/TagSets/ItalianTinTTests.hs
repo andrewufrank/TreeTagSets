@@ -13,9 +13,9 @@ import NLP.Tags
 
 
 prop_tagsRoundTrip ::  POStag -> Bool
-prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag
+prop_tagsRoundTrip tag = tag == (fromPOStag . fromTag) tag
 
-test_erd = assertEqual EplusRD (parseTag "E+RD")
+test_erd = assertEqual EplusRD (fromPOStag "E+RD")
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

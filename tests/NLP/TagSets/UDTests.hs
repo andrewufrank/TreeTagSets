@@ -9,7 +9,7 @@ import NLP.Tags
 
 
 prop_tagsRoundTrip ::  POStag -> Bool
-prop_tagsRoundTrip tag = tag == (parseTag . fromTag) tag
+prop_tagsRoundTrip tag = tag == (fromPOStag . toPOStag) tag
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

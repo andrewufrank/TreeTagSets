@@ -59,15 +59,15 @@ instance NLP.TagsetIDs POStag where
 
 instance NLP.POStags  POStag where
 
-    tagUNK = X
+    unkPOStag = X
 
 --    tagTerm = showTag
 
-    startTag = START
-    endTag = END
-
-    isDeterminerTag tag = tag `elem` [DET]
-    tagMap = mkTagMap [minBound ..] []
+--    startTag = START
+--    endTag = END
+--
+--    isDeterminerTag tag = tag `elem` [DET]
+    mapPOStag = mkTagMap [minBound ..] []
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]

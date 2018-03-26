@@ -22,6 +22,13 @@ import NLP.TagSets.DEPcodes
 import Data.Aeson
 import GHC.Exts
 
+--instance CharChains2 DepCode Text where
+instance Arbitrary DepCode1 where
+  arbitrary = elements [minBound ..]
+instance Arbitrary DepCode2 where
+  arbitrary = elements [minBound ..]
+instance Zeros DepCode where zero = DepUnknown "constant zero"
+
 
 test_1a = assertEqual (DepCode ACL Dep2zero) (readDepCode "ACL")
 test_2a = assertEqual (DepCode AUX ON) (readDepCode "AUX:ON")

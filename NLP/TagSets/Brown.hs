@@ -2,17 +2,18 @@
 {-# LANGUAGE DeriveGeneric #-}
 -- | The internal implementation of critical types in terms of the
 -- Brown corpus.
-    -- the structure of these tags is complex and parsed with a specialized system
+-- the structure of these tags is complex and \
+-- parsed with a specialized system
 
 module NLP.TagSets.Brown
  (module NLP.TagSets.Brown
          ) where
 
-import Data.Serialize (Serialize)
+--import Data.Serialize (Serialize)
 import qualified Data.Text as T
 import Text.Read (readEither)
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 import GHC.Generics
 
@@ -29,33 +30,34 @@ data ChunkTag = C_NP -- ^ Noun Phrase.
             | C_UNK
   deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
-instance Arbitrary ChunkTag where
-  arbitrary = elements [minBound ..]
+instance ChunkTags ChunkTag where
+  fromChunkTag = T.pack . drop 2 . show
+  toChunkTag txt = read2unk C_UNK (  T.append "C_" txt)
+  unkChunkTag = C_UNK -- C_O
 
-instance Serialize ChunkTag
 
-instance Serialize POStag
+instance TagsetIDs POStag where
+    tagsetURL _ = "https://hackage.haskell.org/package/chatter-0.9.1.0/docs/NLP-Corpora-Conll.html"
+    -- this is the original haskell code of which this is a copy
 
 instance POStags POStag where
-  fromTag = showBrownTag
+  fromPOStag = showBrownTag
 
-  parseTag txt = case parseBrownTag txt of
+  toPOStag txt = case parseBrownTag txt of
                    Left  _ -> Unk
                    Right t -> t
 
   -- | Constant tag for "unknown"
-  tagUNK = Unk
+  unkPOStag = Unk
 
 --  tagTerm = showBrownTag
-  tagMap = error "tagmap not required for brown corpus pos tags"
+  mapPOStag = error "tagmap not required for brown corpus pos tags"
 
-  startTag = START
-  endTag = END
+--  startTag = START
+--  endTag = END
+--
+--  isDeterminerTag tag = tag `elem` [DT, DTdollar, DT_pl_BEZ, DT_pl_MD, DTI, DTS, DTS_pl_BEZ, DTX]
 
-  isDeterminerTag tag = tag `elem` [DT, DTdollar, DT_pl_BEZ, DT_pl_MD, DTI, DTS, DTS_pl_BEZ, DTX]
-
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
 
 parseBrownTag :: Text -> ErrOrVal POStag
 parseBrownTag "(" = Right Op_Paren
@@ -102,13 +104,6 @@ readOrErr    t = case  readEither (t2s t)  of
                         Right a -> Right a
 
 
-instance ChunkTags ChunkTag where
-  fromChunkTag = T.pack . drop 2 . show
-  parseChunkTag txt = read2unk C_UNK (  T.append "C_" txt)
-  notChunkTag = C_UNK -- C_O
-instance TagsetIDs POStag where
-    tagsetURL _ = "https://hackage.haskell.org/package/chatter-0.9.1.0/docs/NLP-Corpora-Conll.html"
-    -- this is the original haskell code of which this is a copy
 
 data POStag = START -- ^ START tag, used in training.
          | END -- ^ END tag, used in training.

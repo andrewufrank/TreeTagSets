@@ -80,17 +80,17 @@ instance Serialize Chunk
 
 instance POStags POStag where
 -- | Constant tag for "unknown"
-    tagUNK = Unk
+    unkPOStag = Unk
 
 --
 --  tagTerm = showTag
 --
-    startTag = START
-    endTag = END
---
-    isDeterminerTag tag = tag `elem` [DT]
+--    startTag = START
+--    endTag = END
+----
+--    isDeterminerTag tag = tag `elem` [DT]
 
-    tagMap = mkTagMap [minBound ..] spelledAs
+    mapPOStag = mkTagMap [minBound ..] spelledAs
 
 
 instance Arbitrary POStag where

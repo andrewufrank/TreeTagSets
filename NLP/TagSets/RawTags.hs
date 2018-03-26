@@ -35,25 +35,25 @@ newtype RawPOStag = RawPOStag Text
   deriving (Ord, Eq, Read, Show, Generic, Serialize)
 
 instance POStags RawPOStag where
-  fromTag (RawPOStag t) = t
+  fromPOStag (RawPOStag t) = t
 
-  parseTag  = RawPOStag
+  toPOStag  = RawPOStag
 
   -- | Constant tag for "unknown"
-  tagUNK = RawPOStag "Unk"
+  unkPOStag = RawPOStag "Unk"
 
 --  tagTerm (RawPOStag t) = t
 
-  startTag = RawPOStag "-START-"
-  endTag = RawPOStag "-END-"
+--  startTag = RawPOStag "-START-"
+--  endTag = RawPOStag "-END-"
+--
+--  isDeterminerTag (RawPOStag tg) = tg == "DT"
+  mapPOStag = error "tagMap not implemented for RawPOStag"
 
-  isDeterminerTag (RawPOStag tg) = tg == "DT"
-  tagMap = error "tagMap not implemented for RawPOStag"
-
-instance Arbitrary RawPOStag where
-  arbitrary = do
-    NonEmpty str <- arbitrary
-    return $ RawPOStag $ T.pack str
+--instance Arbitrary RawPOStag where
+--  arbitrary = do
+--    NonEmpty str <- arbitrary
+--    return $ RawPOStag $ T.pack str
 
 
 -----------------------------------------------------------------C H U N K
@@ -64,8 +64,8 @@ newtype RawChunk = RawChunk Text
 
 instance ChunkTags RawChunk where
   fromChunkTag (RawChunk ch) = ch
-  parseChunkTag txt =  RawChunk txt
-  notChunkTag = RawChunk "O"
+  toChunkTag txt =  RawChunk txt
+  unkChunkTag = RawChunk "O"
 
 
 

@@ -99,15 +99,15 @@ spelledAs =
 
 instance POStags POStag where
 
-    tagUNK = Germanunk
+    unkPOStag = Germanunk
 
 --    tagTerm = showTag
 
-    startTag = START
-    endTag = END
-
-    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
-    tagMap = mkTagMap [minBound ..] spelledAs
+--    startTag = START
+--    endTag = END
+--
+--    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
+    mapPOStag = mkTagMap [minBound ..] spelledAs
 
 instance Arbitrary POStag where
   arbitrary = elements [minBound ..]

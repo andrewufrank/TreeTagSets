@@ -1,23 +1,28 @@
 name: TreeTagSets
-version: 0.0.3.8.1
+version: 0.0.3.9.1
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE
-synopsis: a collection of TreeTags
-description: tree tag and other codes for the Stanford coreNLP 0.3.8(and older codes)
+synopsis:  NLP Tags for different annotations
+description: A collection of the tagsets used 2017, especially the
+    tags used by coreNLP annotators for different languages, with a
+    minimal set of operations (fromXXtag , toXXtag, unkXXtag).
+    The goal is to create a place to collect different tagsets
+    and make them available with minimal other imports.
+    The different tagsets should be imported, preferably qualified to
+    avoid clashes.
+    All claseses export Eq, Ord, Show, Read, Generic.
+    The unknown value is by default the last value in the enumeration
+    (but can be overridden)
 
 
-author: Andrew U. Frank
+author: Andrew U. Frank, using the code from chatter by Rogan Creswick
 
 library
     build-depends:
         base >=4.8 && <= 5
---        network-uri,
---        monads-tf,
         , HTF
---        bytestring,
---        text, utf8-string,
         -- for testing
         , test-invariant
         , cereal

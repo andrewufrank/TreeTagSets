@@ -27,10 +27,10 @@ module NLP.TagSets.French (module NLP.TagSets.French
          where
 
 import GHC.Generics
-import Data.Serialize (Serialize)
+--import Data.Serialize (Serialize)
 import Data.Utilities
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 import  NLP.Tags  (POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
@@ -77,17 +77,15 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
 
 instance POStags POStag where
 
-    tagUNK = Frenchunk
+    unkPOStag = Frenchunk
 
 --    tagTerm = showTag
 
-    startTag = START
-    endTag = END
+--    startTag = START
+--    endTag = END
+--
+--    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
+    mapPOStag = mkTagMap [minBound ..] []
 
-    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
-    tagMap = mkTagMap [minBound ..] []
-
-instance Arbitrary POStag  where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Serialize POStag
 

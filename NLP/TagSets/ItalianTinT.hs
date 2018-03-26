@@ -22,10 +22,10 @@ module  NLP.TagSets.ItalianTinT (module  NLP.TagSets.ItalianTinT
         ) where
 
 import GHC.Generics
-import Data.Serialize (Serialize)
+--import Data.Serialize (Serialize)
 import Data.Utilities
-import Test.QuickCheck.Arbitrary (Arbitrary(..))
-import Test.QuickCheck.Gen (elements)
+--import Test.QuickCheck.Arbitrary (Arbitrary(..))
+--import Test.QuickCheck.Gen (elements)
 
 import Data.Text   as T (replace)
 import Text.Read (readEither)
@@ -120,19 +120,19 @@ spelledAs =
             -}
 instance POStags POStag where
 
-    tagUNK = TinTunk
+    unkPOStag = TinTunk
 
 --    tagTerm = showTag
 
-    startTag = START
-    endTag = END
+--    startTag = START
+--    endTag = END
+--
+--    isDeterminerTag tag = tag `elem` [RD]  -- unknown what is a det here?
+    mapPOStag = mkTagMap [minBound ..] spelledAs
 
-    isDeterminerTag tag = tag `elem` [RD]  -- unknown what is a det here?
-    tagMap = mkTagMap [minBound ..] spelledAs
-
-instance Arbitrary POStag where
-  arbitrary = elements [minBound ..]
-instance Serialize POStag
+--instance Arbitrary POStag where
+--  arbitrary = elements [minBound ..]
+--instance Serialize POStag
 
 
 

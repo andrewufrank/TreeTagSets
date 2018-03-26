@@ -53,45 +53,27 @@ import Uniform.Zero
 
 --import              NLP.TagSets.Conll  hiding (NERtag (..))
 
--- | The class of named entity sets.  This typeclass can be defined
--- entirely in terms of the required class constraints.
-    -- removed Serialize and Bounded
-class (Ord a, Eq a, Read a, Show a ) => NERtags a where
-  fromNERtag :: a -> Text
-  -- ^ convert Tag to the form used by the tagger
-  fromNERtag = showT
-  -- does not reproduce exactly (I-LOC becomes I_LOC)
-
-  fromNERtagNormalized :: a -> Text
-
-
-
-  parseNERtag :: Text ->  a
-  -- convert the tagger form to a type
---  parseNERtag  = read2unkF NERunk
-
-  nerUNK :: a
-  -- ^ the value marking a tag which is not defined - always the last
---  default nerUNK :: Bounded a => a
+import NLP.Tags
 
 instance NERtags NERtag where
-  parseNERtag txt = either (\_ -> NERunk txt) id (readEitherT txt2)
+  toNERtag txt = either (\_ -> NERunk txt) id (readEitherT txt2)
     where
         txt2 = T.replace "-" "_" txt
-  nerUNK = UNK
+  unkNERtag = UNK
+  fromNERtag = fromNERtagNormalized
 
-  fromNERtagNormalized I_LOC  = fromNERtag LOC
-  fromNERtagNormalized LUG = fromNERtag LOC
+fromNERtagNormalized I_LOC  = fromNERtag LOC
+fromNERtagNormalized LUG = fromNERtag LOC
 
-  fromNERtagNormalized I_ORG = fromNERtag ORG
-  fromNERtagNormalized I_PER = fromNERtag PER
-  fromNERtagNormalized PERS = fromNERtag PER
-  fromNERtagNormalized I_MISC = fromNERtag MISC
+fromNERtagNormalized I_ORG = fromNERtag ORG
+fromNERtagNormalized I_PER = fromNERtag PER
+fromNERtagNormalized PERS = fromNERtag PER
+fromNERtagNormalized I_MISC = fromNERtag MISC
 
 parseNERtagList :: [Text] -> [NERtag]
 parseNERtagList [] = []
-parseNERtagList [a] = [parseNERtag a]
-parseNERtagList (a:as) = parseNERtag a : map NERtagValue as
+parseNERtagList [a] = [toNERtag a]
+parseNERtagList (a:as) = toNERtag a : map NERtagValue as
 
 isAnUnknownNER  (NERunk a) = True
 isAnUnknownNER  _ = False
@@ -203,10 +185,10 @@ newtype RawNERtag = RawNERtag Text
 -- | POStags instance for unknown tagsets.
 instance NERtags RawNERtag where
   fromNERtag (RawNERtag t) = t
-  parseNERtag  = RawNERtag
-  fromNERtagNormalized = error "fromNERtagNormalized not implemented"
+  toNERtag  = RawNERtag
+--  fromNERtagNormalized = error "fromNERtagNormalized not implemented"
   -- | Constant tag for "unknown"  -- cannot occur
-  nerUNK = error "nerUNK cannot occur for RawNERtag"
+  unkNERtag = error "nerUNK cannot occur for RawNERtag"
 
 
 --instance Arbitrary RawNERtag where

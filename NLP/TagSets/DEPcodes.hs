@@ -5,7 +5,6 @@
 -- |
 --
 -----------------------------------------------------------------------------}
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
        , ScopedTypeVariables
         , FlexibleContexts
@@ -17,31 +16,13 @@
 {-# LANGUAGE DeriveGeneric #-}  -- for RawDEPtag
 
 module NLP.TagSets.DEPcodes (module NLP.TagSets.DEPcodes
-
-
-
---        DepCode1(..), DepCode2 (..), DepCode
---        , isROOT, isPUNCT
-----        , hasDepCode
---        , makeSimpleDepCode, makeDepCode
---        , Pos (..)  -- , Unk
---        , NERTag (..)
---        , isVerbCode, isNounCode, isPunctuation, isAdjective
---        , isClosedClass
---        , isSimpleCode
---        , isPOSpunctuation
---        , coarsePOS
---        , readDepCodes, showDepCodes
---        , SpeakerTag (..), readSpeakerTag
---        , Conll.Tag (..)
-
         )
          where
 
-import           Test.Framework
+import NLP.Tags
 
-import Data.Serialize (Serialize) -- for RawDEPtag
-import Data.Serialize.Text ()
+--import Data.Serialize (Serialize) -- for RawDEPtag
+--import Data.Serialize.Text ()
 import GHC.Generics
 import Uniform.Zero
 
@@ -51,34 +32,26 @@ import Data.Utilities
 import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Aeson
+--import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
+--import Test.QuickCheck.Instances ()
 
 --class (Ord a, Eq a, Read a, Show a) => POStags a where
 ---- , Generic a, Serialize a
 --    fromTag :: a -> Text
---    parseTag :: Text -> a
+--    fromPOStag :: Text -> a
 --    tagUNK :: a
 
-class (Ord a, Eq a, Read a, Show a) => DEPtags a where
-  fromDEPtag :: a -> Text
-  parseDEPtag :: Text -> a
---  propertyDEP :: a -> Text
---  -- produce a property text for RDF
--- use the fromDEPtag and convert to lowercase
-
-  tagDEPunk :: a
-  notDEPtag :: a
---  default notChunkTag :: Bounded a => a
---  notChunkTag = maxBound
 
 instance DEPtags DepCode where
-  fromDEPtag (DepCode c1 c2) = if c2==Dep2zero then showT c1
-                                               else T.concat [showT c1, ":", showT c2]
+  fromDEPtag (DepCode c1 c2) = if c2==Dep2zero
+        then showT c1
+        else T.concat [showT c1, ":", showT c2]
   fromDEPtag (DepUnknown s) = s
 --  fromDEPtag x = error ("fromDEPtag in DEPcodes " ++ show x)
 
-  parseDEPtag   = readDepCode
-  tagDEPunk  =  DepCode DepUnk Dep2zero
-  notDEPtag = error "not implemented notDEPtag"
+  toDEPtag t  = readDepCode t
+  unkDEPtag  =  DepCode DepUnk Dep2zero
+--  notDEPtag = error "not implemented notDEPtag"
 
 --  propertyDEP =
 
@@ -88,12 +61,6 @@ data DepCode = DepCode {d1::DepCode1
             | DepUnknown {s :: Text }
                 deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
 
---instance CharChains2 DepCode Text where
-instance Arbitrary DepCode1 where
-  arbitrary = elements [minBound ..]
-instance Arbitrary DepCode2 where
-  arbitrary = elements [minBound ..]
-instance Zeros DepCode where zero = DepUnknown "constant zero"
 
 --
 map1 :: Map DepCode1 Text
@@ -150,7 +117,7 @@ data DepCode1 = ACL
                 | AUX
                 | AUXPASS
                 | CASE
-                | CC  -- was CC but gives conflict with Conll.Tag
+                | CC
                 | CCOMP
                 | COMPOUND
                 | CONJ
@@ -200,7 +167,7 @@ data DepCode2 = RELCL
             | UPON
             | BUT
             | OF
-            | IN  -- was IN, but conflicts with Conll.Tag
+            | IN
             | OVER
             | DOWN
             | AFTER
@@ -213,7 +180,7 @@ data DepCode2 = RELCL
             | OR
             | DURING
             | FOR
-            | TO  -- was TO, but conflicts with Conll.Tag
+            | TO
             | AT
             | AND
             | AGENT
@@ -259,10 +226,10 @@ showDepCodes (DepCode dd1 dd2)  = if dd2==Dep2zero then showT dd1
 newtype RawDEPtag = RawDEPtag Text
   deriving (Show, Read, Eq, Ord, Generic, ToJSON, FromJSON)
 
-instance Serialize RawDEPtag
+--instance Serialize RawDEPtag
 
 instance DEPtags RawDEPtag where
   fromDEPtag (RawDEPtag ch) = ch
-  parseDEPtag txt =  RawDEPtag txt
-  tagDEPunk  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2zero
-  notDEPtag = error "not implemented notDEPtag"
+  toDEPtag txt =  RawDEPtag txt
+  unkDEPtag  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2zero
+--  notDEPtag = error "not implemented notDEPtag"
