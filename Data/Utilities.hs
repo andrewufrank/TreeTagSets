@@ -16,6 +16,7 @@ import Data.Text (Text)
 import Text.Read (readEither)
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
+import           Data.Char    (isSpace, isLower, toLower, toUpper)
 
 type ErrOrVal a = Either Text a
 -- ^ a type for recording errors as text
@@ -80,6 +81,10 @@ s2t = T.pack
 t2s :: Text -> String
 -- ^ String to Text (invertable)
 t2s = T.unpack
+
+toLowerStart :: Text -> Text
+-- ^ convert the first character to lowercase - for Properties in RDF
+toLowerStart t = (toLower . T.head $ t ) `T.cons` (T.tail t)
 
 
 splitIn2By :: Text -> Text -> Maybe (Text, Maybe Text)

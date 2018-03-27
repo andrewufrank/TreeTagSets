@@ -35,7 +35,6 @@ import Data.Utilities
 --import Test.QuickCheck.Arbitrary (Arbitrary(..))
 --import Test.QuickCheck.Gen (elements)
 import qualified Data.Text                as T
-import           Data.Char                (isSpace, isLower, toLower, toUpper)
 
 
 import  NLP.Tags
@@ -161,35 +160,37 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     Zu        |    -- Numeral qualifier (other units)	km, cc
 --    Other
     Word        |    -- Emoticon or other symbol	:), ®
-    Dollar  | -- ?
-    Spanishunk  -- other  -- conflicts possible!
-        deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
+    Dollar   |  -- ?
+    POSunk
+--    Spanishunk  -- Text -- other  -- conflicts possible!
+        deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic)
 
-
-instance POStags POStag  where
+instance POStags POStag   where
     toPOStag "$" = Dollar
-    toPOStag t = maybe Spanishunk id $ Map.lookup t
-            (reverseMap mapPOStag)
+    toPOStag t = maybe POSunk  id
+        $ Map.lookup t (reverseMap mapPOStag)
 
     fromPOStag Dollar = "$"
-    fromPOStag a = fromMaybe (showT (Spanishunk ) )
+    fromPOStag a = maybe (showT (POSunk ) ) id
                 $  Map.lookup a mapPOStag
 
-    unkPOStag = Spanishunk
+    unkPOStag = POSunk
+    mapPOStag = mkTagMap4conv toLowerStart [START ..] []
 
---    tagTerm = showTag
+-- | Named entity categories defined for the Conll 2003 task.
+    -- used in spanish?
+data NERtag = PERS
+            | LUG
+            -- generic from Conll 2003 task - used in Spanish?
+            |   PER
+            | ORG
+            | LOC
+            | MISC
+            | NERunk
+    deriving (Show, Read, Eq, Ord, Generic)
 
---    startTag = START
---    endTag = END
---
---    isDeterminerTag tag = tag `elem` [Da0000, Dd0000,  De0000, Di0000,  Dn0000,  Do0000, Dp0000,  Dt0000   ]
-    mapPOStag = mkTagMap4conv toLowerStart [minBound ..] []
-
---instance Arbitrary POStag where
---  arbitrary = elements [minBound ..]
---instance Serialize POStag
-
-toLowerStart :: Text -> Text
--- ^ convert the first character to lowercase - for Properties in RDF
-toLowerStart t = (toLower . T.head $ t ) `T.cons` (T.tail t)
+instance NERtags NERtag where
+  toNERtag txt = either (const NERunk) id (readEitherT txt)
+  unkNERtag = NERunk
+  fromNERtag = showT
 

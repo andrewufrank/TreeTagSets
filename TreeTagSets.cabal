@@ -36,6 +36,7 @@ library
         NLP.TagSets.ItalianTinT
         NLP.TagSets.RawTags
         NLP.TagSets.NERcodes
+        NLP.TagSets.SpeakerTags
         NLP.TagSets.DEPcodes
         Data.Utilities
         NLP.Tags
@@ -66,4 +67,6 @@ Test-Suite TestAuto
         NLP.TagSets.ItalianTinTTests
         NLP.TagSets.FrenchUDTests
         NLP.TagSets.NERcodesTests
+        NLP.TagSets.SpeakerTagsTests
         NLP.TagSets.DEPcodesTests
+        NLP.TagSets.RawTagsTests

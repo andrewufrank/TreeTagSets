@@ -71,21 +71,13 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     CL |
     PROWH |
     VS |
-    Frenchunk  -- other  -- conflicts possible!
+    Frenchunk  -- other
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
 instance POStags POStag where
 
     unkPOStag = Frenchunk
-
---    tagTerm = showTag
-
---    startTag = START
---    endTag = END
---
---    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
     mapPOStag = mkTagMap [minBound ..] []
 
---instance Serialize POStag
 

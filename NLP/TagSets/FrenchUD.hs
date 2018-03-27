@@ -26,14 +26,9 @@ module NLP.TagSets.FrenchUD (module  NLP.TagSets.FrenchUD
          where
 
 import GHC.Generics
---import Data.Serialize (Serialize)
 import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Utilities
---import Test.QuickCheck.Arbitrary (Arbitrary(..))
---import Test.QuickCheck.Gen (elements)
-
---import Data.Text   as T (replace)
 
 
 import  NLP.Tags
@@ -43,10 +38,6 @@ undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
---    Dollar | -- ^ $
---    Comma  | -- ^ ,
---    Point | -- ^ .
---    OpenBracket |   -- [
     Dollarpoint | --    $.       |   --	0
     Dollaropenbracket | --  $[       |   --	 '
     Dollarcomma  |   --	,
@@ -95,7 +86,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     VVPP       |   --	maintenant
     X |
     XY       |   --	n
-    Frenchunk  -- other  -- conflicts possible!
+    Frenchunk  -- other
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
@@ -105,18 +96,6 @@ spelledAs =
     ]
 
 instance POStags POStag where
-
     unkPOStag = Frenchunk
-
---    tagTerm = showTag
-
---    startTag = START
---    endTag = END
-
---    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
     mapPOStag = mkTagMap [minBound ..] spelledAs
---
---instance Arbitrary POStag where
---  arbitrary = elements [minBound ..]
---instance Serialize POStag
 

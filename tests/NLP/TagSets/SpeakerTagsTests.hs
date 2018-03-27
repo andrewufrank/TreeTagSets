@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
 --
--- Module      :  Dependency and other Codes
+-- Module      :  Test for speaker tags
 --
 -- |
 --
@@ -15,13 +15,13 @@
         , DeriveAnyClass
         #-}
 
-module NLP.TagSets.NERcodesTests  where
+module NLP.TagSets.SpeakerTagsTests  where
 
 import           Test.Framework
-import NLP.TagSets.NERcodes
+import NLP.TagSets.SpeakerTags
 --import NLP.Tags
 
---test_listNull = assertEqual [NERunk] (parseNERtagList [text0])
+--test_listNull = assertEqual [NERunk text0] (parseNERtagList [text0])
 --test_listOh = assertEqual [O] (parseNERtagList [textOh])
 --test_unk = assertBool . isAnUnknownNER . toNERtag $ text0
 --

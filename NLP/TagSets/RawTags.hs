@@ -1,15 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveAnyClass #-}
+
 module NLP.TagSets.RawTags (
-        RawPOStag (..)
- , module NLP.Tags
+        module NLP.TagSets.RawTags
+         , module NLP.Tags
         ) where
 
 -- the raw tags are just newtypes of the text output from the tagger
 -- raw tags are used to find all the tags used by a model
-
---import Data.Serialize (Serialize)
---import Data.Serialize.Text ()
 import Data.Text (Text)
 import qualified Data.Text as T
 import GHC.Generics
@@ -17,14 +15,10 @@ import Text.Read (readEither)
 
 import Data.Utilities
 
---import Test.QuickCheck (Arbitrary(..), NonEmptyList(..))
---import Test.QuickCheck.Instances ()
-
 import qualified Data.Map as Map
 import  Data.Map (Map (..))
 
 import NLP.Tags
---import Data.Utilities (ErrOrVal))
 
 
 ------------------------------------------------------- P O S tags
@@ -38,14 +32,9 @@ instance POStags RawPOStag where
   toPOStag  = RawPOStag
 
   -- | Constant tag for "unknown"
+  -- should not occur, as all tags are mapped
   unkPOStag = RawPOStag "Unk"
 
---  tagTerm (RawPOStag t) = t
-
---  startTag = RawPOStag "-START-"
---  endTag = RawPOStag "-END-"
---
---  isDeterminerTag (RawPOStag tg) = tg == "DT"
   mapPOStag = error "tagMap not implemented for RawPOStag"
 
 --instance Arbitrary RawPOStag where
@@ -65,6 +54,32 @@ instance ChunkTags RawChunk where
   toChunkTag txt =  RawChunk txt
   unkChunkTag = RawChunk "O"
 
+
+------------------------------------------------------------------- D E P tags
+
+-- | A fallback Dependency tag instance.
+
+newtype RawDEPtag = RawDEPtag Text
+  deriving (Show, Read, Eq, Ord, Generic)
+
+--instance Serialize RawDEPtag
+
+instance DEPtags RawDEPtag where
+  fromDEPtag (RawDEPtag ch) = ch
+  toDEPtag txt =  RawDEPtag txt
+  unkDEPtag  = error "not implemented notDEPtag" --  DepCode DepUnk Dep2zero
+--  notDEPtag = error "not implemented notDEPtag"
+
+------------------------------------------------__N E R tags
+newtype RawNERtag = RawNERtag Text
+  deriving (Show, Read, Eq, Ord,  Generic)
+
+-- | POStags instance for unknown tagsets.
+instance NERtags RawNERtag where
+  fromNERtag (RawNERtag t) = t
+  toNERtag  = RawNERtag
+
+  unkNERtag = error "nerUNK cannot occur for RawNERtag"
 
 
 

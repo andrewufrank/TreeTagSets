@@ -19,40 +19,12 @@ module NLP.TagSets.Conll (
  , module NLP.Tags
     ) where
 
---import Data.Serialize (Serialize)
---import Test.QuickCheck.Arbitrary (Arbitrary(..))
---import Test.QuickCheck.Gen (elements)
---
---import Data.Aeson
 import GHC.Generics
 
-import  NLP.Tags  (POStags (..), TagsetIDs (..)
-                    , ChunkTags (..))
---import NLP.Types.General
+import  NLP.Tags
 import Data.Utilities
 
-
---import qualified Data.Map as Map
---import  Data.Map (Map (..))
---import Data.Utilities
---import qualified Data.Text as T
---import Data.Text (Text)
---import Data.Aeson
-
 undefConll = error "convertOneSnip2Triples postag conll":: POStag
-
----- | Named entity categories defined for the Conll 2003 task.
---data NERtag = PER
---            | ORG
---            | LOC
---            | MISC
---  deriving (Read, Show, Ord, Eq, Enum, Bounded)
---
---instance Arbitrary NERtag where
---  arbitrary = elements [minBound..]
-
---instance Serialize NERtag
---instance NERtags NERtag
 
 
 -- | Phrase chunk tags defined for the Conll task.
@@ -76,9 +48,13 @@ data NERtag = PER
             | ORG
             | LOC
             | MISC
-            | UNK
-  deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic)
+            | NERunk
+  deriving (Read, Show, Ord, Eq,  Generic)
 
+instance NERtags NERtag where
+  toNERtag txt = either (const NERunk) id (readEitherT txt)
+  unkNERtag = NERunk
+  fromNERtag = showT
 
 instance POStags POStag where
 -- | Constant tag for "unknown"

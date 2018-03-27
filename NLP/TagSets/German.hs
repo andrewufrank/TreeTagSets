@@ -2,7 +2,8 @@
 --
 -- Module       | --  Dependency and other Codes
 --
--- | the codes for TinT parser for German
+-- | the codes for   German
+-- was also used in a french model from stanford coreNLP
 --
 -----------------------------------------------------------------------------}
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -21,10 +22,6 @@ module  NLP.TagSets.German (module  NLP.TagSets.German
         )  where
 
 import GHC.Generics
---import Data.Serialize (Serialize)
---import Test.QuickCheck.Arbitrary (Arbitrary(..))
---import Test.QuickCheck.Gen (elements)
-
 
 import  NLP.Tags
 import Data.Utilities
@@ -88,7 +85,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     VMPP |
     PPOSS |
     KOKOM |
-    Germanunk  -- other  -- conflicts possible!
+    Germanunk -- Text -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
@@ -101,18 +98,18 @@ spelledAs =
 instance POStags POStag where
 
     unkPOStag = Germanunk
-
---    tagTerm = showTag
-
---    startTag = START
---    endTag = END
---
---    isDeterminerTag tag = tag `elem` []  -- unknown what is a det here?
     mapPOStag = mkTagMap [minBound ..] spelledAs
 
---instance Arbitrary POStag where
---  arbitrary = elements [minBound ..]
---instance Serialize POStag
+instance NERtags NERtag where
+  toNERtag txt = either (const NERunk) id (readEitherT txt)
+  unkNERtag = NERunk
+  fromNERtag = showT
 
+data NERtag = I_LOC
+            | I_ORG
+            | I_PER
+            | I_MISC
+            | NERunk
 
+  deriving (Show, Read, Eq, Ord, Generic)
 

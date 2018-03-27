@@ -82,6 +82,17 @@ class (Ord a, Eq a, Read a, Show a, Generic a) => NERtags a where
   -- ^ the value marking a tag which is not defined - always the last
 --  default nerUNK :: Bounded a => a
 
+class (Ord a, Eq a, Read a, Show a ) => SpeakerTags a where
+  fromSpeakerTag :: a -> Text
+  -- ^ convert Tag to the form used by the tagger
+  fromSpeakerTag = showT
+
+  toSpeakerTag :: Text ->  a
+  -- convert the tagger form to a type
+
+  unkSpeakerTag :: a
+  -- ^ the value marking a tag which is not defined - always the last
+
 class TagsetIDs t where
     tagsetURL :: t ->  Text
 
