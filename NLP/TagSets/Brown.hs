@@ -4,6 +4,8 @@
 -- Brown corpus.
 -- the structure of these tags is complex and \
 -- parsed with a specialized system
+-- code from chatter by Rogan Creswick
+
 
 module NLP.TagSets.Brown
  (module NLP.TagSets.Brown

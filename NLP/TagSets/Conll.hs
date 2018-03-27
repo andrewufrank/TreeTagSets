@@ -10,6 +10,8 @@
 
 -- | Data types representing the POS tags and Chunk tags derived from
 -- the Conll2000 training corpus.
+    -- code from chatter by Rogan Creswick
+
     -- it is an attempt to a complete list of penn treebank codes
     -- see http://erwinkomen.ruhosting.nl/eng/2014_Longdale-Labels.htm and
     -- https://stackoverflow.com/questions/1833252/java-stanford-nlp-part-of-speech-labels
