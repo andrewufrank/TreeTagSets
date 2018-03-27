@@ -36,16 +36,15 @@ instance DEPtags DepCode where
   fromDEPtag (DepCode c1 c2) = if c2==Dep2zero
         then showT c1
         else T.concat [showT c1, ":", showT c2]
-  fromDEPtag (DepUnknown s) = s
+--  fromDEPtag (DepUnknown s) = s
 
   toDEPtag t  = readDepCode t
   unkDEPtag  =  DepCode DepUnk Dep2zero
-  -- ^ contains the value, cannot be used for testing after parsing!
 
 data DepCode = DepCode {d1::DepCode1
                         , d2 :: DepCode2
                         }
-            | DepUnknown {s :: Text }
+--            | DepUnknown {s :: Text }
                 deriving (Show, Read, Eq, Ord, Generic)
 
 
@@ -63,7 +62,7 @@ readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t))
                     (Nothing, _) -> unk
                     (Just a1, Nothing) -> DepCode a1 Dep2zero
                     (Just a1, Just b1) -> DepCode a1 b1
-            unk = DepUnknown t
+            unk = unkDEPtag -- DepUnknown t
             c1 a =    (reverseLookup map1 a) :: Maybe DepCode1
             c2 b =    (reverseLookup map2 b):: Maybe DepCode2
 

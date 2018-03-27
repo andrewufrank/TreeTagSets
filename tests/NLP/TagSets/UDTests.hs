@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module NLP.TagSets.UDTests where
 
@@ -16,6 +17,10 @@ instance Arbitrary POStag where
 
 prop_tagsRoundTrip ::  POStag -> Bool
 prop_tagsRoundTrip tag = tag == (toPOStag . fromPOStag) tag
+
+unkP =unkPOStag :: POStag
+test_unk = assertEqual unkP (toPOStag "xy99")
+test_unk2 = assertEqual "X" (fromPOStag unkP)
 
 --prop_nerTagsRoundTrip :: C.NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (fromRight . parseNERTag . fromNERTag) tag

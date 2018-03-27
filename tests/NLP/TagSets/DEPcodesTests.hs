@@ -30,6 +30,18 @@ instance Arbitrary DepCode2 where
   arbitrary = elements [minBound ..]
 --instance Zeros DepCode where zero = DepUnknown "constant zero"
 
+--instance Arbitrary DepCode where
+--    arbitrary = DepCode  d1 d2
+--        where
+--                d1 = arbitrary
+--                d2 = arbitrary
+--
+--prop_tagsRoundTrip :: DepCode -> Bool
+--prop_tagsRoundTrip tag = tag == (toDEPtag . fromDEPtag) tag
+
+unkD =unkDEPtag :: DepCode
+test_unk = assertEqual unkD (toDEPtag "xy99")
+test_unk2 = assertEqual "DepUnk" (fromDEPtag unkD)
 
 test_1a = assertEqual (DepCode ACL Dep2zero) (readDepCode "ACL")
 test_2a = assertEqual (DepCode AUX ON) (readDepCode "AUX:ON")

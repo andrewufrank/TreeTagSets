@@ -5,7 +5,6 @@ module NLP.TagSets.BrownTests where
 
 import Test.Framework
 
-import qualified NLP.TagSets.Brown as B
 import  NLP.TagSets.Brown as B
 import  NLP.TagSets.Brown
 -- qualification here is not required
@@ -32,8 +31,9 @@ test_read1 = assertEqual (Right WRB_pl_DO)
             (parseBrownTag "WRB+DO")
 test_show1 = assertEqual "WRB+DO" (fromPOStag WRB_pl_DO)
 
---prop_nerTagsRoundTrip :: NERtag -> Bool
---prop_nerTagsRoundTrip tag = tag == (parseNERTag . fromNERTag) tag
---
+unkP =unkPOStag :: B.POStag
+test_unk = assertEqual unkP (toPOStag "xy99")
+test_unk2 = assertEqual "Unk" (fromPOStag unkP)
+
 prop_chunkTagsRoundTrip :: ChunkTag -> Bool
 prop_chunkTagsRoundTrip tag = tag == (toChunkTag . fromChunkTag) tag

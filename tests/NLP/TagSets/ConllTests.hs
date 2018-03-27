@@ -32,6 +32,10 @@ instance Arbitrary POStag where
 prop_tagsRoundTrip ::  POStag -> Bool
 prop_tagsRoundTrip tag = tag == (toPOStag . fromPOStag) tag
 
+unkP =unkPOStag :: POStag
+test_unk = assertEqual unkP (toPOStag "xy99")
+test_unk2 = assertEqual "Unk" (fromPOStag unkP)
+
 --prop_nerTagsRoundTrip :: NERtag -> Bool
 --prop_nerTagsRoundTrip tag = tag == (parseNERtag . fromNERtag) tag
 ----

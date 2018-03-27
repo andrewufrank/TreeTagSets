@@ -161,20 +161,20 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
 --    Other
     Word        |    -- Emoticon or other symbol	:), ®
     Dollar   |  -- ?
-    POSunk
+    Posunk
 --    Spanishunk  -- Text -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Enum, Bounded, Generic)
 
 instance POStags POStag   where
     toPOStag "$" = Dollar
-    toPOStag t = maybe POSunk  id
+    toPOStag t = maybe Posunk  id
         $ Map.lookup t (reverseMap mapPOStag)
 
     fromPOStag Dollar = "$"
-    fromPOStag a = maybe (showT (POSunk ) ) id
+    fromPOStag a = maybe (showT (Posunk ) ) id
                 $  Map.lookup a mapPOStag
 
-    unkPOStag = POSunk
+    unkPOStag = Posunk
     mapPOStag = mkTagMap4conv toLowerStart [START ..] []
 
 -- | Named entity categories defined for the Conll 2003 task.

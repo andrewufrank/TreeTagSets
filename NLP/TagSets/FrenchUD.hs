@@ -86,7 +86,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     VVPP       |   --	maintenant
     X |
     XY       |   --	n
-    Frenchunk  -- other
+    FrenchUnk  -- other
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
@@ -96,6 +96,6 @@ spelledAs =
     ]
 
 instance POStags POStag where
-    unkPOStag = Frenchunk
+    unkPOStag = FrenchUnk
     mapPOStag = mkTagMap [minBound ..] spelledAs
 

@@ -71,13 +71,13 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     CL |
     PROWH |
     VS |
-    Frenchunk  -- other
+    FrenchUnk  -- other
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
 instance POStags POStag where
 
-    unkPOStag = Frenchunk
+    unkPOStag = FrenchUnk
     mapPOStag = mkTagMap [minBound ..] []
 
 

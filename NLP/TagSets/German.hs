@@ -85,7 +85,7 @@ data POStag =   -- copied from http://universaldependencies.org/u/pos/
     VMPP |
     PPOSS |
     KOKOM |
-    Germanunk -- Text -- other  -- conflicts possible!
+    GermanUnk -- Text -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 spelledAs =
@@ -97,7 +97,7 @@ spelledAs =
 
 instance POStags POStag where
 
-    unkPOStag = Germanunk
+    unkPOStag = GermanUnk
     mapPOStag = mkTagMap [minBound ..] spelledAs
 
 instance NERtags NERtag where
