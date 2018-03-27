@@ -19,27 +19,8 @@
 
 module NLP.TagSets.NERcodes (module NLP.TagSets.NERcodes
  , module NLP.Tags
---    DepCode1(..), DepCode2 (..), DepCode
---        , isROOT, isPUNCT
-----        , hasDepCode
---        , makeSimpleDepCode, makeDepCode
---        , Pos (..)  -- , Unk
---        , NERtag (..)
---        , isVerbCode, isNounCode, isPunctuation, isAdjective
---        , isClosedClass
---        , isSimpleCode
---        , isPOSpunctuation
---        , coarsePOS
---        , readDepCodes, showDepCodes
---        , SpeakerTag (..), readSpeakerTag
---        , Conll.Tag (..)
-
         )
          where
-
---import           Test.Framework
---import Data.Serialize (Serialize)
---import Data.Serialize.Text ()
 import GHC.Generics
 
 import Data.Text (Text)
@@ -47,12 +28,7 @@ import qualified Data.Text as T
 import Data.Maybe
 import Data.Utilities
 import Text.Read (readEither)
---import Data.Aeson
 import GHC.Generics
---import Uniform.Zero
-
---import              NLP.TagSets.Conll  hiding (NERtag (..))
-
 import NLP.Tags
 
 instance NERtags NERtag where
@@ -69,6 +45,7 @@ fromNERtagNormalized I_ORG = fromNERtag ORG
 fromNERtagNormalized I_PER = fromNERtag PER
 fromNERtagNormalized PERS = fromNERtag PER
 fromNERtagNormalized I_MISC = fromNERtag MISC
+fromNERtagNormalized x = error ("fromNERtagNormalized missing for " ++ show x)
 
 parseNERtagList :: [Text] -> [NERtag]
 parseNERtagList [] = []
