@@ -101,7 +101,7 @@ readDepCode t = maybe unk conv (splitIn2By ":" (T.toUpper t)) -- at least french
             c1 a =    (reverseLookup map1 a) :: Maybe DepCode1
             c2 b =    (reverseLookup map2 b):: Maybe DepCode2
 
-            conv2 (a, mb) = (c1 a, flatMaybe $ fmap c2 mb)
+            conv2 (a, mb) = (c1 a, joinMaybe $ fmap c2 mb)
                          :: (Maybe DepCode1, Maybe DepCode2)
 
 
