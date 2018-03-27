@@ -69,6 +69,10 @@ data NERtag = PER
             | ORGANIZATION
             | MONEY
             | PERCENT
+--            | NERtagValue Text
+            -- in the stanford coreNLP json output
+            -- named entities are given as lists, starting with a tag and
+            -- followed by values ??
 
   deriving (Show, Read, Eq, Ord, Generic)
          -- ,  Enum, Bounded)
