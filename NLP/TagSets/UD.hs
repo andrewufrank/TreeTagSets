@@ -3,9 +3,9 @@
 -- Module       | --  Dependency and other Codes
 --
 -- | the codes for UD  -- the table is lifted
+-- missing he feature codes (which is requiring some work!)
 --
 -----------------------------------------------------------------------------}
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
        , ScopedTypeVariables
         , FlexibleContexts
@@ -21,16 +21,11 @@ module NLP.TagSets.UD (module NLP.TagSets.UD
         )
          where
 
---import Data.Serialize (Serialize)
---import Test.QuickCheck.Arbitrary (Arbitrary(..))
---import Test.QuickCheck.Gen (elements)
-
 import GHC.Generics
-
 import  NLP.Tags
 import Data.Utilities
 
-undefUPOS = error "NLP.TagSets.UD" :: POStag
+undefPOS = error "NLP.TagSets.UD" :: POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
@@ -61,16 +56,6 @@ instance  POStags  POStag where
 
     unkPOStag = X
 
---    tagTerm = showTag
-
---    startTag = START
---    endTag = END
---
---    isDeterminerTag tag = tag `elem` [DET]
     mapPOStag = mkTagMap [minBound ..] []
-
---instance Arbitrary POStag where
---  arbitrary = elements [minBound ..]
---instance Serialize POStag
 
 

@@ -26,7 +26,7 @@ import GHC.Generics
 import  NLP.Tags
 import Data.Utilities
 
-undefConll = error "convertOneSnip2Triples postag conll":: POStag
+undefPOS = error "convertOneSnip2Triples postag conll":: POStag
 
 
 -- | Phrase chunk tags defined for the Conll task.
