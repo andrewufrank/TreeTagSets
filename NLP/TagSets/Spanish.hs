@@ -39,7 +39,7 @@ import qualified Data.Text                as T
 
 import  NLP.Tags
 
-undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: POStag
+undefPOS = undef "convertOneSnip2Triples postat spanish":: POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.

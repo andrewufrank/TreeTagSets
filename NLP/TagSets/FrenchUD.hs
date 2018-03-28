@@ -33,7 +33,7 @@ import Data.Utilities
 
 import  NLP.Tags
 
-undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
+undefPOS = undef "convertOneSnip2Triples postat FrenchUD"::  POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.

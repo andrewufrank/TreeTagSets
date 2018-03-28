@@ -26,7 +26,7 @@ import GHC.Generics
 import  NLP.Tags
 import Data.Utilities
 
-undefGermanPos = undef "convertOneSnip2Triples postag german":: POStag
+undefPOS = undef "convertOneSnip2Triples postag german":: POStag
 
 data POStag =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
