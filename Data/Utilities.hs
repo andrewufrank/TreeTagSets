@@ -24,8 +24,8 @@ type ErrOrVal a = Either Text a
 ---- | Just a handy alias for Text
 --type Error = Text
 
-(<>):: Text -> Text -> Text
-(<>) = T.append
+--(<>):: Text -> Text -> Text
+--(<>) = T.append
 
 readEitherT :: Read a => Text -> Either Text a
 readEitherT t = either (Left . s2t) Right  $ readEither . t2s $ t
