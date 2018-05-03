@@ -15,97 +15,17 @@
         , DeriveAnyClass
         #-}
 
-module CoreNLP.NERcodes (module CoreNLP.NERcodes
---    DepCode1(..), DepCode2 (..), DepCode
---        , isROOT, isPUNCT
-----        , hasDepCode
---        , makeSimpleDepCode, makeDepCode
---        , Pos (..)  -- , Unk
---        , NERtag (..)
---        , isVerbCode, isNounCode, isPunctuation, isAdjective
---        , isClosedClass
---        , isSimpleCode
---        , isPOSpunctuation
---        , coarsePOS
---        , readDepCodes, showDepCodes
---        , SpeakerTag (..), readSpeakerTag
---        , Conll.Tag (..)
-
-        )
-         where
+module CoreNLP.NERcodesTests  where
 
 import           Test.Framework
+import CoreNLP.NERcodes
 
-import Data.Text (Text)
-import qualified Data.Text as T
+test_listNull = assertEqual [NERunk text0] (parseNERtagList [text0])
+test_listOh = assertEqual [O] (parseNERtagList [textOh])
+test_unk = assertBool . isAnUnknownNER . parseNERtag $ text0
 
-import Data.Utilities
+test_eq = assertBool $ [NERunk text0] == (parseNERtagList [text0])
+test_eqOh = assertBool $ [O] == (parseNERtagList [textOh])
 
---import Uniform.Zero
---import Uniform.Strings
---import Uniform.Error
-
-import              NLP.Corpora.Conll  hiding (NERtag (..))
-
-
--- | Named entity categories defined for the Conll 2003 task.
-data NERtag = PER
-            | ORG
-            | LOC
-            | MISC
-            | NERunk
-            -- found in Stanford CoreNLP 3.5.2
-            -- Time, Location, Organization, Person, Money, Percent, Date
-            | O
-            | NUMBER
-            | PERSON
-            | DURATION
-            | DATE
-            | SET
-            | TIME
-            | ORDINAL
-            | LOCATION
-            | ORGANIZATION
-            | MONEY
-            | PERCENT
-
-  deriving (Read, Show, Ord, Eq,  Enum, Bounded)
-
---instance Zeros NERtag where zero = NERunk
-
---data SpeakerTag =  -- PER0 | PER1 | PER2 |
---                    Speaker Text
---    deriving (Read, Show,  Ord, Eq)
---    -- to encode the speaker tag -- any others? PER5 or 5 is seen
---
---readSpeakerTag :: Text -> SpeakerTag
---readSpeakerTag  t = case (take' 3 t) of
---                "PER" -> Speaker (fromJustNote "readSpeakerTag 342u324" $ stripPrefix' "PER" t)
---                _ -> Speaker t
-----                "PER1" -> PER1
-----                "PER2" -> PER2
-----                s     -> Speaker s
-
---instance CharChains2 SpeakerTag Text  where
-------    show' PER0 = "PERO"
-------    show' PER1 = "PER1"
-------    show' PER2 = "PER2"
---    show' (Speaker n) = "Speaker " <> showT n
-
--- readSpeakerTag :: Text -> SpeakerTag
--- readSpeakerTag = readNoteT "readSpeakerTag"
-
---readSpeakerTag :: Text -> SpeakerTag
---readSpeakerTag  t = case t of
---                "PER0" -> PER0
---                "PER1" -> PER1
---                "PER2" -> PER2
---                s     -> Speaker s
---
---instance CharChains2 SpeakerTag Text  where
---    show' PER0 = "PERO"
---    show' PER1 = "PER1"
---    show' PER2 = "PER2"
---    show' (Speaker n) = "Speaker " <> showT n
-
-
+text0 = "0" :: Text
+textOh = "O" :: Text
